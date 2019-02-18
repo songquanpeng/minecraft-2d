@@ -10,6 +10,7 @@ About::About(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint);
+    setWindowTitle("About");
 }
 
 About::~About()

@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="image.qrc">
+    <normaloff>:/lancher/image/icon.png</normaloff>:/lancher/image/icon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">border-image: url(:/lancher/image/dialog.png);</string>
   </property>

@@ -8,7 +8,7 @@ Lancher::Lancher(QWidget *parent) :
     ui(new Ui::Lancher)
 {
     ui->setupUi(this);
-
+    setWindowTitle("MineCraft");
 }
 
 Lancher::~Lancher()

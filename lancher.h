@@ -20,8 +20,8 @@ protected:
     void paintEvent(QPaintEvent *);
 private:
     Ui::Lancher *ui;
-//    QPushButton *aboutBtn;
 private slots:
+    // 按照以下命名方式对槽函数进行命名
     void on_aboutBtn_clicked();
 };
 

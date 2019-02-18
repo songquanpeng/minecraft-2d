@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Lancher</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="image.qrc">
+    <normaloff>:/lancher/image/icon.png</normaloff>:/lancher/image/icon.png</iconset>
+  </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
@@ -105,6 +109,9 @@ color: rgb(255, 255, 255);
            <height>71</height>
           </size>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="styleSheet">
           <string notr="true">font: 12pt &quot;Georgia&quot;;
 background-image: url(:/lancher/image/button.png);</string>
@@ -128,6 +135,9 @@ background-image: url(:/lancher/image/button.png);</string>
            <height>71</height>
           </size>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="styleSheet">
           <string notr="true">font: 12pt &quot;Georgia&quot;;
 background-image: url(:/lancher/image/button.png);</string>
@@ -150,6 +160,9 @@ background-image: url(:/lancher/image/button.png);</string>
            <width>311</width>
            <height>71</height>
           </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="styleSheet">
           <string notr="true">font: 12pt &quot;Georgia&quot;;
