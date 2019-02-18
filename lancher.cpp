@@ -3,12 +3,18 @@
 #include <QStyleOption>
 #include <QPainter>
 
+
 Lancher::Lancher(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Lancher)
 {
     ui->setupUi(this);
     setWindowTitle("MineCraft");
+
+    backgroundMusicPlayer = new QMediaPlayer(this);
+//    connect(backgroundMusicPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    backgroundMusicPlayer->setMedia(QUrl::fromLocalFile("sound/forest.mp3"));
+    backgroundMusicPlayer->play();
 }
 
 Lancher::~Lancher()

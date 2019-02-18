@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QMediaPlayer>
 #include "about.h"
 
 namespace Ui {
@@ -20,6 +21,7 @@ protected:
     void paintEvent(QPaintEvent *);
 private:
     Ui::Lancher *ui;
+    QMediaPlayer *backgroundMusicPlayer;
 private slots:
     // 按照以下命名方式对槽函数进行命名
     void on_aboutBtn_clicked();
