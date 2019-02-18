@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/lancher">
+    <file>image/button.png</file>
+    <file>image/background.png</file>
+  </qresource>
+</RCC>
