@@ -21,12 +21,11 @@ protected:
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
-
+	bool mouseMoveing;
+	QPoint lastMousePosition;
 private:
     Ui::About *ui;
-    // 实现窗体的可拖动
-    bool mouseMoveing;
-    QPoint lastMousePosition;
+
 };
 
 #endif // ABOUT_H

@@ -10,11 +10,22 @@ Lancher::Lancher(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("MineCraft");
+	// ¼ÓÔØÉèÖÃ
+	gameSetting = new QSettings("config.ini", QSettings::IniFormat);
+	loadSetting();
+	if (config.backgroundMusicOn)
+	{
+		// ²¥·Å±³¾°ÒôÀÖ
+		backgroundMusicPlayer = new QMediaPlayer(this);
+		backgroundMusicPlayer->setMedia(QUrl::fromLocalFile("sound/forest.mp3"));
+		backgroundMusicPlayer->play();
+	}
+}
 
-    backgroundMusicPlayer = new QMediaPlayer(this);
-//    connect(backgroundMusicPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
-    backgroundMusicPlayer->setMedia(QUrl::fromLocalFile("sound/forest.mp3"));
-    backgroundMusicPlayer->play();
+void Lancher::loadSetting()
+{
+	config.backgroundMusicOn = gameSetting->value("backgroundMusicOn").toBool();
+	config.difficulty = gameSetting->value("difficulty").toInt();
 }
 
 Lancher::~Lancher()
@@ -24,8 +35,14 @@ Lancher::~Lancher()
 
 void Lancher::on_aboutBtn_clicked()
 {
-    About *aboutDialog = new About();
+	About *aboutDialog = new About();
     aboutDialog->show();
+}
+
+void Lancher::on_settingBtn_clicked()
+{
+	Setting *settingDialog = new Setting();
+	settingDialog->show();
 }
 
 
@@ -36,4 +53,5 @@ void Lancher::paintEvent(QPaintEvent *event)
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
 
