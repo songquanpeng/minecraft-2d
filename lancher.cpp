@@ -8,12 +8,20 @@ Lancher::Lancher(QWidget *parent) :
     ui(new Ui::Lancher)
 {
     ui->setupUi(this);
+
 }
 
 Lancher::~Lancher()
 {
     delete ui;
 }
+
+void Lancher::on_aboutBtn_clicked()
+{
+    About *aboutDialog = new About();
+    aboutDialog->show();
+}
+
 
 void Lancher::paintEvent(QPaintEvent *event)
 {
@@ -22,3 +30,4 @@ void Lancher::paintEvent(QPaintEvent *event)
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+

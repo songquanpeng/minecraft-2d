@@ -2,6 +2,8 @@
 #define LANCHER_H
 
 #include <QWidget>
+#include <QPushButton>
+#include "about.h"
 
 namespace Ui {
 class Lancher;
@@ -14,11 +16,13 @@ class Lancher : public QWidget
 public:
     explicit Lancher(QWidget *parent = nullptr);
     ~Lancher();
-//    void paintEvent(QPaintEvent *event);
 protected:
     void paintEvent(QPaintEvent *);
 private:
     Ui::Lancher *ui;
+//    QPushButton *aboutBtn;
+private slots:
+    void on_aboutBtn_clicked();
 };
 
 #endif // LANCHER_H

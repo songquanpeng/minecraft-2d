@@ -26,13 +26,16 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        lancher.cpp
+        lancher.cpp \
+    about.cpp
 
 HEADERS += \
-        lancher.h
+        lancher.h \
+    about.h
 
 FORMS += \
-        lancher.ui
+        lancher.ui \
+    about.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
