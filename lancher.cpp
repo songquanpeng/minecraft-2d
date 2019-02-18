@@ -36,13 +36,22 @@ Lancher::~Lancher()
 void Lancher::on_aboutBtn_clicked()
 {
 	About *aboutDialog = new About();
+	//aboutDialog->setModal(true);
     aboutDialog->show();
 }
 
 void Lancher::on_settingBtn_clicked()
 {
 	Setting *settingDialog = new Setting();
+	//settingDialog->setModal(true);
 	settingDialog->show();
+}
+
+void Lancher::on_startBtn_clicked()
+{
+	archiveManager = new ArchiveManager();
+	archiveManager->setModal(true);
+	archiveManager->show();
 }
 
 

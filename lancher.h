@@ -7,6 +7,7 @@
 #include <QSettings>
 #include "about.h"
 #include "setting.h"
+#include "archivemanager.h"
 
 namespace Ui {
 class Lancher;
@@ -27,12 +28,15 @@ protected:
 private:
     Ui::Lancher *ui;
     QMediaPlayer *backgroundMusicPlayer;
+	ArchiveManager *archiveManager;
 	//About *aboutDialog;
 	//Setting *settingDialog;
 private slots:
     // 按照以下命名方式对槽函数进行命名
     void on_aboutBtn_clicked();
 	void on_settingBtn_clicked();
+	void on_startBtn_clicked();
+
 };
 
 #endif // LANCHER_H

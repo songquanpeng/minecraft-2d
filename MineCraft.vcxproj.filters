@@ -50,6 +50,9 @@
     <ClCompile Include="about.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="archivemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="about.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="archivemanager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="game.h">
@@ -84,6 +90,8 @@
     
     
     
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
@@ -95,6 +103,9 @@
     
     
     <ClInclude Include="ui_about.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_archivemanager.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="ui_game.h">
@@ -109,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="about.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="archivemanager.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="game.ui">

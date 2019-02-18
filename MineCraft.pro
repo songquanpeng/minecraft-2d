@@ -29,19 +29,22 @@ SOURCES += \
         lancher.cpp \
     about.cpp \
     setting.cpp \
-    game.cpp
+    game.cpp \
+    archivemanager.cpp
 
 HEADERS += \
         lancher.h \
     about.h \
     setting.h \
-    game.h
+    game.h \
+    archivemanager.h
 
 FORMS += \
         lancher.ui \
     about.ui \
     setting.ui \
-    game.ui
+    game.ui \
+    archivemanager.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
