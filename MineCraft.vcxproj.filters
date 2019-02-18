@@ -50,10 +50,16 @@
     <ClCompile Include="about.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lancher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="setting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,11 +67,19 @@
     <QtMoc Include="about.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="game.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="lancher.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="setting.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    
+    
     
     
     
@@ -78,10 +92,18 @@
     </CustomBuild>
     
     
+    
+    
     <ClInclude Include="ui_about.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="ui_game.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
     <ClInclude Include="ui_lancher.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_setting.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,7 +111,13 @@
     <QtUic Include="about.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="game.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
     <QtUic Include="lancher.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="setting.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

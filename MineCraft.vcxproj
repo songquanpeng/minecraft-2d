@@ -198,13 +198,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="about.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="lancher.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="setting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="about.h">
     </QtMoc>
+    <QtMoc Include="game.h">
+    </QtMoc>
     <QtMoc Include="lancher.h">
+    </QtMoc>
+    <QtMoc Include="setting.h">
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -225,16 +231,26 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CustomBuild>
     <ClInclude Include="ui_about.h" />
+    <ClInclude Include="ui_game.h" />
     <ClInclude Include="ui_lancher.h" />
+    <ClInclude Include="ui_setting.h" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="about.ui">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_about.h</OutputFile>
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_about.h</OutputFile>
     </QtUic>
+    <QtUic Include="game.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_game.h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_game.h</OutputFile>
+    </QtUic>
     <QtUic Include="lancher.ui">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_lancher.h</OutputFile>
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_lancher.h</OutputFile>
+    </QtUic>
+    <QtUic Include="setting.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_setting.h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_setting.h</OutputFile>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
