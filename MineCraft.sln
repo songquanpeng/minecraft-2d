@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MineCraft", "MineCraft.vcxproj", "{E3512BC5-053A-3560-9F23-FE8AFC81AB74}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGraphicsItem", "..\TestGraphicsItem\TestGraphicsItem.vcxproj", "{F589095E-2CE3-3D1C-954C-3C5F7FD44AB8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -17,10 +15,6 @@ Global
 		{E3512BC5-053A-3560-9F23-FE8AFC81AB74}.Debug|x64.Build.0 = Debug|x64
 		{E3512BC5-053A-3560-9F23-FE8AFC81AB74}.Release|x64.ActiveCfg = Release|x64
 		{E3512BC5-053A-3560-9F23-FE8AFC81AB74}.Release|x64.Build.0 = Release|x64
-		{F589095E-2CE3-3D1C-954C-3C5F7FD44AB8}.Debug|x64.ActiveCfg = Debug|x64
-		{F589095E-2CE3-3D1C-954C-3C5F7FD44AB8}.Debug|x64.Build.0 = Debug|x64
-		{F589095E-2CE3-3D1C-954C-3C5F7FD44AB8}.Release|x64.ActiveCfg = Release|x64
-		{F589095E-2CE3-3D1C-954C-3C5F7FD44AB8}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

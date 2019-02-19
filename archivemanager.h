@@ -2,6 +2,7 @@
 #define ARCHIVEMANAGER_H
 
 #include <QDialog>
+#include <QSettings>
 
 namespace Ui {
 class ArchiveManager;
@@ -17,6 +18,10 @@ public:
 
 private:
     Ui::ArchiveManager *ui;
+private slots:
+	void on_createBtn_clicked();
+	void on_quitBtn_clicked();
+
 };
 
 #endif // ARCHIVEMANAGER_H

@@ -1,10 +1,12 @@
 <RCC>
-    <qresource prefix="/lancher">
-        <file>image/button.png</file>
-        <file>image/background.png</file>
-        <file>image/dialog.png</file>
-        <file>image/button2.png</file>
-        <file>image/textView.png</file>
-        <file>image/icon.png</file>
-    </qresource>
+  <qresource prefix="/lancher">
+    <file>image/button3.PNG</file>
+    <file>image/background_hit.jpg</file>
+    <file>image/button.png</file>
+    <file>image/background.png</file>
+    <file>image/dialog.png</file>
+    <file>image/button2.png</file>
+    <file>image/textView.png</file>
+    <file>image/icon.png</file>
+  </qresource>
 </RCC>
