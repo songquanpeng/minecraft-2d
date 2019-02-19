@@ -58,9 +58,13 @@ void ArchiveManager::updateArchiveList()
 
 void ArchiveManager::updateUi()
 {
-	//ui->editBtn->hide();
+	ui->editBtn->hide();
 	ui->startBtn->hide();
-	// TODO
+	for (int i = 0; i < archiveInfos.size(); i++)
+	{
+		
+	}
+	//ui->scrollArea->addScrollBarWidget()
 }
 
 void ArchiveManager::createArchive()
