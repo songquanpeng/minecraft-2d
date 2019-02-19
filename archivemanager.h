@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 #include "World.h"
+#include "worldeditdialog.h"
 
 namespace Ui {
 class ArchiveManager;
@@ -40,7 +41,8 @@ private:
 private slots:
 	void on_createBtn_clicked();
 	void on_quitBtn_clicked();
-
+	void on_editBtn_clicked();
+	void receiveData(QString data);
 };
 
 #endif // ARCHIVEMANAGER_H

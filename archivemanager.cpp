@@ -58,7 +58,7 @@ void ArchiveManager::updateArchiveList()
 
 void ArchiveManager::updateUi()
 {
-	ui->editBtn->hide();
+	//ui->editBtn->hide();
 	ui->startBtn->hide();
 	// TODO
 }
@@ -97,4 +97,17 @@ int ArchiveManager::detemineId()
 void ArchiveManager::on_quitBtn_clicked()
 {
 	this->close();
+}
+
+void ArchiveManager::on_editBtn_clicked()
+{
+	WorldEditDialog *dialog = new WorldEditDialog();
+	connect(dialog, SIGNAL(sendData(QString)), this, SLOT(receiveData(QString)));
+	dialog->exec();
+	delete dialog;
+}
+
+void ArchiveManager::receiveData(QString data)
+{
+	data;
 }

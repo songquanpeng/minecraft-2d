@@ -30,21 +30,24 @@ SOURCES += \
     about.cpp \
     setting.cpp \
     game.cpp \
-    archivemanager.cpp
+    archivemanager.cpp \
+    worldeditdialog.cpp
 
 HEADERS += \
         lancher.h \
     about.h \
     setting.h \
     game.h \
-    archivemanager.h
+    archivemanager.h \
+    worldeditdialog.h
 
 FORMS += \
         lancher.ui \
     about.ui \
     setting.ui \
     game.ui \
-    archivemanager.ui
+    archivemanager.ui \
+    worldeditdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

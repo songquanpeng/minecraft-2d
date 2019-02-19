@@ -2,10 +2,10 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QTDIR>D:\Others\Qt\Qt5.11.2\5.11.2\msvc2017_64</QTDIR>
-    <LocalDebuggerEnvironment>PATH=D:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(PATH)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(PATH)</LocalDebuggerEnvironment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QTDIR>D:\Others\Qt\Qt5.11.2\5.11.2\msvc2017_64</QTDIR>
-    <LocalDebuggerEnvironment>PATH=D:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(PATH)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(QTDIR)\bin%3bD:\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\bin%3b$(PATH)</LocalDebuggerEnvironment>
   </PropertyGroup>
 </Project>
