@@ -1,5 +1,6 @@
 #include "archivemanager.h"
 #include "ui_archivemanager.h"
+#include <QMessageBox>
 
 
 ArchiveManager::ArchiveManager(QWidget *parent) :
@@ -7,9 +8,14 @@ ArchiveManager::ArchiveManager(QWidget *parent) :
 	ui(new Ui::ArchiveManager)
 {
 	ui->setupUi(this);
+
 	this->showFullScreen();
+	this->setAttribute(Qt::WA_DeleteOnClose, true);
+	this->setWindowTitle("Archive Manager");
 	archive = new QSettings("archive.ini", QSettings::IniFormat);
 	world = new World();
+	currentArchiveId = 0;
+	updateUi();
 }
 
 ArchiveManager::~ArchiveManager()
@@ -17,9 +23,10 @@ ArchiveManager::~ArchiveManager()
     delete ui;
 }
 
-void ArchiveManager::startGame()
+bool ArchiveManager::startGame()
 {
-	world->startGame(currentArchiveId);
+	bool isSuccess = world->startGame(currentArchiveId);
+	return isSuccess;
 }
 
 void ArchiveManager::resetGame()

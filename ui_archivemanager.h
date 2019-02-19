@@ -10,6 +10,7 @@
 #define UI_ARCHIVEMANAGER_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QGridLayout>
@@ -49,6 +50,9 @@ public:
         if (ArchiveManager->objectName().isEmpty())
             ArchiveManager->setObjectName(QStringLiteral("ArchiveManager"));
         ArchiveManager->resize(1920, 1080);
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/lancher/image/icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        ArchiveManager->setWindowIcon(icon);
         ArchiveManager->setStyleSheet(QLatin1String("QDialog#ArchiveManager{\n"
 "border-image: url(:/lancher/image/background_hit.jpg);\n"
 "}"));

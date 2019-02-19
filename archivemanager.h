@@ -23,7 +23,7 @@ public:
 
 	int currentArchiveId;
 
-	void startGame();
+	bool startGame();
 	void resetGame();
 	void renameGame();
 	void updateUi();

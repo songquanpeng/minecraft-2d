@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="image.qrc">
+    <normaloff>:/lancher/image/icon.png</normaloff>:/lancher/image/icon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QDialog#ArchiveManager{
 border-image: url(:/lancher/image/background_hit.jpg);
