@@ -9,7 +9,16 @@
 + QGraphicsScene
 + QGraphicsPixmapItem
  
+ArchiveManager类负责储存世界的名称，Id，并维护一个worldList，用以记录可用的世界
+ World类，实现：
+ World(int worldId);
+createWorld();
+loadWorld();
+updateWorld();
+deleteWorld();
 
+提供World类一个Id，可以创建，加载，更新，删除世界存档
+ArchiveManager类从文件中读取现有的世界的ID和名称
 ## Introduction and Objective
 1. 该游戏为类似于我的世界（Minecraft）的一款2D沙盒游戏
 2. 游戏支持由给定的地图种子创建唯一确定的地图
