@@ -12,6 +12,7 @@ Setting::Setting(QWidget *parent) :
     ui->setupUi(this);
 	setWindowFlags(Qt::FramelessWindowHint);
 	setWindowTitle("Setting");
+	this->setAttribute(Qt::WA_DeleteOnClose, true);
 
 	setting = new QSettings("config.ini", QSettings::IniFormat);
 	// 开始读取配置文件

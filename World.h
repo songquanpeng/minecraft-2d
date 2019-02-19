@@ -10,6 +10,7 @@ public:
 	World();
 	~World();
 	void createWorld(int id);
-	void deleteWorld(int id);
+	void resetGame(int id);
+	void startGame(int id);
 };
 

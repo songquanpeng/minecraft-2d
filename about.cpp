@@ -11,6 +11,7 @@ About::About(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowTitle("About");
+	this->setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 About::~About()
