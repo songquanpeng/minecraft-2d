@@ -71,6 +71,9 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="about.h">
@@ -160,6 +163,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,9 +2,10 @@
 #include <cstdlib>
 #include <ctime>
 #include <QString>
+#include "Core.h"
 
-const int WORLD_ROW = 270;
-const int WORLD_COL = 480;
+//const int WORLD_ROW = 270;
+//const int WORLD_COL = 480;
 
 class World
 {
@@ -16,11 +17,13 @@ public:
 	void resetGame(int id);
 	bool startGame(int id);
 	bool saveToFile(int id);
-
+	Core *core;
 
 private:
 	int getRandomInt();
 	int getSuitableCube();
 	QString getPath(int id);
+	QString getArchiveFilePath(int id);
+	bool isArchiveExist(int id);
 };
 

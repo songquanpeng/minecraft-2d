@@ -4,6 +4,7 @@
 #include <QIODevice>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QFileInfo>
 
 World::World()
 {
@@ -35,7 +36,16 @@ void World::resetGame(int id)
 
 bool World::startGame(int id)
 {
-	return createWorld(id);
+	if (!isArchiveExist(id))
+	{
+		if (!createWorld(id))
+		{
+			return false;
+		}
+	}
+	core = new Core(getPath(id));
+	core->show();
+	return true;
 }
 
 inline int World::getRandomInt()
@@ -52,6 +62,18 @@ int World::getSuitableCube()
 QString World::getPath(int id)
 {
 	return "archive/" + QString::number(id);
+}
+
+QString World::getArchiveFilePath(int id)
+{
+	return getPath(id) + "/map.txt";
+}
+
+bool World::isArchiveExist(int id)
+{
+	QFileInfo fileInfo(getArchiveFilePath(id));
+	
+	return fileInfo.isFile();
 }
 
 
@@ -79,6 +101,7 @@ bool World::saveToFile(int id)
 				input << endl;
 			}
 			file->close();
+			delete file;
 			return true;
 		}
 	}

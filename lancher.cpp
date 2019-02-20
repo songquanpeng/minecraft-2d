@@ -9,7 +9,7 @@ Lancher::Lancher(QWidget *parent) :
     ui(new Ui::Lancher)
 {
     ui->setupUi(this);
-    setWindowTitle("MineCraft");
+    setWindowTitle("MineCraft Lancher");
 	// º”‘ÿ…Ë÷√
 	gameSetting = new QSettings("config.ini", QSettings::IniFormat);
 	loadSetting();
