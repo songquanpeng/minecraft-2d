@@ -74,6 +74,15 @@
     <ClCompile Include="Core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Organism.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PassiveMob.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="about.h">
@@ -167,6 +176,18 @@
     </ClInclude>
     <ClInclude Include="Core.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Organism.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PassiveMob.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

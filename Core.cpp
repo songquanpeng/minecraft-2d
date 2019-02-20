@@ -19,6 +19,7 @@ Core::Core(QString archivePath)
 
 Core::~Core()
 {
+
 }
 
 void Core::resetGame()
@@ -28,6 +29,7 @@ void Core::resetGame()
 
 void Core::startGame()
 {
+
 }
 
 bool Core::loadMapData()
@@ -36,13 +38,6 @@ bool Core::loadMapData()
 		return false;
 	}
 	QTextStream output(file);
-	//for (int row = 0; row < WORLD_ROW; row++)
-	//{
-	//	for (int col = 0; col < WORLD_COL; col++)
-	//	{
-	//		board[row][col] = (unsigned short int)output.read(2).toInt();
-	//	}
-	//}
 	QStringList line;
 	for (int row = 0; row < WORLD_ROW; row++)
 	{
@@ -114,21 +109,21 @@ void Core::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void Core::moveWindow(int direction)
+void Core::moveWindow(int direction, int moveStep)
 {
 	switch (direction)
 	{
 	case UP:
-		windowStartPoint.row -=WINDOW_MOVE_STEP;
+		windowStartPoint.row -= moveStep;
 		break;
 	case DOWN:
-		windowStartPoint.row += WINDOW_MOVE_STEP;
+		windowStartPoint.row += moveStep;
 		break;
 	case LEFT:
-		windowStartPoint.col -= WINDOW_MOVE_STEP;
+		windowStartPoint.col -= moveStep;
 		break;
 	case RIGHT:
-		windowStartPoint.col += WINDOW_MOVE_STEP;
+		windowStartPoint.col += moveStep;
 		break;
 	default:
 		break;
@@ -137,6 +132,11 @@ void Core::moveWindow(int direction)
 	if (windowStartPoint.row < 0) windowStartPoint.row = 0;
 	if (windowStartPoint.col >= WORLD_COL - SCREEN_COL) windowStartPoint.col = WORLD_COL - SCREEN_COL;
 	if (windowStartPoint.row >= WORLD_ROW - SCREEN_ROW) windowStartPoint.row = WORLD_ROW - SCREEN_ROW;
+}
+
+void Core::moveWindow(int direction)
+{
+	moveWindow(direction, WINDOW_MOVE_STEP);
 }
 
 void Core::timerEvent(QTimerEvent *event)

@@ -203,6 +203,9 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="lancher.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Organism.cpp" />
+    <ClCompile Include="PassiveMob.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="setting.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="worldeditdialog.cpp" />
@@ -220,7 +223,11 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Constant.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Organism.h" />
+    <ClInclude Include="PassiveMob.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="World.h" />
     <QtMoc Include="worldeditdialog.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtMultimedia;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtWidgets;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtGui;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtANGLE;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtNetwork;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtCore;.\debug;\include;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\mkspecs\win32-msvc</IncludePath>
