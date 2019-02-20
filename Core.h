@@ -9,6 +9,8 @@
 #include <ctime>
 #include <QPainter>
 #include "Constant.h"
+#include "Organism.h"
+#include "Player.h"
 
 class Core :
 	public QWidget
@@ -27,12 +29,18 @@ public:
 	virtual void paintEvent(QPaintEvent *event); //场景刷新
 	virtual void timerEvent(QTimerEvent *event); //定时器事件
 	virtual void keyPressEvent(QKeyEvent *event); //键盘响应
+
 private:
 	int renderTimer;
+	
+	Player player;
+	Point windowStartPoint;
+
+	void renderMobs();
 	void moveWindow(int direction, int moveStep);
 	void moveWindow(int direction);
 	void movePlayer(int direction);
-	Point windowStartPoint;
+	Point positionConvertor(Point screenPostion);
 
 };
 

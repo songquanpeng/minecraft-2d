@@ -83,6 +83,8 @@ void Core::paintEvent(QPaintEvent *event)
 			painter.drawRect(col*SIZE, row*SIZE, SIZE, SIZE);
 		}
 	}
+
+	renderMobs();
 }
 
 void Core::keyPressEvent(QKeyEvent *event)
@@ -107,6 +109,11 @@ void Core::keyPressEvent(QKeyEvent *event)
 	default:
 		break;
 	}
+}
+
+void Core::renderMobs()
+{
+
 }
 
 void Core::moveWindow(int direction, int moveStep)
@@ -137,6 +144,36 @@ void Core::moveWindow(int direction, int moveStep)
 void Core::moveWindow(int direction)
 {
 	moveWindow(direction, WINDOW_MOVE_STEP);
+}
+
+void Core::movePlayer(int direction)
+{
+	switch (direction)
+	{
+	case UP:
+		windowStartPoint.row -= player.speed;
+		break;
+	case DOWN:
+		windowStartPoint.row += player.speed;
+		break;
+	case LEFT:
+		windowStartPoint.col -= player.speed;
+		break;
+	case RIGHT:
+		windowStartPoint.col += player.speed;
+		break;
+	default:
+		break;
+	}
+
+}
+
+Point Core::positionConvertor(Point screenPostion)
+{
+	Point realPostion;
+	realPostion.row = screenPostion.row + windowStartPoint.row;
+	realPostion.col = screenPostion.col + windowStartPoint.col;
+	return realPostion;
 }
 
 void Core::timerEvent(QTimerEvent *event)

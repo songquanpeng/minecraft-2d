@@ -14,8 +14,11 @@ public:
 	float speed;
 	int blood;
 	Point positionRelativeToScreen;
+	Point realPosition;
 
 	int attakPower;
+	int attackRange;
+	int attackInterval;
 	int armor;
 	int desiredDirection();
 };
