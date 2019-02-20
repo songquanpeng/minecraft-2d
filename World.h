@@ -7,12 +7,14 @@
 //const int WORLD_ROW = 270;
 //const int WORLD_COL = 480;
 
+
+
 class World
 {
 public:
 	World();
 	~World();
-	unsigned char board[WORLD_ROW][WORLD_COL]; // 行，列
+	unsigned short int board[WORLD_ROW][WORLD_COL]; // 行，列
 	bool createWorld(int id);
 	void resetGame(int id);
 	bool startGame(int id);
@@ -21,9 +23,13 @@ public:
 
 private:
 	int getRandomInt();
-	int getSuitableCube();
+	int getRandomInt(int lower, int upper);
+	int getSuitableCube(int _row, int _col);
 	QString getPath(int id);
 	QString getArchiveFilePath(int id);
 	bool isArchiveExist(int id);
+	Point riverStartPoint;
+	Point riverEndPoint;
+	bool isWater(int _row, int _col);
 };
 

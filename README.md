@@ -1,24 +1,13 @@
-## 需要掌握的Qt类
-
+## 可能需要用到的Qt类
 + QPainter：用来绘制图形
 + QPainterPath：控制Painter绘制的路径
 + QRegion：控制图像刷新的范围
-
 + QGraphicsObject
 + QGraphicsView
 + QGraphicsScene
 + QGraphicsPixmapItem
- 
-ArchiveManager类负责储存世界的名称，Id，并维护一个worldList，用以记录可用的世界
- World类，实现：
- World(int worldId);
-createWorld();
-loadWorld();
-updateWorld();
-deleteWorld();
++ QSettings
 
-提供World类一个Id，可以创建，加载，更新，删除世界存档
-ArchiveManager类从文件中读取现有的世界的ID和名称
 ## Introduction and Objective
 1. 该游戏为类似于我的世界（Minecraft）的一款2D沙盒游戏
 2. 游戏支持由给定的地图种子创建唯一确定的地图
@@ -30,19 +19,8 @@ ArchiveManager类从文件中读取现有的世界的ID和名称
 8. 玩家可以建造工具台，用来合成各种工具。
 9. 玩家可以建造箱子用来储存物品。
 ## Requirements and Functionality
-1. Game类：
-   1. 渲染地图
-   2. 程序主循环
-2. Map类：
-   1. 创建地图
-   2. 更新地图
-   3. 保存地图
-3. Player类：
-   1. 记录，存储与加载player的各项属性
-   2. 处理键盘输入（action函数）
-4. Animal类：
-   1. 记录animal的各项属性
-   2. 控制生物活动（action函数）
+**TODO**
+
 ## Logic Flow 
 1. 由种子产生地图或者加载之前以及储存的地图
 2. 游戏主循环：
@@ -61,116 +39,63 @@ ArchiveManager类从文件中读取现有的世界的ID和名称
 4. ？？？同学负责展示
 5. ？？？同学负责程序的编写
 
+## 草稿区
+### 确定的方块种类
++ 基岩方块：0
++ 草方块：1
++ 土方块：2
++ 圆石方块：3
++ 木头方块：4
++ 树叶方块：5
++ 水方块：6
 
+### 确定的生物种类
++ 玩家
++ 牛
++ 羊
++ 僵尸
++ 骷髅
++ 爬行者
++ 蜘蛛
 
+### 生物掉落物
++ 腐肉
++ 骨头
++ 蛛丝
++ 生肉
++ 火药
 
+### 确定的武器/工具种类
++ 剑
++ 斧
++ 铲
++ 镐
++ 弓
 
+### 所支持的玩家行为
++ 移动
++ 破坏方块
++ 摆放方块
++ 使用近战武器
++ 使用远程武器
++ 合成物品
 
+### UI
++ 玩家的物品栏
++ 玩家的状态栏
++ 生物的移动
 
-______________________________________________________________________________________________________________________
+### 地图的组成
++ 树：由一个树叶方块和一个木头方块组成
++ 森林：一片树
++ 河：一片条形的水方块所组成
++ 大地：一层基岩方块，一层土方块，一层草方块
++ 山：一片圆石
 
-
-## 总流程
-第一步，确定开发此游戏需要的Qt类与函数
-第二步，梳理此程序的逻辑流
-
-## 第一步
-QSettings
-QGraphicsObject
-QGraphicsView
-QGraphicsPixmapItem
-QPainter
-QPainterPath
-QRectF
-QPixmaps
-QObject
-QVariant
-QGraphicsScene
-
-## 第二步
-### 类
-#### Setting
-管理程序设置
-+ loadSetting()
-+ updateSetting()
-
-#### Launcher
-游戏启动器，提供开始游戏，管理存档（创建，修改，删除，复制），进行设置的功能
-+ startGame()
-+ createMap()
-+ 
- ```C++
- const unsigned int MAP_LEGTH_SIZE = 1000;
-const unsigned int MAP_HEIGHT_SIZE = 1000;
-const unsigned int WINDOW_SIZE = 100;
-const unsigned int WINDOW_SIZE = 100;
-const unsigned int PLAYER_MAX_ARTICLE_NUMBER = 10;
-
-struct Point
-{
-    int x;
-    int y;
-}
-
-struct Position
-{
-    float x;
-    float y;
-};
-
-class Game : public QWidget
-{
-public:
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void timerEvent(QTimerEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
-    void startGame();
-
-private:
-    Map map;
-    Player player;
-    Animal[] animals; 
-}
-
-class Map
-{
-public:
-    bool generateMap(int seed);
-    bool loadMap();
-    bool saveMap();
-    unsigned int* window(Point center);
-    bool updateMap(unsigned int*);
-private:
-    Point lastWindowCenter;
-    int map[MAP_HEIGHT_SIZE][MAP_LENGTH_SIZE];
-}
-
-class Player
-{
-public:
-    Position position;
-    Image image;
-    unsigned int blood;
-    unsigned int level;
-    unsigned int armor;
-    unsigned int attackPower;
-    float speed;
-    int facing;
-    unsigned int articles[PLAYER_MAX_ARTICLE_NUMBER];
-    bool loadPLayerState();
-    bool savePlayerState();
-    bool action(QKeyEvent *event, unsigned int *playerAround);
-}
-
-class Animal
-{
-public:
-    Position position;
-    Image image;
-    unsigned int blood;
-    unsigned int armor;
-    float speed;
-    int facing;
-    bool action();
-}
-```
+### 键盘控制
++ 使用up，down，left，donw控制窗口移动
++ 使用w，a，s，d控制主角移动
++ 使用左键进行攻击/破坏
++ 使用右键放置方块
++ 使用滚轮切换手持物品
++ 使用E键打开物品栏
