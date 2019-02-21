@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QPaintEvent>
+#include <QMouseEvent>
 #include <QKeyEvent>
 #include <cstdlib>
 #include <ctime>
@@ -33,11 +34,13 @@ public:
 	virtual void paintEvent(QPaintEvent *event); //场景刷新
 	virtual void timerEvent(QTimerEvent *event); //定时器事件
 	virtual void keyPressEvent(QKeyEvent *event); //键盘响应
+	void mousePressEvent(QMouseEvent *event);
 	// virtual void keyReleaseEvent(QKeyEvent *event); //键盘响应
 
 private:
 	int renderTimer;
 	int mobsMoveTimer;
+	Point mousePoint;
 	Player *player;
 	QVector<Organism*> *mobsList; 
 	Point windowStartPoint;

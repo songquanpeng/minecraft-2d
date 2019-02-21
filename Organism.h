@@ -21,6 +21,7 @@ public:
 	int attackRange;
 	int attackInterval;
 	int armor;
+	int facing;
 	int desiredDirection();
 	int getRealMove(int speed);
 	QImage image;

@@ -17,6 +17,8 @@ Core::Core(QString archivePath)
 	player = new Player();
 	player->realPosition = positionConvertor(player->positionRelativeToScreen);
 	generateMobs();
+	mousePoint.col = WORLD_COL*SIZE;
+	mousePoint.row = WORLD_ROW*SIZE;
 }
 
 
@@ -59,6 +61,7 @@ void Core::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 
+	// 渲染环境
 	for (int row = 0; row < SCREEN_ROW; ++row)
 	{
 		for (int col = 0; col < SCREEN_COL; ++col) // 渲染时依据绝对坐标
@@ -87,7 +90,15 @@ void Core::paintEvent(QPaintEvent *event)
 			painter.drawRect(col*SIZE, row*SIZE, SIZE, SIZE);
 		}
 	}
-
+	// 渲染鼠标所指点
+	painter.setBrush(Qt::NoBrush);
+	QPen pen;
+	pen.setStyle(Qt::DotLine);
+	pen.setWidth(3);
+	pen.setColor(Qt::red);
+	painter.setPen(pen);
+	painter.drawRect(mousePoint.col, mousePoint.row, SIZE, SIZE);
+	// 渲染生物（包括玩家）
 	renderMobs();
 }
 
@@ -97,7 +108,7 @@ void Core::renderMobs()
 	QPainter painter(this);
 	// 渲染玩家
 	updateScreenPosition(player);
-	QRectF targetPosition(player->positionRelativeToScreen.col, player->positionRelativeToScreen.row, 40, 40); // TODO: 玩家初始位置的确定
+	QRectF targetPosition(player->positionRelativeToScreen.col, player->positionRelativeToScreen.row, 40, 40);
 	painter.drawImage(targetPosition, player->image);
 
 	// 渲染生物
@@ -149,6 +160,18 @@ void Core::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+void Core::mousePressEvent(QMouseEvent * event)
+{
+	mousePoint.row = (event->y() / SIZE)*SIZE;
+	mousePoint.col = (event->x() / SIZE)*SIZE;
+	
+	if (event->button() == Qt::LeftButton)
+	{
+
+	}
+
+}
+
 // 根据方向操作screen显示的部位；防止越界；此函数仅更新 windowStartPoint
 void Core::moveWindow(int direction, int moveStep)
 {
@@ -181,7 +204,7 @@ void Core::moveWindow(int direction)
 }
 
 // 玩家移动
-void Core::movePlayer(int direction) // TODO：当玩家移动到边缘时要控制窗口移动
+void Core::movePlayer(int direction) 
 {
 	if (isMobNearScreenBorder(player, direction))
 	{
@@ -195,7 +218,7 @@ void Core::movePlayer(int direction) // TODO：当玩家移动到边缘时要控制窗口移动
 }
 
 // 生物移动
-void Core::moveMobs(Organism* mob, int direction) // TODO：当生物移动到边缘时要采取措施
+void Core::moveMobs(Organism* mob, int direction) 
 {
 	if (isAbleToGo(mob, direction))
 	{
