@@ -13,9 +13,9 @@ Lancher::Lancher(QWidget *parent) :
 	// ¼ÓÔØÉèÖÃ
 	gameSetting = new QSettings("config.ini", QSettings::IniFormat);
 	loadSetting();
-	if (config.backgroundMusicOn)
+	if (config.backgroundMusicOn) // TODO: ÒôÀÖÑ­»·²¥·Å£»×ÔÓÉÑ¡ÔñÒôÀÖ£»ÖÇÄÜ²¥·Å±³¾°ÒôÀÖ
 	{
-		// ²¥·Å±³¾°ÒôÀÖ
+		// ²¥·Å±³¾°ÒôÀÖ 
 		backgroundMusicPlayer = new QMediaPlayer(this);
 		backgroundMusicPlayer->setMedia(QUrl::fromLocalFile("sound/forest.mp3"));
 		backgroundMusicPlayer->play();

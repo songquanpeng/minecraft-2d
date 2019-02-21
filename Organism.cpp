@@ -10,7 +10,6 @@ Organism::Organism()
 	positionRelativeToScreen.col = rand() % SCREEN_COL;
 }
 
-
 Organism::~Organism()
 {
 
@@ -19,4 +18,9 @@ Organism::~Organism()
 int Organism::desiredDirection()
 {
 	return rand() % 4;
+}
+
+int Organism::getRealMove(int speed)
+{
+	return (int)((double)(speed*SPEED_SCALAR) / (double)(FPS));
 }

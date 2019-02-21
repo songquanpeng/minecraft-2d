@@ -1,5 +1,15 @@
 <RCC>
   <qresource prefix="/lancher">
+    <file>image/game/axe.png</file>
+    <file>image/game/crafting_table.png</file>
+    <file>image/game/diamond.png</file>
+    <file>image/game/pickaxe.png</file>
+    <file>image/game/pig.png</file>
+    <file>image/game/shovel.png</file>
+    <file>image/game/skeleton.png</file>
+    <file>image/game/steven.png</file>
+    <file>image/game/sword.png</file>
+    <file>image/game/zombie.png</file>
     <file>image/button3.PNG</file>
     <file>image/background_hit.jpg</file>
     <file>image/button.png</file>

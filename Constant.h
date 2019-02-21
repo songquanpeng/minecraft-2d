@@ -12,7 +12,6 @@ const int WORLD_COL = 480;
 const int SIZE = 40;
 const int SCREEN_ROW = 27;
 const int SCREEN_COL = 48;
-const int SPEED_SCALAR = 40;
 
 const int RIVER_WIDTH = 7;
 const int RIVER_PROBABILITY = 9;
@@ -37,6 +36,7 @@ const int RIGHT = 3;
 const int WINDOW_MOVE_STEP = 1;
 
 // 生物属性
+const int MOBS_NUMBER = 30;
 // cattle
 const int CATTLE_BLOOD = 15;
 const int CATTLE_ARMOR = 4;
@@ -86,5 +86,11 @@ const int PLAYER_ATTACK_POWER = 2;
 const int PLAYER_ATTACK_RANGE = 1;
 const int PLAYER_ATTACK_INTERVAL = 1;
 
-// todo
-// 移动
+// move
+const int FPS = 60;
+// SPEED*SPEED_SCALAR = FPS*REAL_MOVE
+// 以玩家每s移动一格（40像素为基准)
+// SPEED*SPEED_SCALAR = FPS*SIZE
+// =>	
+const float SPEED_SCALAR = (double)(FPS*SIZE) / (double)(PLAYER_SPEED);
+
