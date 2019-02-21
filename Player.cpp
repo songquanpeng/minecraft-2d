@@ -12,8 +12,8 @@ Player::Player()
 	attackRange = PLAYER_ATTACK_RANGE;
 	attackInterval = PLAYER_ATTACK_INTERVAL;
 	level = 0;
-	realPosition.row = 80;
-	realPosition.col = 80;
+	positionRelativeToScreen.row = 6;
+	positionRelativeToScreen.col = 10;
 }
 
 

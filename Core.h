@@ -14,6 +14,7 @@
 #include "Constant.h"
 #include "Organism.h"
 #include "Player.h"
+#include "Pig.h"
 
 class Core :
 	public QWidget
@@ -36,14 +37,18 @@ public:
 
 private:
 	int renderTimer;
+	int mobsMoveTimer;
 	Player player;
-	QVector<Organism> *mobsList; 
+	QVector<Organism*> *mobsList; 
 	Point windowStartPoint;
 	void renderMobs(); 
 	void moveWindow(int direction, int moveStep); 
 	void moveWindow(int direction);
 	void movePlayer(int direction);
-	void movePoint(Point& point, int direction, int moveDistance); 
+	void moveMobs(Organism* mob, int direction);
+	void moveAllMobs();
+	void movePoint(Point& point, int direction, int moveDistance);
+	void generateMobs();
 	Point positionConvertor(Point screenPostion);
 	Point absolutePositionConvertor(Point absolutePosition);
 

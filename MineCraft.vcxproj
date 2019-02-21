@@ -205,6 +205,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Organism.cpp" />
     <ClCompile Include="PassiveMob.cpp" />
+    <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="setting.cpp" />
     <ClCompile Include="World.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="Organism.h" />
     <ClInclude Include="PassiveMob.h" />
+    <ClInclude Include="Pig.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="World.h" />
     <QtMoc Include="worldeditdialog.h">

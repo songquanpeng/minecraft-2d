@@ -83,6 +83,9 @@
     <ClCompile Include="PassiveMob.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pig.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="about.h">
@@ -187,6 +190,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PassiveMob.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pig.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

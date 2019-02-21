@@ -15,7 +15,7 @@ Core::Core(QString archivePath)
 	windowStartPoint.row = 0;
 	windowStartPoint.col = 0;
 	player.realPosition = positionConvertor(player.positionRelativeToScreen);
-	mobsList = new QVector<Organism>(MOBS_NUMBER);
+	generateMobs();
 }
 
 
@@ -27,6 +27,7 @@ Core::~Core()
 void Core::resetGame()
 {
 	renderTimer = startTimer(1000/FPS);
+	mobsMoveTimer = startTimer(MOBS_MOVE_TIMER);
 }
 
 void Core::startGame()
@@ -98,6 +99,17 @@ void Core::renderMobs()
 	QRectF targetPosition(player.positionRelativeToScreen.col, player.positionRelativeToScreen.row, 40, 40); // TODO: 玩家初始位置的确定
 	QImage playerImage(":/lancher/image/game/steven.png");
 	painter.drawImage(targetPosition, playerImage);
+
+	// 渲染生物
+	QVector<Organism*> ::iterator iter;
+	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
+	{
+		if ((*iter) == NULL) continue;
+		(*iter)->positionRelativeToScreen = absolutePositionConvertor((*iter)->realPosition);
+		QRectF targetPosition((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40); // TODO: 玩家初始位置的确定
+		QImage mobImage(":/lancher/image/game/pig.png");
+		painter.drawImage(targetPosition, mobImage);
+	}
 
 }
 
@@ -173,8 +185,22 @@ void Core::moveWindow(int direction)
 void Core::movePlayer(int direction) // TODO：当玩家移动到边缘时要控制窗口移动
 {
 	movePoint(player.realPosition, direction, player.speed);
-	//movePoint(player.realPosition, direction, 4);
+}
 
+// 生物移动
+void Core::moveMobs(Organism* mob, int direction) // TODO：当生物移动到边缘时要采取措施
+{
+	movePoint(mob->realPosition, direction, mob->speed);
+}
+
+void Core::moveAllMobs()
+{
+	QVector<Organism*> ::iterator iter;
+	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
+	{
+		if ((*iter) == NULL) continue;
+		moveMobs(*iter, (*iter)->desiredDirection());
+	}
 }
 
 // 确保不超出真实地图边界；单位：像素
@@ -194,13 +220,29 @@ void Core::movePoint(Point& point, int direction, int moveDistance)
 	case RIGHT:
 		point.col += moveDistance;
 		break;
+	case STAY:
+		break;
 	default:
 		break;
 	}
 	if (point.col < 0) point.col = 0;
 	if (point.row < 0) point.row = 0;
-	if (point.col >= (WORLD_COL)*SIZE) point.col = (WORLD_COL)*SIZE;
-	if (point.row >= (WORLD_ROW)*SIZE) point.row = (WORLD_ROW)*SIZE;
+	if (point.col >= (WORLD_COL)*SIZE) point.col = (WORLD_COL - 1)*SIZE;
+	if (point.row >= (WORLD_ROW)*SIZE) point.row = (WORLD_ROW - 1)*SIZE;
+}
+
+// 生成怪物
+void Core::generateMobs()
+{
+	srand(static_cast<unsigned int>(time(0)));
+	mobsList = new QVector<Organism*>; // TODO
+	Point generatedRealPosition;
+	for (int i = 0; i < MOBS_NUMBER; i++)
+	{
+		generatedRealPosition.row = (rand() % SCREEN_ROW)*SIZE;
+		generatedRealPosition.col = (rand() % SCREEN_COL)*SIZE;
+		mobsList->append(new Pig(generatedRealPosition));
+	}
 }
 
 // 以格为单位，非像素
@@ -226,5 +268,13 @@ void Core::timerEvent(QTimerEvent *event)
 
 	//刷新画面
 	if (event->timerId() == renderTimer)
+	{
 		update();
+		
+	}
+	if (event->timerId() == mobsMoveTimer)
+	{
+		// 生物移动
+		moveAllMobs();
+	}
 }

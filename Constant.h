@@ -32,6 +32,7 @@ const int UP = 0;
 const int DOWN = 1;
 const int LEFT = 2;
 const int RIGHT = 3;
+const int STAY = 4;
 
 const int WINDOW_MOVE_STEP = 1;
 
@@ -46,6 +47,11 @@ const int CATTLE_SPEED = 3;
 const int SHEEP_BLOOD = 7;
 const int SHEEP_ARMOR = 0;
 const int SHEEP_SPEED = 5;
+
+// pig
+const int PIG_BLOOD = 7;
+const int PIG_ARMOR = 1;
+const int PIG_SPEED = 5;
 
 // zombie
 const int ZOMBIE_BLOOD = 10;
@@ -94,3 +100,4 @@ const int FPS = 60;
 // =>	
 const float SPEED_SCALAR = (double)(FPS*SIZE) / (double)(PLAYER_SPEED);
 
+const int MOBS_MOVE_TIMER = 500;
