@@ -14,7 +14,8 @@ Core::Core(QString archivePath)
 	resetGame();
 	windowStartPoint.row = 0;
 	windowStartPoint.col = 0;
-	player.realPosition = positionConvertor(player.positionRelativeToScreen);
+	player = new Player();
+	player->realPosition = positionConvertor(player->positionRelativeToScreen);
 	generateMobs();
 }
 
@@ -90,25 +91,23 @@ void Core::paintEvent(QPaintEvent *event)
 	renderMobs();
 }
 
-// 根据相应的坐标渲染玩家与生物
+// 根据相应的 实际 坐标渲染玩家与生物；每次渲染前才更新相对屏幕坐标
 void Core::renderMobs()
 {
 	QPainter painter(this);
 	// 渲染玩家
-	player.positionRelativeToScreen = absolutePositionConvertor(player.realPosition);
-	QRectF targetPosition(player.positionRelativeToScreen.col, player.positionRelativeToScreen.row, 40, 40); // TODO: 玩家初始位置的确定
-	QImage playerImage(":/lancher/image/game/steven.png");
-	painter.drawImage(targetPosition, playerImage);
+	updateScreenPosition(player);
+	QRectF targetPosition(player->positionRelativeToScreen.col, player->positionRelativeToScreen.row, 40, 40); // TODO: 玩家初始位置的确定
+	painter.drawImage(targetPosition, player->image);
 
 	// 渲染生物
 	QVector<Organism*> ::iterator iter;
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
 	{
 		if ((*iter) == NULL) continue;
-		(*iter)->positionRelativeToScreen = absolutePositionConvertor((*iter)->realPosition);
-		QRectF targetPosition((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40); // TODO: 玩家初始位置的确定
-		QImage mobImage(":/lancher/image/game/pig.png");
-		painter.drawImage(targetPosition, mobImage);
+		updateScreenPosition(*iter);
+		QRectF targetPos((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40);
+		painter.drawImage(targetPos, (*iter)->image);
 	}
 
 }
@@ -150,7 +149,7 @@ void Core::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-// 根据方向操作screen显示的部位；防止越界
+// 根据方向操作screen显示的部位；防止越界；此函数仅更新 windowStartPoint
 void Core::moveWindow(int direction, int moveStep)
 {
 	switch (direction)
@@ -184,13 +183,87 @@ void Core::moveWindow(int direction)
 // 玩家移动
 void Core::movePlayer(int direction) // TODO：当玩家移动到边缘时要控制窗口移动
 {
-	movePoint(player.realPosition, direction, player.speed);
+	if (isMobNearScreenBorder(player, direction))
+	{
+		moveWindow(direction, SCREEN_MOVE_DISTANCE);
+	}
+
+	if (isAbleToGo(player, direction))
+	{
+		movePoint(player->realPosition, direction, player->speed); // 实际坐标已更新
+	}
 }
 
 // 生物移动
 void Core::moveMobs(Organism* mob, int direction) // TODO：当生物移动到边缘时要采取措施
 {
-	movePoint(mob->realPosition, direction, mob->speed);
+	if (isAbleToGo(mob, direction))
+	{
+		movePoint(mob->realPosition, direction, mob->speed);
+	}
+}
+
+// 每次检查都会更新其屏幕坐标; 玩家若正在靠近，则置true
+bool Core::isMobNearScreenBorder(Organism * mobs, int direction)
+{
+	// 确保屏幕坐标正确
+	updateScreenPosition(mobs);
+	bool colMin = mobs->positionRelativeToScreen.col <= DISTANCE_TO_SCREEN_BORDER;
+	bool colMax = mobs->positionRelativeToScreen.col + DISTANCE_TO_SCREEN_BORDER >= SCREEN_COL * SIZE;
+	bool rowMin = mobs->positionRelativeToScreen.row <= DISTANCE_TO_SCREEN_BORDER;
+	bool rowMax = mobs->positionRelativeToScreen.row + DISTANCE_TO_SCREEN_BORDER >= SCREEN_ROW * SIZE;
+
+	if ((direction == UP && rowMin) || (direction == DOWN && rowMax) || (direction == LEFT && colMin) || direction == RIGHT && colMax)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+// 需要准确的实际坐标
+bool Core::isAbleToGo(Organism * mobs, int direction)
+{
+	Point myGridPosition = pixelToGrid(mobs->realPosition);
+	switch (direction)
+	{
+	case UP:
+		myGridPosition.row -= 1;
+		break;
+	case DOWN:
+		myGridPosition.row += 1;
+		break;
+	case LEFT:
+		myGridPosition.col -= 1;
+		break;
+	case RIGHT:
+		myGridPosition.col += 1;
+		break;
+	default:
+		break;
+	}
+	// 检查是否越界
+	if (myGridPosition.row < 0 || myGridPosition.col < 0 || myGridPosition.col >= WORLD_COL || myGridPosition.row >= WORLD_ROW)
+	{
+		return false;
+	}
+
+	// 检查是否是可以通过的方块
+	if (board[myGridPosition.row][myGridPosition.col] == LEAF || board[myGridPosition.row][myGridPosition.col] == STONE)
+	{
+		return false;
+	}
+	return true;;
+}
+
+Point Core::pixelToGrid(Point inPixel)
+{
+	Point inGrid;
+	inGrid.col = inPixel.col / SIZE;
+	inGrid.row = inPixel.row / SIZE;
+	return inGrid;
 }
 
 void Core::moveAllMobs()
@@ -235,22 +308,22 @@ void Core::movePoint(Point& point, int direction, int moveDistance)
 void Core::generateMobs()
 {
 	srand(static_cast<unsigned int>(time(0)));
-	mobsList = new QVector<Organism*>; // TODO
-	Point generatedRealPosition;
+	mobsList = new QVector<Organism*>; 
+	Point generatedScreenPosition;
 	for (int i = 0; i < MOBS_NUMBER; i++)
 	{
-		generatedRealPosition.row = (rand() % SCREEN_ROW)*SIZE;
-		generatedRealPosition.col = (rand() % SCREEN_COL)*SIZE;
-		mobsList->append(new Pig(generatedRealPosition));
+		generatedScreenPosition.row = (rand() % SCREEN_ROW)*SIZE;
+		generatedScreenPosition.col = (rand() % SCREEN_COL)*SIZE;
+		mobsList->append(new Pig(positionConvertor(generatedScreenPosition)));
 	}
 }
 
-// 以格为单位，非像素
+// 以像素为单位，非格；屏幕坐标-->绝对坐标
 Point Core::positionConvertor(Point screenPostion)
 {
 	Point realPostion;
-	realPostion.row = (screenPostion.row + windowStartPoint.row)*SIZE;
-	realPostion.col = (screenPostion.col + windowStartPoint.col)*SIZE;
+	realPostion.row = screenPostion.row + windowStartPoint.row*SIZE;
+	realPostion.col = screenPostion.col + windowStartPoint.col*SIZE;
 	return realPostion;
 }
 
@@ -262,6 +335,13 @@ Point Core::absolutePositionConvertor(Point absolutePosition)
 	screenPosition.col = absolutePosition.col - windowStartPoint.col*SIZE;
 	return screenPosition;
 }
+
+// 根据其实际坐标更新其屏幕坐标
+void Core::updateScreenPosition(Organism * mobs)
+{
+	mobs->positionRelativeToScreen = absolutePositionConvertor(mobs->realPosition);
+}
+
 
 void Core::timerEvent(QTimerEvent *event)
 {

@@ -101,3 +101,5 @@ const int FPS = 60;
 const float SPEED_SCALAR = (double)(FPS*SIZE) / (double)(PLAYER_SPEED);
 
 const int MOBS_MOVE_TIMER = 500;
+const int DISTANCE_TO_SCREEN_BORDER = 1*SIZE;
+const int SCREEN_MOVE_DISTANCE = 1;

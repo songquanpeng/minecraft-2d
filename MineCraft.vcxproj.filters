@@ -81,10 +81,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PassiveMob.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Pig.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,10 +190,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PassiveMob.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pig.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

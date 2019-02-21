@@ -8,6 +8,7 @@ Organism::Organism()
 
 }
 
+// 提供给定的实际坐标，单位为像素
 Organism::Organism(Point givenRealPosition)
 {
 	Organism();
