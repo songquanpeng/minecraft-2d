@@ -23,7 +23,13 @@ public:
 	int armor;
 	int facing;
 	int desiredDirection();
-	int getRealMove(int speed);
+	int getRealMove(int speed); // 此函数的功能与名称描述不符；不要轻易修改
+	bool isDead;
 	QImage image;
+
+	void killed();
+	void beAttacked(int demage);
+	void constructorTool();
+	int min(int a, int b);
 };
 

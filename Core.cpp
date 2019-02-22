@@ -2,7 +2,16 @@
 #include <QIcon>
 #include <QListIterator>
 
-
+// TODO: 破坏方块
+// TODO: 排放方块
+// TODO: 切换武器
+// TODO: 玩家远程攻击
+// TODO: 生物普通攻击
+// TODO: 生物远程攻击
+// TODO: 音效
+// TODO: Setting
+// TODO: 更新地图
+// TODO: 保存所有生物的位置
 
 Core::Core(QString archivePath)
 {
@@ -106,11 +115,6 @@ void Core::paintEvent(QPaintEvent *event)
 void Core::renderMobs()
 {
 	QPainter painter(this);
-	// 渲染玩家
-	updateScreenPosition(player);
-	QRectF targetPosition(player->positionRelativeToScreen.col, player->positionRelativeToScreen.row, 40, 40);
-	painter.drawImage(targetPosition, player->image);
-
 	// 渲染生物
 	QVector<Organism*> ::iterator iter;
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
@@ -121,6 +125,11 @@ void Core::renderMobs()
 		painter.drawImage(targetPos, (*iter)->image);
 	}
 
+
+	// 渲染玩家;玩家必须最后渲染
+	updateScreenPosition(player);
+	QRectF targetPosition(player->positionRelativeToScreen.col, player->positionRelativeToScreen.row, 40, 40);
+	painter.drawImage(targetPosition, player->image);
 }
 
 void Core::keyPressEvent(QKeyEvent *event)
@@ -164,10 +173,11 @@ void Core::mousePressEvent(QMouseEvent * event)
 {
 	mousePoint.row = (event->y() / SIZE)*SIZE;
 	mousePoint.col = (event->x() / SIZE)*SIZE;
-	
-	if (event->button() == Qt::LeftButton)
+	mouseGridPoint = screenPositionToScreenGridPosition(mousePoint);
+	qDebug() << "mousePoint.col " << mousePoint.col << "; mousePoint.row " << mousePoint.row;
+	if (event->button() == Qt::LeftButton) // TODO: 判断玩家的行为
 	{
-
+		playerNormalAttack();
 	}
 
 }
@@ -278,6 +288,34 @@ bool Core::isAbleToGo(Organism * mobs, int direction)
 	{
 		return false;
 	}
+	
+	// 检查是否有玩家阻挡
+	if (mobs != player)
+	{
+		updateScreenPosition(player);
+		if (myGridPosition == screenPositionToScreenGridPosition(player->positionRelativeToScreen))
+		{
+			return false;
+		}
+	}
+
+	// 检查是否其他生物阻挡
+	if (ENABLE_CHECK_ALL)
+	{
+		QVector<Organism*>::iterator iter;
+		for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
+		{
+			if (*iter == NULL) continue;
+			if (mobs != (*iter))
+			{
+				updateScreenPosition(*iter);
+				if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
+				{
+					return false;
+				}
+			}
+		}
+	}
 	return true;;
 }
 
@@ -289,7 +327,27 @@ Point Core::pixelToGrid(Point inPixel)
 	return inGrid;
 }
 
-void Core::moveAllMobs()
+Point Core::screenPositionToScreenGridPosition(Point screenPosition)
+{
+	Point result;
+	result.col = (screenPosition.col / SIZE);
+	result.row = (screenPosition.row / SIZE);
+	return result;
+}
+
+int Core::min(int a, int b)
+{
+	if (a > b)
+	{
+		return a;
+	}
+	else
+	{
+		return b;
+	}
+}
+
+void Core::moveAllMobs()  // 在Mobs中内置定时器以实现速度控制并按照格子行动
 {
 	QVector<Organism*> ::iterator iter;
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
@@ -341,6 +399,37 @@ void Core::generateMobs()
 	}
 }
 
+// 玩家进行攻击，攻击位置为mousePoint
+void Core::playerNormalAttack()
+{
+	Point mouseGridPosition = screenPositionToScreenGridPosition(mousePoint);
+	qDebug() << "Player attack STH, point: row: " << mouseGridPosition.row << " col: " << mouseGridPosition.col;
+	int mouseDirection;
+	QVector<Organism*>::iterator iter;
+	for (iter=mobsList->begin();iter!=mobsList->end();iter++)
+	{
+		if (*iter == NULL) continue;
+		updateScreenPosition(*iter);
+		Point mobGridPosition = screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen);
+		if ( mouseGridPosition == mobGridPosition) 
+		{
+			(*iter)->beAttacked(player->finalAttackPower);
+			if ((*iter)->isDead)
+			{
+				delete *iter;
+				mobsList->erase(iter); // 删除后，数组会前移（？）
+			}
+		}
+	}
+}
+
+// 更新所有生物（包括玩家）的状态（血量，是否死亡）
+void Core::adjustAllMobsStatus() // TODO: 更新所有生物（包括玩家）的状态
+{
+
+}
+
+
 // 以像素为单位，非格；屏幕坐标-->绝对坐标
 Point Core::positionConvertor(Point screenPostion)
 {
@@ -379,5 +468,6 @@ void Core::timerEvent(QTimerEvent *event)
 	{
 		// 生物移动
 		moveAllMobs();
+		adjustAllMobsStatus();
 	}
 }

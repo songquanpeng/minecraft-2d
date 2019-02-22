@@ -8,6 +8,7 @@ public:
 	Player();
 	~Player();
 
+	int finalAttackPower;
 	int level;
 
 };

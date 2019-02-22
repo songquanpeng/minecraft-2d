@@ -1,5 +1,14 @@
 <RCC>
-    <qresource prefix="/music">
-        <file>sound/forest.mp3</file>
-    </qresource>
+  <qresource prefix="/music">
+    <file>sound/minecraft/cow.mp3</file>
+    <file>sound/minecraft/cow_hurt.mp3</file>
+    <file>sound/minecraft/creeper_death.mp3</file>
+    <file>sound/minecraft/creeper_hurt.mp3</file>
+    <file>sound/minecraft/sheep.mp3</file>
+    <file>sound/minecraft/skeleton_death.mp3</file>
+    <file>sound/minecraft/sketon_hurt.mp3</file>
+    <file>sound/minecraft/zombie_death.mp3</file>
+    <file>sound/minecraft/zombie_hurt.mp3</file>
+    <file>sound/forest.mp3</file>
+  </qresource>
 </RCC>

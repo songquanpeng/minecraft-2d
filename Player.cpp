@@ -6,7 +6,6 @@ Player::Player()
 	:Organism()
 {
 	image = QImage(":/lancher/image/game/steven.png");
-	speed = getRealMove(PLAYER_SPEED);
 	blood = PLAYER_BLOOD;
 	armor = PLAYER_ARMOR;
 	attakPower = PLAYER_ATTACK_POWER;
@@ -15,6 +14,7 @@ Player::Player()
 	level = 0;
 	positionRelativeToScreen.row = 6*SIZE;
 	positionRelativeToScreen.col = 10*SIZE;
+	finalAttackPower = attakPower;
 }
 
 

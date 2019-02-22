@@ -1,11 +1,23 @@
 #pragma once
-
+#include <QDebug>
 struct Point
 {
 	int row;
 	int col;
+	bool operator== (const Point otherPoint) const
+	{
+		if (row == otherPoint.row && col == otherPoint.col)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
+const float ARMOR_PROTECTION_RATIO = 0.5;
 
 const int WORLD_ROW = 270;
 const int WORLD_COL = 480;
@@ -37,7 +49,7 @@ const int STAY = 4;
 const int WINDOW_MOVE_STEP = 1;
 
 // ÉúÎïÊôÐÔ
-const int MOBS_NUMBER = 30;
+const int MOBS_NUMBER = 60;
 // cattle
 const int CATTLE_BLOOD = 15;
 const int CATTLE_ARMOR = 4;
@@ -51,7 +63,7 @@ const int SHEEP_SPEED = 5;
 // pig
 const int PIG_BLOOD = 7;
 const int PIG_ARMOR = 1;
-const int PIG_SPEED = 5;
+const int PIG_SPEED = 6;
 
 // zombie
 const int ZOMBIE_BLOOD = 10;
@@ -99,7 +111,8 @@ const int FPS = 60;
 // SPEED*SPEED_SCALAR = FPS*SIZE
 // =>	
 const float SPEED_SCALAR = (double)(FPS*SIZE) / (double)(PLAYER_SPEED);
-
+const int SPEED_ARGUMENT = 6;
 const int MOBS_MOVE_TIMER = 500;
 const int DISTANCE_TO_SCREEN_BORDER = 1*SIZE;
 const int SCREEN_MOVE_DISTANCE = 1;
+const bool ENABLE_CHECK_ALL = true;

@@ -40,7 +40,8 @@ public:
 private:
 	int renderTimer;
 	int mobsMoveTimer;
-	Point mousePoint;
+	Point mousePoint; // 单位像素
+	Point mouseGridPoint; // 单位格
 	Player *player;
 	QVector<Organism*> *mobsList; 
 	Point windowStartPoint;
@@ -52,11 +53,15 @@ private:
 	void moveAllMobs();
 	void movePoint(Point& point, int direction, int moveDistance);
 	void generateMobs();
+	void playerNormalAttack();
+	void adjustAllMobsStatus();
 	Point positionConvertor(Point screenPostion);
 	Point absolutePositionConvertor(Point absolutePosition);
 	void updateScreenPosition(Organism* mobs);
 	bool isMobNearScreenBorder(Organism* mobs, int direction);
 	bool isAbleToGo(Organism* mobs, int direction);
 	Point pixelToGrid(Point inPixel);
+	Point screenPositionToScreenGridPosition(Point screenPosition);
+	int min(int a, int b);
 };
 
