@@ -1,3 +1,5 @@
+**This file will be rewritten. Currently only draft**
+
 ## 可能需要用到的Qt类
 + QPainter：用来绘制图形
 + QPainterPath：控制Painter绘制的路径
