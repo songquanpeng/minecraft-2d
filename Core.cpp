@@ -28,6 +28,26 @@ Core::Core(QString archivePath)
 	generateMobs();
 	mousePoint.col = WORLD_COL*SIZE;
 	mousePoint.row = WORLD_ROW*SIZE;
+	setArticleName();
+}
+
+void Core::setArticleName()
+{
+	articleName[BASE] = "BASE";
+	articleName[GLASS] = "GLASS";
+	articleName[EARTH] = "EARTH";
+	articleName[STONE] = "STONE";
+	articleName[WOOD] = "WOOD";
+	articleName[LEAF] = "LEAF";
+	articleName[WATER] = "WATER";
+
+	articleName[SWORD] = "SWORD";
+	articleName[AXE] = "AXE";
+	articleName[PICK] = "PICK";
+	articleName[SHOVEL] = "SHOVEL";
+	articleName[BOW] = "BOW";
+	articleName[ARROW] = "ARROW";
+	articleName[MEAT] = "MEAT";
 }
 
 
@@ -47,6 +67,12 @@ void Core::startGame()
 
 }
 
+void Core::quitGame()
+{
+	saveMapData();
+	this->close();
+}
+
 bool Core::loadMapData()
 {
 	if (!file->open(QIODevice::ReadWrite | QIODevice::Text)) {
@@ -63,7 +89,28 @@ bool Core::loadMapData()
 			board[row][col] = (unsigned short int)listIterator.next().toInt();
 		}
 	}
+	file->close();
 	return true;
+}
+
+bool Core::saveMapData()
+{
+	if (file->open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream input(file);
+		for (int row = 0; row < WORLD_ROW; row++)
+		{
+			for (int col = 0; col < WORLD_COL; col++)
+			{
+				input << board[row][col] << " ";
+			}
+			input << endl;
+		}
+		qDebug() << "successfully save map data";
+		file->close();
+		return true;
+	}
+	return false;
 }
 
 void Core::paintEvent(QPaintEvent *event)
@@ -78,24 +125,25 @@ void Core::paintEvent(QPaintEvent *event)
 			switch (board[windowStartPoint.row + row][windowStartPoint.col + col])
 			{
 			case GLASS:
-				painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
-
+				painter.setBrush(QBrush(QColor::fromRgb(0, 255, 127), Qt::SolidPattern));
 				break;
 			case WATER:
-				painter.setBrush(QBrush(Qt::blue, Qt::SolidPattern));
-
+				painter.setBrush(QBrush(QColor::fromRgb(0, 192, 255), Qt::SolidPattern));
 				break;
 			case LEAF:
-				painter.setBrush(QBrush(Qt::darkGreen, Qt::SolidPattern));
-
+				painter.setBrush(QBrush(QColor::fromRgb(0, 139, 69), Qt::SolidPattern));
 				break;
 			case STONE:
-				painter.setBrush(QBrush(Qt::gray, Qt::SolidPattern));
-
+				painter.setBrush(QBrush(QColor::fromRgb(156, 156, 156), Qt::SolidPattern));
 				break;
 			case WOOD:
 				painter.setBrush(QBrush(QColor::fromRgb(139, 71, 38), Qt::SolidPattern));
-
+				break;
+			case BASE:
+				painter.setBrush(QBrush(QColor::fromRgb(0, 0, 0), Qt::SolidPattern));
+				break;
+			case EARTH:
+				painter.setBrush(QBrush(QColor::fromRgb(232, 139, 0), Qt::SolidPattern));
 				break;
 			default:
 				break;
@@ -103,6 +151,7 @@ void Core::paintEvent(QPaintEvent *event)
 			painter.drawRect(col*SIZE, row*SIZE, SIZE, SIZE);
 		}
 	}
+
 	// 渲染鼠标所指点
 	painter.setBrush(Qt::NoBrush);
 	QPen pen;
@@ -111,9 +160,42 @@ void Core::paintEvent(QPaintEvent *event)
 	pen.setColor(Qt::red);
 	painter.setPen(pen);
 	painter.drawRect(mousePoint.col, mousePoint.row, SIZE, SIZE);
+
 	// 渲染生物（包括玩家）
 	renderMobs();
+	renderArticleList();
 }
+
+// 渲染物品栏
+void Core::renderArticleList()
+{
+	QString text("");
+	// 目前所持物品
+	text.append("LEVEL<" + QString::number(player->level) + "> BLOOD<" + QString::number(player->blood)+">\t");
+	text.append("[>> " + articleName[player->currentArticleType] + " <<]\t");
+	// 玩家的位置
+	text += ("(" + QString::number(player->realPosition.row) + " ," + QString::number(player->realPosition.col) + " )\t");
+	for (int i = 0; i < MAX_ARTICLE_NUM; i++)
+	{
+		if (articleName[i] != NULL)
+		{
+			text.append(articleName[i] + "<" + QString::number(player->articleList[i]) + ">\t");
+		}
+	}
+	QPainter painter(this);
+	QPen pen;
+	pen.setStyle(Qt::SolidLine);
+	pen.setWidth(3);
+	pen.setColor(QColor::fromRgb(148, 0, 211));
+	painter.setPen(pen);
+	painter.drawRect(ARTICLE_LIST_RECT);
+	painter.setPen(QColor::fromRgb(255, 0, 255));
+	QFont font("Geogia", 12.5, 75);
+	font.setCapitalization(QFont::Capitalize);
+	painter.setFont(font);
+	painter.drawText(ARTICLE_LIST_RECT, Qt::AlignCenter, text);
+}
+
 
 // 根据相应的 实际 坐标渲染玩家与生物；每次渲染前才更新相对屏幕坐标
 void Core::renderMobs()
@@ -153,7 +235,7 @@ void Core::keyPressEvent(QKeyEvent *event)
 		moveWindow(RIGHT);
 		break;
 	case Qt::Key_Escape:
-		this->close();
+		quitGame();
 		break;
 	case Qt::Key_W:
 		movePlayer(UP);
@@ -167,7 +249,12 @@ void Core::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_D:
 		movePlayer(RIGHT);
 		break;
-
+	case Qt::Key_Tab:
+		player->changeCurrentHold(1);
+		break;
+	case Qt::Key_CapsLock:
+		player->changeCurrentHold(-1);
+		break;
 	default:
 		break;
 	}
@@ -179,9 +266,13 @@ void Core::mousePressEvent(QMouseEvent * event)
 	mousePoint.col = (event->x() / SIZE)*SIZE;
 	mouseGridPoint = screenPositionToScreenGridPosition(mousePoint);
 	qDebug() << "mousePoint.col " << mousePoint.col << "; mousePoint.row " << mousePoint.row;
-	if (event->button() == Qt::LeftButton) // TODO: 判断玩家的行为
+	if (event->button() == Qt::LeftButton) 
 	{
 		playerNormalAction();
+	}
+	else if(event->button() == Qt::RightButton) // TODO: 判断玩家的行为(前往或者放置）
+	{
+		playerCreateCube(mouseGridPoint);
 	}
 
 }
@@ -412,26 +503,93 @@ void Core::generateMobs()
 	}
 }
 
-// 玩家进行普通操作（攻击，挖掘），位置为mousePoint
-void Core::playerNormalAction()
+// 每次操作会更新mouseGridPoint
+bool Core::isActionValid()
 {
-	qDebug() << "Player normal operation, point: row: " << mouseGridPoint.row << " col: " << mouseGridPoint.col;
 	mouseGridPoint = screenPositionToScreenGridPosition(mousePoint);
-	int mouseDirection;
-
 	// 判断是否是有效操作
-	bool isActionValid = false; // TODO:验证操作是否有效
+	bool isValid = false; 
 	// 需要获取玩家和操作点的屏幕格坐标
 	updateScreenPosition(player);
 	Point playerGridPoint = screenPositionToScreenGridPosition(player->positionRelativeToScreen);
 	bool condition_1 = (player->attackRange >= abs(playerGridPoint.row - mouseGridPoint.row)) && (player->attackRange >= abs(playerGridPoint.col - mouseGridPoint.col));
-	isActionValid = condition_1;
-	if (!isActionValid)
+	isValid = condition_1;
+	if (!isValid)
 	{
 		qDebug() << "unvalid action, player grid position: row: " << playerGridPoint.row << " col: " << playerGridPoint.col;
-		return;
+		return false;
 	}
 
+	return true;
+}
+
+// 决定某方块是否可以放在某一方块上
+bool Core::isCubeCanBeCreateOn(Point position)
+{
+	int cubeType = board[position.row][position.col];
+	bool isAble = false;
+	switch (player->currentArticleType)
+	{
+	case WOOD:
+		if (cubeType == GLASS || cubeType == WATER)
+		{
+			isAble = true;
+		}
+		break;
+	case GLASS:
+		if (cubeType == EARTH || cubeType == WATER)
+		{
+			isAble = true;
+		}
+		break;
+	case STONE:
+		if (cubeType == GLASS || cubeType == WATER)
+		{
+			isAble = true;
+		}
+		break;
+	case LEAF:
+		if (cubeType == WOOD || cubeType == WATER)
+		{
+			isAble = true;
+		}
+		break;
+	case EARTH:
+		if (cubeType == BASE || cubeType == WATER)
+		{
+			isAble = true;
+		}
+		break;
+	case WATER:
+		if (cubeType == GLASS || cubeType == BASE)
+		{
+			isAble = true;
+		}
+		break;
+	case BASE:
+
+	default:
+		isAble = false;
+		break;
+	}
+
+	if (!isAble)
+	{
+		qDebug() << "you cannot put " << player->currentArticleType << " on point: row: " << position.row << " col: " << position.col;
+		return isAble;
+	}
+	return isAble;
+}
+
+// 玩家进行普通操作（攻击，挖掘），位置为mousePoint
+void Core::playerNormalAction()
+{
+	qDebug() << "Player normal operation, point: row: " << mouseGridPoint.row << " col: " << mouseGridPoint.col;
+
+	if (!isActionValid())
+	{
+		return;
+	}
 
 	// 判断是否是攻击
 	bool isAttack = false;
@@ -465,6 +623,7 @@ void Core::playerMining(Point miningPoint)
 	Point realMiningPoint = screenGridToRealGrid(miningPoint);
 	qDebug() << "player mine at row: " << miningPoint.row << " col: " << miningPoint.col;
 	unsigned short* targetCube = &board[realMiningPoint.row][realMiningPoint.col];
+	player->articleList[*targetCube] += 1; // 增加玩家物品栏储备
 	switch (*targetCube)
 	{
 	case LEAF:
@@ -476,9 +635,43 @@ void Core::playerMining(Point miningPoint)
 	case WOOD:
 		*targetCube = GLASS;
 		break;
+	case GLASS:
+		*targetCube = EARTH;
+		break;
+	case EARTH:
+		*targetCube = BASE;
+		break;
 	default:
 		break;
 	}
+}
+
+// 接收参数的单位为格
+void Core::playerCreateCube(Point createPoint)
+{
+
+	if (!isActionValid())
+	{
+		return;
+	}
+
+	if (!isCubeCanBeCreateOn(createPoint))
+	{
+		return;
+	}
+
+	int* cubeNumber = &(player->articleList[player->currentArticleType]);
+	if ((*cubeNumber) <= 0)
+	{
+		qDebug() << "no enough such type material: " << player->currentArticleType;
+		return;
+	}
+	else
+	{
+		(*cubeNumber)--;
+	}
+	board[createPoint.row][createPoint.col] = player->currentArticleType;
+	qDebug()<<"player create cube: "<< player->currentArticleType << " on point: row: " << createPoint.row << " col: " << createPoint.col;
 }
 
 // 更新所有生物（包括玩家）的状态（血量，是否死亡）

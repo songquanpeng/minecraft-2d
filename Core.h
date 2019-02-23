@@ -28,10 +28,12 @@ public:
 	QFile *file;
 	unsigned short int board[WORLD_ROW][WORLD_COL]; // 行，列
 	   
-
+	QString articleName[MAX_ARTICLE_NUM];
 	void resetGame();
 	void startGame();
+	void quitGame();
 	bool loadMapData();
+	bool saveMapData();
 	virtual void paintEvent(QPaintEvent *event); //场景刷新
 	virtual void timerEvent(QTimerEvent *event); //定时器事件
 	virtual void keyPressEvent(QKeyEvent *event); //键盘响应
@@ -46,7 +48,9 @@ private:
 	Player *player;
 	QVector<Organism*> *mobsList; 
 	Point windowStartPoint; // 单位：格
+	void setArticleName();
 	void renderMobs(); 
+	void renderArticleList();
 	void moveWindow(int direction, int moveStep); 
 	void moveWindow(int direction);
 	void movePlayer(int direction);
@@ -56,12 +60,15 @@ private:
 	void generateMobs();
 	void playerNormalAction();
 	void playerMining(Point miningPoint);
+	void playerCreateCube(Point createPoint);
 	void adjustAllMobsStatus();
 	Point positionConvertor(Point screenPostion);
 	Point absolutePositionConvertor(Point absolutePosition);
 	void updateScreenPosition(Organism* mobs);
 	bool isMobNearScreenBorder(Organism* mobs, int direction);
 	bool isAbleToGo(Organism* mobs, int direction);
+	bool isActionValid();
+	bool isCubeCanBeCreateOn(Point position);
 	Point pixelToGrid(Point inPixel);
 	Point screenPositionToScreenGridPosition(Point screenPosition);
 	Point screenGridToRealGrid(Point screenGrid);

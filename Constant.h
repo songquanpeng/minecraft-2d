@@ -1,5 +1,8 @@
 #pragma once
 #include <QDebug>
+#include <QRectF>
+#include <QString>
+
 struct Point
 {
 	int row;
@@ -31,6 +34,10 @@ const int STONE_PROBABILITY = 2;
 const int WOOD_PROBABILITY = 2;
 const int EARTH_PROBABILITY = 6;
 
+// 此处添加物品后务必在
+// Core.cpp 中的setArticleName函数中更新其名称
+// Player.cpp 中的loadAticleList函数中初始化其数量
+const int MAX_ARTICLE_NUM = 20;
 const int BASE = 0;
 const int GLASS = 1;
 const int EARTH = 2;
@@ -38,6 +45,14 @@ const int STONE = 3;
 const int WOOD = 4;
 const int LEAF = 5;
 const int WATER = 6;
+
+const int SWORD = 10;
+const int AXE = 11;
+const int PICK = 12;
+const int SHOVEL = 13;
+const int BOW = 14;
+const int ARROW = 15;
+const int MEAT = 16;
 
 // 不应改动
 const int UP = 0;
@@ -116,3 +131,6 @@ const int MOBS_MOVE_TIMER = 500;
 const int DISTANCE_TO_SCREEN_BORDER = 1*SIZE;
 const int SCREEN_MOVE_DISTANCE = 1;
 const bool ENABLE_CHECK_ALL = true;
+
+
+const QRectF ARTICLE_LIST_RECT(0, 0, SCREEN_COL * SIZE, 1 * SIZE);

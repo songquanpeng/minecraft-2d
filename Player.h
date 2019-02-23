@@ -7,9 +7,11 @@ class Player :
 public:
 	Player();
 	~Player();
-
+	int articleList[MAX_ARTICLE_NUM];
 	int finalAttackPower;
 	int level;
-
+	int currentArticleType;
+	void loadAticleList();
+	void changeCurrentHold(int step);
 };
 
