@@ -20,6 +20,7 @@ void Organism::constructorTool()
 	name = "Organism";
 	isDead = false;
 	speed = getRealMove(SPEED_ARGUMENT);
+	isPenetrateAble = false;
 }
 
 Organism::~Organism()

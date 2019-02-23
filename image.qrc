@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/lancher">
+    <file>image/game/arrow.png</file>
     <file>image/game/axe.png</file>
     <file>image/game/crafting_table.png</file>
     <file>image/game/diamond.png</file>

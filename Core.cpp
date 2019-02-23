@@ -2,9 +2,7 @@
 #include <QIcon>
 #include <QListIterator>
 
-// TODO: 破坏方块
-// TODO: 排放方块
-// TODO: 切换武器
+
 // TODO: 玩家远程攻击
 // TODO: 生物普通攻击
 // TODO: 生物远程攻击
@@ -60,6 +58,7 @@ void Core::resetGame()
 {
 	renderTimer = startTimer(1000/FPS);
 	mobsMoveTimer = startTimer(MOBS_MOVE_TIMER);
+	arrowMoveTimer = startTimer(50); // TODO: arrowMoveTimer
 }
 
 void Core::startGame()
@@ -128,7 +127,7 @@ void Core::paintEvent(QPaintEvent *event)
 				painter.setBrush(QBrush(QColor::fromRgb(0, 255, 127), Qt::SolidPattern));
 				break;
 			case WATER:
-				painter.setBrush(QBrush(QColor::fromRgb(0, 192, 255), Qt::SolidPattern));
+				painter.setBrush(QBrush(QColor::fromRgb(0, 0, 255), Qt::SolidPattern));
 				break;
 			case LEAF:
 				painter.setBrush(QBrush(QColor::fromRgb(0, 139, 69), Qt::SolidPattern));
@@ -163,7 +162,13 @@ void Core::paintEvent(QPaintEvent *event)
 
 	// 渲染生物（包括玩家）
 	renderMobs();
+
+	// 渲染飞行物（如箭矢）
+	renderArrows();
+
+	// 渲染状态栏（物品栏）
 	renderArticleList();
+
 }
 
 // 渲染物品栏
@@ -218,6 +223,20 @@ void Core::renderMobs()
 	painter.drawImage(targetPosition, player->image);
 }
 
+void Core::renderArrows()
+{
+	QPainter painter(this);
+	QVector<Arrow*> ::iterator iter;
+	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
+	{
+		if ((*iter) == NULL) continue;
+		updateScreenPosition(*iter);
+		QRectF targetPos((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40);
+		painter.drawImage(targetPos, (*iter)->image);
+	}
+
+}
+
 void Core::keyPressEvent(QKeyEvent *event)
 {
 	switch (event->key())
@@ -260,6 +279,7 @@ void Core::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+// 自动更新mousePoint 与 mouseGridPoint
 void Core::mousePressEvent(QMouseEvent * event)
 {
 	mousePoint.row = (event->y() / SIZE)*SIZE;
@@ -268,11 +288,79 @@ void Core::mousePressEvent(QMouseEvent * event)
 	qDebug() << "mousePoint.col " << mousePoint.col << "; mousePoint.row " << mousePoint.row;
 	if (event->button() == Qt::LeftButton) 
 	{
-		playerNormalAction();
+		// 判断是否是远程攻击
+		if (player->currentArticleType == BOW)
+		{
+			shotArrow(player);
+		}
+		else
+		{
+			playerNormalAction();
+		}
 	}
 	else if(event->button() == Qt::RightButton) // TODO: 判断玩家的行为(前往或者放置）
 	{
 		playerCreateCube(mouseGridPoint);
+	}
+
+}
+
+// 远程攻击
+void Core::shotArrow(Organism* shoter)
+{
+	int direction;
+	// 首先确定鼠标点与发射者的位置
+	Point shoterRealGrid = pixelToGrid(shoter->realPosition);
+	Point mouseRealGrid;
+	mouseRealGrid.row = mouseGridPoint.row + windowStartPoint.row;
+	mouseRealGrid.col = mouseGridPoint.col + windowStartPoint.col;
+	Point arrowStartRealGrid;
+	if (mouseRealGrid.col < shoterRealGrid.col)
+	{
+		direction = LEFT;
+		arrowStartRealGrid.row = shoterRealGrid.row;
+		arrowStartRealGrid.col = shoterRealGrid.col - 1;
+
+	}
+	else if (mouseRealGrid.col > shoterRealGrid.col)
+	{
+		direction = RIGHT;
+		arrowStartRealGrid.row = shoterRealGrid.row;
+		arrowStartRealGrid.col = shoterRealGrid.col + 1;
+
+	}
+	else if (mouseRealGrid.row < shoterRealGrid.row)
+	{
+		direction = UP;
+		arrowStartRealGrid.row = shoterRealGrid.row - 1;
+		arrowStartRealGrid.col = shoterRealGrid.col;
+
+	}
+	else if (mouseRealGrid.row > shoterRealGrid.row)
+	{
+		direction = DOWN;
+		arrowStartRealGrid.row = shoterRealGrid.row + 1;
+		arrowStartRealGrid.col = shoterRealGrid.col;
+
+	}
+	else
+	{
+		direction = STAY;
+		return;
+	}
+
+	qDebug() << shoter->name << " shot at direction: " << direction << " row: " << arrowStartRealGrid.row << " col: " << arrowStartRealGrid.col;
+	arrowList->append(new Arrow(direction, arrowStartRealGrid));
+}
+
+// 处理箭矢的移动以及碰撞，消失
+void Core::moveAllArrows()
+{
+	QVector<Arrow*> ::iterator iter;
+	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
+	{
+		if ((*iter) == NULL) continue;
+		moveArrows((*iter), (*iter)->direction);
 	}
 
 }
@@ -316,7 +404,7 @@ void Core::movePlayer(int direction)
 		moveWindow(direction, SCREEN_MOVE_DISTANCE);
 	}
 
-	if (isAbleToGo(player, direction))
+	if (isAbleToGo(player, direction, false))
 	{
 		movePoint(player->realPosition, direction, player->speed); // 实际坐标已更新
 	}
@@ -325,10 +413,20 @@ void Core::movePlayer(int direction)
 // 生物移动
 void Core::moveMobs(Organism* mob, int direction) 
 {
-	if (isAbleToGo(mob, direction))
+	if (isAbleToGo(mob, direction, mob->isPenetrateAble))
 	{
 		movePoint(mob->realPosition, direction, mob->speed);
 	}
+}
+
+// 箭矢移动
+void Core::moveArrows(Arrow* arrow, int direction)
+{
+	if (isAbleToGo(arrow, direction, arrow->isPenetrateAble))
+	{
+		movePoint(arrow->realPosition, direction, arrow->speed);
+	}
+
 }
 
 // 每次检查都会更新其屏幕坐标; 玩家若正在靠近，则置true
@@ -352,7 +450,7 @@ bool Core::isMobNearScreenBorder(Organism * mobs, int direction)
 }
 
 // 需要准确的实际坐标
-bool Core::isAbleToGo(Organism * mobs, int direction)
+bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 {
 	Point myGridPosition = pixelToGrid(mobs->realPosition);
 	switch (direction)
@@ -385,6 +483,10 @@ bool Core::isAbleToGo(Organism * mobs, int direction)
 		return false;
 	}
 	
+	if (isPenetrateAble) //如果允许穿透，则跳过生物碰撞检查
+	{
+		return true;
+	}
 	// 检查是否有玩家阻挡
 	if (mobs != player)
 	{
@@ -412,7 +514,7 @@ bool Core::isAbleToGo(Organism * mobs, int direction)
 			}
 		}
 	}
-	return true;;
+	return true;
 }
 
 Point Core::pixelToGrid(Point inPixel)
@@ -493,7 +595,8 @@ void Core::movePoint(Point& point, int direction, int moveDistance)
 void Core::generateMobs()
 {
 	srand(static_cast<unsigned int>(time(0)));
-	mobsList = new QVector<Organism*>; 
+	mobsList = new QVector<Organism*>;
+	arrowList = new QVector<Arrow*>;
 	Point generatedScreenPosition;
 	for (int i = 0; i < MOBS_NUMBER; i++)
 	{
@@ -675,7 +778,7 @@ void Core::playerCreateCube(Point createPoint)
 }
 
 // 更新所有生物（包括玩家）的状态（血量，是否死亡）
-void Core::adjustAllMobsStatus() // TODO: 更新所有生物（包括玩家）的状态
+void Core::adjustAllMobsStatus()
 {
 
 }
@@ -718,7 +821,12 @@ void Core::timerEvent(QTimerEvent *event)
 	if (event->timerId() == mobsMoveTimer)
 	{
 		// 生物移动
-		moveAllMobs();
-		adjustAllMobsStatus();
+		moveAllMobs(); // 当前正常启用
+		adjustAllMobsStatus(); // 目前弃用
 	}
+	if (event->timerId() == arrowMoveTimer)
+	{
+		moveAllArrows();
+	}
+
 }

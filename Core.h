@@ -17,6 +17,7 @@
 #include "Organism.h"
 #include "Player.h"
 #include "Pig.h"
+#include "Arrow.h"
 
 class Core :
 	public QWidget
@@ -41,20 +42,26 @@ public:
 	// virtual void keyReleaseEvent(QKeyEvent *event); //键盘响应
 
 private:
+	void shotArrow(Organism* shoter);
+	void moveAllArrows(); 
 	int renderTimer;
 	int mobsMoveTimer;
+	int arrowMoveTimer;
 	Point mousePoint; // 单位像素
 	Point mouseGridPoint; // 指针鼠标位置，单位：格
 	Player *player;
 	QVector<Organism*> *mobsList; 
+	QVector<Arrow*> *arrowList;
 	Point windowStartPoint; // 单位：格
 	void setArticleName();
-	void renderMobs(); 
+	void renderMobs();
+	void renderArrows();
 	void renderArticleList();
 	void moveWindow(int direction, int moveStep); 
 	void moveWindow(int direction);
 	void movePlayer(int direction);
 	void moveMobs(Organism* mob, int direction);
+	void moveArrows(Arrow* arrow, int direction);
 	void moveAllMobs();
 	void movePoint(Point& point, int direction, int moveDistance);
 	void generateMobs();
@@ -66,7 +73,7 @@ private:
 	Point absolutePositionConvertor(Point absolutePosition);
 	void updateScreenPosition(Organism* mobs);
 	bool isMobNearScreenBorder(Organism* mobs, int direction);
-	bool isAbleToGo(Organism* mobs, int direction);
+	bool isAbleToGo(Organism* mobs, int direction, bool isPenetrateAble);
 	bool isActionValid();
 	bool isCubeCanBeCreateOn(Point position);
 	Point pixelToGrid(Point inPixel);

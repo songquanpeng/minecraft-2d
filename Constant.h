@@ -134,3 +134,5 @@ const bool ENABLE_CHECK_ALL = true;
 
 
 const QRectF ARTICLE_LIST_RECT(0, 0, SCREEN_COL * SIZE, 1 * SIZE);
+
+const int ARROW_SPEED = 2;

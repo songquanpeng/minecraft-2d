@@ -199,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="about.cpp" />
     <ClCompile Include="archivemanager.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="lancher.cpp" />
@@ -224,6 +225,7 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Organism.h" />
