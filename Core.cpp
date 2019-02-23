@@ -176,8 +176,8 @@ void Core::renderArticleList()
 {
 	QString text("");
 	// 目前所持物品
+	text.append("[>>> " + articleName[player->currentArticleType] + " <<<]\t");
 	text.append("LEVEL<" + QString::number(player->level) + "> BLOOD<" + QString::number(player->blood)+">\t");
-	text.append("[>> " + articleName[player->currentArticleType] + " <<]\t");
 	// 玩家的位置
 	text += ("(" + QString::number(player->realPosition.row) + " ," + QString::number(player->realPosition.col) + " )\t");
 	for (int i = 0; i < MAX_ARTICLE_NUM; i++)
@@ -229,12 +229,26 @@ void Core::renderArrows()
 	QVector<Arrow*> ::iterator iter;
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
-		if ((*iter) == NULL) continue;
+		if ((*iter) == NULL ) continue;
+		if ((*iter)->isMoving == false) continue; // 对不移动的箭矢做隐藏处理
 		updateScreenPosition(*iter);
 		QRectF targetPos((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40);
 		painter.drawImage(targetPos, (*iter)->image);
 	}
 
+}
+
+void Core::removeNotMovingArrow()
+{
+	QVector<Arrow*> ::iterator iter;
+	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
+	{
+		if ((*iter) == NULL || (*iter)->isMoving == false)
+		{
+			delete *iter;
+			arrowList->erase(iter);
+		}
+	}
 }
 
 void Core::keyPressEvent(QKeyEvent *event)
@@ -356,11 +370,14 @@ void Core::shotArrow(Organism* shoter)
 // 处理箭矢的移动以及碰撞，消失
 void Core::moveAllArrows()
 {
-	QVector<Arrow*> ::iterator iter;
+	QVector<Arrow*>::iterator iter;
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
 		if ((*iter) == NULL) continue;
-		moveArrows((*iter), (*iter)->direction);
+		if (!(*iter)->isMoving) continue;
+
+		bool isMoving = moveArrows((*iter), (*iter)->direction);
+		(*iter)->isMoving = isMoving; 
 	}
 
 }
@@ -419,14 +436,15 @@ void Core::moveMobs(Organism* mob, int direction)
 	}
 }
 
-// 箭矢移动
-void Core::moveArrows(Arrow* arrow, int direction)
+// 箭矢移动;不可继续移动：false
+bool Core::moveArrows(Arrow* arrow, int direction)
 {
-	if (isAbleToGo(arrow, direction, arrow->isPenetrateAble))
+	if (isArrowAbleToGo(arrow, direction, arrow->isPenetrateAble))
 	{
 		movePoint(arrow->realPosition, direction, arrow->speed);
+		return true;
 	}
-
+	return false;
 }
 
 // 每次检查都会更新其屏幕坐标; 玩家若正在靠近，则置true
@@ -511,6 +529,78 @@ bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 				{
 					return false;
 				}
+			}
+		}
+	}
+	return true;
+}
+
+bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
+{
+	Point myGridPosition = pixelToGrid(mobs->realPosition);
+	switch (direction)
+	{
+	case UP:
+		myGridPosition.row -= 1;
+		break;
+	case DOWN:
+		myGridPosition.row += 1;
+		break;
+	case LEFT:
+		myGridPosition.col -= 1;
+		break;
+	case RIGHT:
+		myGridPosition.col += 1;
+		break;
+	default:
+		break;
+	}
+	// 检查是否越界
+	if (myGridPosition.row < 0 || myGridPosition.col < 0 || myGridPosition.col >= WORLD_COL || myGridPosition.row >= WORLD_ROW)
+	{
+		return false;
+	}
+
+	// 检查是否是可以通过的方块
+	int cubeType = board[myGridPosition.row][myGridPosition.col];
+	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
+	{
+		mobs->isMoving = false;
+		return false;
+	}
+
+	// 是否射中了玩家
+	updateScreenPosition(player);
+	if (myGridPosition == screenPositionToScreenGridPosition(player->positionRelativeToScreen))
+	{
+		// 击中
+		player->beAttacked(mobs->attakPower);
+
+		if (!isPenetrateAble)
+		{
+			mobs->isMoving = false;
+			return false;
+		}
+	}
+
+
+	QVector<Organism*>::iterator iter;
+	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
+	{
+		if (*iter == NULL) continue;
+		updateScreenPosition(*iter);
+		if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
+		{
+			(*iter)->beAttacked(mobs->attakPower);
+			if (!isPenetrateAble)
+			{
+				mobs->isMoving = false;
+				if ((*iter)->isDead)
+				{
+					delete *iter;
+					mobsList->erase(iter); // 删除后，数组会前移（？）
+				}
+				return false;
 			}
 		}
 	}
@@ -826,6 +916,8 @@ void Core::timerEvent(QTimerEvent *event)
 	}
 	if (event->timerId() == arrowMoveTimer)
 	{
+		// TODO: 删除无用的箭矢
+		// removeNotMovingArrow();  
 		moveAllArrows();
 	}
 

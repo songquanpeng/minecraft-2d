@@ -6,6 +6,7 @@ Player::Player()
 	:Organism()
 {
 	image = QImage(":/lancher/image/game/steven.png");
+	name = "player";
 	blood = PLAYER_BLOOD;
 	armor = PLAYER_ARMOR;
 	attakPower = PLAYER_ATTACK_POWER;
@@ -16,7 +17,7 @@ Player::Player()
 	positionRelativeToScreen.col = 10*SIZE;
 	finalAttackPower = attakPower;
 	attackRange = PLAYER_ATTACK_RANGE;
-	currentArticleType = STONE;
+	currentArticleType = BOW;
 	loadAticleList();
 }
 

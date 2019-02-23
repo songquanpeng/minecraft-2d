@@ -8,7 +8,8 @@ class Arrow :
 public:
 	Arrow(int direction_, Point realGrid);
 	~Arrow();
-
+	// ARROW direction
 	int direction;
+	bool isMoving;
 };
 

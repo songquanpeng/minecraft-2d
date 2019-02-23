@@ -56,12 +56,13 @@ private:
 	void setArticleName();
 	void renderMobs();
 	void renderArrows();
+	void removeNotMovingArrow();
 	void renderArticleList();
 	void moveWindow(int direction, int moveStep); 
 	void moveWindow(int direction);
 	void movePlayer(int direction);
 	void moveMobs(Organism* mob, int direction);
-	void moveArrows(Arrow* arrow, int direction);
+	bool moveArrows(Arrow* arrow, int direction);
 	void moveAllMobs();
 	void movePoint(Point& point, int direction, int moveDistance);
 	void generateMobs();
@@ -74,6 +75,7 @@ private:
 	void updateScreenPosition(Organism* mobs);
 	bool isMobNearScreenBorder(Organism* mobs, int direction);
 	bool isAbleToGo(Organism* mobs, int direction, bool isPenetrateAble);
+	bool isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble);
 	bool isActionValid();
 	bool isCubeCanBeCreateOn(Point position);
 	Point pixelToGrid(Point inPixel);
