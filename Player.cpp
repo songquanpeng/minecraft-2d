@@ -15,6 +15,7 @@ Player::Player()
 	positionRelativeToScreen.row = 6*SIZE;
 	positionRelativeToScreen.col = 10*SIZE;
 	finalAttackPower = attakPower;
+	attackRange = PLAYER_ATTACK_RANGE;
 }
 
 

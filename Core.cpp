@@ -93,6 +93,10 @@ void Core::paintEvent(QPaintEvent *event)
 				painter.setBrush(QBrush(Qt::gray, Qt::SolidPattern));
 
 				break;
+			case WOOD:
+				painter.setBrush(QBrush(QColor::fromRgb(139, 71, 38), Qt::SolidPattern));
+
+				break;
 			default:
 				break;
 			}
@@ -177,7 +181,7 @@ void Core::mousePressEvent(QMouseEvent * event)
 	qDebug() << "mousePoint.col " << mousePoint.col << "; mousePoint.row " << mousePoint.row;
 	if (event->button() == Qt::LeftButton) // TODO: 判断玩家的行为
 	{
-		playerNormalAttack();
+		playerNormalAction();
 	}
 
 }
@@ -284,7 +288,8 @@ bool Core::isAbleToGo(Organism * mobs, int direction)
 	}
 
 	// 检查是否是可以通过的方块
-	if (board[myGridPosition.row][myGridPosition.col] == LEAF || board[myGridPosition.row][myGridPosition.col] == STONE)
+	int cubeType = board[myGridPosition.row][myGridPosition.col];
+	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
 	{
 		return false;
 	}
@@ -332,6 +337,14 @@ Point Core::screenPositionToScreenGridPosition(Point screenPosition)
 	Point result;
 	result.col = (screenPosition.col / SIZE);
 	result.row = (screenPosition.row / SIZE);
+	return result;
+}
+
+Point Core::screenGridToRealGrid(Point screenGrid)
+{
+	Point result;
+	result.col = screenGrid.col + windowStartPoint.col;
+	result.row = screenGrid.row + windowStartPoint.row;
 	return result;
 }
 
@@ -399,19 +412,36 @@ void Core::generateMobs()
 	}
 }
 
-// 玩家进行攻击，攻击位置为mousePoint
-void Core::playerNormalAttack()
+// 玩家进行普通操作（攻击，挖掘），位置为mousePoint
+void Core::playerNormalAction()
 {
-	Point mouseGridPosition = screenPositionToScreenGridPosition(mousePoint);
-	qDebug() << "Player attack STH, point: row: " << mouseGridPosition.row << " col: " << mouseGridPosition.col;
+	qDebug() << "Player normal operation, point: row: " << mouseGridPoint.row << " col: " << mouseGridPoint.col;
+	mouseGridPoint = screenPositionToScreenGridPosition(mousePoint);
 	int mouseDirection;
+
+	// 判断是否是有效操作
+	bool isActionValid = false; // TODO:验证操作是否有效
+	// 需要获取玩家和操作点的屏幕格坐标
+	updateScreenPosition(player);
+	Point playerGridPoint = screenPositionToScreenGridPosition(player->positionRelativeToScreen);
+	bool condition_1 = (player->attackRange >= abs(playerGridPoint.row - mouseGridPoint.row)) && (player->attackRange >= abs(playerGridPoint.col - mouseGridPoint.col));
+	isActionValid = condition_1;
+	if (!isActionValid)
+	{
+		qDebug() << "unvalid action, player grid position: row: " << playerGridPoint.row << " col: " << playerGridPoint.col;
+		return;
+	}
+
+
+	// 判断是否是攻击
+	bool isAttack = false;
 	QVector<Organism*>::iterator iter;
 	for (iter=mobsList->begin();iter!=mobsList->end();iter++)
 	{
 		if (*iter == NULL) continue;
 		updateScreenPosition(*iter);
 		Point mobGridPosition = screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen);
-		if ( mouseGridPosition == mobGridPosition) 
+		if (mouseGridPoint == mobGridPosition)
 		{
 			(*iter)->beAttacked(player->finalAttackPower);
 			if ((*iter)->isDead)
@@ -419,7 +449,35 @@ void Core::playerNormalAttack()
 				delete *iter;
 				mobsList->erase(iter); // 删除后，数组会前移（？）
 			}
+			isAttack = true;
+			return; // 已找到被攻击的对象，退出函数
 		}
+	}
+
+	if (!isAttack) // 用户进行了合法的挖掘操作
+	{
+		playerMining(mouseGridPoint);
+	}
+}
+
+void Core::playerMining(Point miningPoint)
+{
+	Point realMiningPoint = screenGridToRealGrid(miningPoint);
+	qDebug() << "player mine at row: " << miningPoint.row << " col: " << miningPoint.col;
+	unsigned short* targetCube = &board[realMiningPoint.row][realMiningPoint.col];
+	switch (*targetCube)
+	{
+	case LEAF:
+		*targetCube = WOOD;
+		break;
+	case STONE:
+		*targetCube = GLASS;
+		break;
+	case WOOD:
+		*targetCube = GLASS;
+		break;
+	default:
+		break;
 	}
 }
 

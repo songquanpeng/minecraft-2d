@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QRectF>
 #include <QVector>
+#include <QColor>
 #include "Constant.h"
 #include "Organism.h"
 #include "Player.h"
@@ -41,10 +42,10 @@ private:
 	int renderTimer;
 	int mobsMoveTimer;
 	Point mousePoint; // 单位像素
-	Point mouseGridPoint; // 单位格
+	Point mouseGridPoint; // 指针鼠标位置，单位：格
 	Player *player;
 	QVector<Organism*> *mobsList; 
-	Point windowStartPoint;
+	Point windowStartPoint; // 单位：格
 	void renderMobs(); 
 	void moveWindow(int direction, int moveStep); 
 	void moveWindow(int direction);
@@ -53,7 +54,8 @@ private:
 	void moveAllMobs();
 	void movePoint(Point& point, int direction, int moveDistance);
 	void generateMobs();
-	void playerNormalAttack();
+	void playerNormalAction();
+	void playerMining(Point miningPoint);
 	void adjustAllMobsStatus();
 	Point positionConvertor(Point screenPostion);
 	Point absolutePositionConvertor(Point absolutePosition);
@@ -62,6 +64,7 @@ private:
 	bool isAbleToGo(Organism* mobs, int direction);
 	Point pixelToGrid(Point inPixel);
 	Point screenPositionToScreenGridPosition(Point screenPosition);
+	Point screenGridToRealGrid(Point screenGrid);
 	int min(int a, int b);
 };
 
