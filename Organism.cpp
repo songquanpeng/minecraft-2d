@@ -24,6 +24,8 @@ void Organism::constructorTool()
 	hurtSound = "sound/minecraft/cow_hurt.mp3";
 	deadSound = "sound/minecraft/cow.mp3";
 	direction = 0;
+	attackDirection = direction;
+	attackNow = false;
 }
 
 Organism::~Organism()
@@ -31,12 +33,18 @@ Organism::~Organism()
 
 }
 
-int Organism::desiredDirection()
+// 决定方向以及是否攻击（attackNow）
+int Organism::desiredDirection()  // TODO: 待优化，目前仅为方便测试其他内容
 {
 	int getRandomNumber = rand() % 7;
 	if (getRandomNumber < 5)
 	{
 		direction = getRandomNumber;
+	}
+	else if(getRandomNumber == 5)
+	{
+		attackNow = true;
+		attackDirection = direction;
 	}
 
 	return direction;

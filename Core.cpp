@@ -15,6 +15,7 @@ Core::Core(QString archivePath)
 {
 	this->showFullScreen();
 	this->setWindowIcon(QIcon(":lancher/image/icon.png"));
+	this->setAttribute(Qt::WA_DeleteOnClose, true);
 	path = archivePath;
 	file = new QFile(path+"/map.txt");
 	loadMapData();
@@ -70,6 +71,31 @@ void Core::quitGame()
 {
 	saveMapData();
 	this->close();
+
+	for (auto it = arrowList->begin(); it != arrowList->end(); ++it)
+	{
+		if (*it != nullptr)
+		{
+			delete (*it);
+			(*it) = nullptr;
+		}
+
+	}
+	arrowList->clear();
+	
+
+	for (auto it = mobsList->begin(); it != mobsList->end(); ++it)
+	{
+		if (*it != nullptr)
+		{
+			delete (*it);
+			(*it) = nullptr;
+		}
+
+	}
+	mobsList->clear();
+
+	delete player;
 }
 
 bool Core::loadMapData()
@@ -230,7 +256,12 @@ void Core::renderArrows()
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
 		if ((*iter) == NULL ) continue;
-		if ((*iter)->isMoving == false) continue; // 对不移动的箭矢做隐藏处理
+		if ((*iter)->isMoving == false) //对不移动的箭矢做（隐藏）处理 
+		{
+			delete (*iter);
+			(*iter) = NULL;
+			continue;
+		}
 		updateScreenPosition(*iter);
 		QRectF targetPos((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40);
 
@@ -260,12 +291,21 @@ void Core::removeNotMovingArrow()
 	QVector<Arrow*> ::iterator iter;
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
-		if ((*iter) == NULL || (*iter)->isMoving == false)
+		if ((*iter)->isMoving == false)
 		{
 			delete *iter;
-			arrowList->erase(iter);
+			*iter = NULL;
 		}
 	}
+	arrowList->clear();
+
+	//for (int i = 0; i < arrowList->size(); i++)
+	//{
+	//	if (arrowList->at(i)->isMoving == false)
+	//	{
+	//		delete arrowList[i];
+	//	}
+	//}
 }
 
 void Core::keyPressEvent(QKeyEvent *event)
@@ -339,40 +379,64 @@ void Core::mousePressEvent(QMouseEvent * event)
 // 远程攻击
 void Core::shotArrow(Organism* shoter)
 {
-	int direction;
-	// 首先确定鼠标点与发射者的位置
+	// 确定发射者位置
 	Point shoterRealGrid = pixelToGrid(shoter->realPosition);
-	Point mouseRealGrid;
-	mouseRealGrid.row = mouseGridPoint.row + windowStartPoint.row;
-	mouseRealGrid.col = mouseGridPoint.col + windowStartPoint.col;
-	Point arrowStartRealGrid;
-	if (mouseRealGrid.col < shoterRealGrid.col)
+
+	// 确定箭矢方向
+	int direction;
+	if (shoter == player)
 	{
-		direction = LEFT;
+		Point mouseRealGrid;
+		mouseRealGrid.row = mouseGridPoint.row + windowStartPoint.row;
+		mouseRealGrid.col = mouseGridPoint.col + windowStartPoint.col;
+		if (mouseRealGrid.col < shoterRealGrid.col)
+		{
+			direction = LEFT;
+		}
+		else if (mouseRealGrid.col > shoterRealGrid.col)
+		{
+			direction = RIGHT;
+		}
+		else if (mouseRealGrid.row < shoterRealGrid.row)
+		{
+			direction = UP;
+		}
+		else if (mouseRealGrid.row > shoterRealGrid.row)
+		{
+			direction = DOWN;
+		}
+		else
+		{
+			direction = STAY;
+			return;
+		}
+	}
+	else
+	{
+		direction = shoter->attackDirection;
+	}
+
+	// 确定箭矢发射点
+	Point arrowStartRealGrid;
+	if (direction == LEFT)
+	{
 		arrowStartRealGrid.row = shoterRealGrid.row;
 		arrowStartRealGrid.col = shoterRealGrid.col - 1;
-
 	}
-	else if (mouseRealGrid.col > shoterRealGrid.col)
+	else if (direction == RIGHT)
 	{
-		direction = RIGHT;
 		arrowStartRealGrid.row = shoterRealGrid.row;
 		arrowStartRealGrid.col = shoterRealGrid.col + 1;
-
 	}
-	else if (mouseRealGrid.row < shoterRealGrid.row)
+	else if (direction == UP)
 	{
-		direction = UP;
 		arrowStartRealGrid.row = shoterRealGrid.row - 1;
 		arrowStartRealGrid.col = shoterRealGrid.col;
-
 	}
-	else if (mouseRealGrid.row > shoterRealGrid.row)
+	else if (direction == DOWN)
 	{
-		direction = DOWN;
 		arrowStartRealGrid.row = shoterRealGrid.row + 1;
 		arrowStartRealGrid.col = shoterRealGrid.col;
-
 	}
 	else
 	{
@@ -390,7 +454,7 @@ void Core::moveAllArrows()
 	QVector<Arrow*>::iterator iter;
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
-		if ((*iter) == NULL) continue;
+		if ((*iter) == NULL) continue; // TODO: 处理内存泄漏
 		if (!(*iter)->isMoving) continue;
 
 		bool isMoving = moveArrows((*iter), (*iter)->direction);
@@ -667,6 +731,16 @@ void Core::moveAllMobs()  // 在Mobs中内置定时器以实现速度控制并按照格子行动
 	{
 		if ((*iter) == NULL) continue;
 		moveMobs(*iter, (*iter)->desiredDirection());
+
+		// 攻击
+		if ((*iter)->attackNow == true)
+		{
+			(*iter)->attackNow = false;
+			if ((*iter)->name == "Skeleton") // TODO: 暂时使骷髅不能放箭
+			{
+				shotArrow(*iter);
+			}
+		}
 	}
 }
 

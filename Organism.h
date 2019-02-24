@@ -29,6 +29,10 @@ public:
 	int desiredDirection();
 	int getRealMove(int speed); // 此函数的功能与名称描述不符；不要轻易修改
 	bool isDead;
+	// 是否现在攻击
+	bool attackNow;
+	// 攻击方向
+	int attackDirection;
 	QImage image;
 
 	void killed();

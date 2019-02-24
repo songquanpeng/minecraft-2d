@@ -11,10 +11,10 @@ Skeleton::Skeleton(Point givenRealPosition)
 	name = "Skeleton";
 	hurtSound = "sound/minecraft/sketon_hurt.mp3";
 	deadSound = "sound/minecraft/skeleton_death.mp3";
-
 }
 
 
 Skeleton::~Skeleton()
 {
 }
+
