@@ -709,7 +709,14 @@ void Core::generateMobs()
 	{
 		generatedScreenPosition.row = (rand() % SCREEN_ROW)*SIZE;
 		generatedScreenPosition.col = (rand() % SCREEN_COL)*SIZE;
-		mobsList->append(new Pig(positionConvertor(generatedScreenPosition)));
+		if (rand() % 2 == 0)
+		{
+			mobsList->append(new Pig(positionConvertor(generatedScreenPosition)));
+		}
+		else
+		{
+			mobsList->append(new Skeleton(positionConvertor(generatedScreenPosition)));
+		}
 	}
 }
 

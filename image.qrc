@@ -23,6 +23,9 @@
         <file>image/game/arrow_left.png</file>
         <file>image/game/arrow_right.png</file>
         <file>image/game/arrow_up.png</file>
+        <file>image/game/creeper.png</file>
+        <file>image/game/skeleton2.png</file>
+        <file>image/game/zombie2.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>sound/minecraft/cow.mp3</file>

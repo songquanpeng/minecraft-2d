@@ -23,6 +23,7 @@ void Organism::constructorTool()
 	isPenetrateAble = false;
 	hurtSound = "sound/minecraft/cow_hurt.mp3";
 	deadSound = "sound/minecraft/cow.mp3";
+	direction = 0;
 }
 
 Organism::~Organism()
@@ -32,7 +33,13 @@ Organism::~Organism()
 
 int Organism::desiredDirection()
 {
-	return rand() % 5;
+	int getRandomNumber = rand() % 7;
+	if (getRandomNumber < 5)
+	{
+		direction = getRandomNumber;
+	}
+
+	return direction;
 }
 
 int Organism::getRealMove(int speed)
@@ -44,8 +51,6 @@ void Organism::killed()
 {
 	qDebug() << name << " be killed";
 	isDead = true;
-	soundPlayer.setMedia(QUrl::fromLocalFile(deadSound));
-	soundPlayer.play();
 }
 
 void Organism::beAttacked(int demage)
@@ -57,12 +62,13 @@ void Organism::beAttacked(int demage)
 	{
 		blood = 0;
 		killed();
+		soundPlayer.setMedia(QUrl::fromLocalFile(deadSound));
 	}
 	else
 	{
 		soundPlayer.setMedia(QUrl::fromLocalFile(hurtSound));
-		soundPlayer.play();
 	}
+	soundPlayer.play();
 }
 
 

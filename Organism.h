@@ -17,6 +17,7 @@ public:
 
 	int speed; //实际移动的像素数，因此为整数
 	int blood;
+	int direction;
 	Point positionRelativeToScreen; // 单位应更新为像素
 	Point realPosition; // 单位：像素；不依赖屏幕位置
 	bool isPenetrateAble;

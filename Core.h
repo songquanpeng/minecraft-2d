@@ -17,6 +17,7 @@
 #include "Organism.h"
 #include "Player.h"
 #include "Pig.h"
+#include "Skeleton.h"
 #include "Arrow.h"
 
 class Core :
