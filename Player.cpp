@@ -33,7 +33,7 @@ void Player::loadAticleList()  // TODO: load article list
 	articleList[WOOD] = 5;
 	articleList[LEAF] = 5;
 	articleList[STONE] = 5;
-	articleList[GLASS] = 5;
+	articleList[GRASS] = 5;
 	articleList[WATER] = 5;
 
 	articleList[SWORD] = 1;

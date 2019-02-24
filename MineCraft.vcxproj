@@ -232,6 +232,7 @@
     <ClInclude Include="PassiveMob.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="World.h" />
     <QtMoc Include="worldeditdialog.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtMultimedia;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtWidgets;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtGui;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtANGLE;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtNetwork;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtCore;.\debug;\include;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\mkspecs\win32-msvc</IncludePath>
@@ -296,6 +297,51 @@
     <QtRcc Include="image.qrc">
     </QtRcc>
     <None Include="image\textView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MineCraft.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\forest.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\cow.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\cow_hurt.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\creeper_death.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\creeper_hurt.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\sheep.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\skeleton_death.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\sketon_hurt.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\zombie_death.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
+    <Media Include="sound\minecraft\zombie_hurt.mp3">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Media>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

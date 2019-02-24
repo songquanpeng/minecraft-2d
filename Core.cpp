@@ -32,7 +32,7 @@ Core::Core(QString archivePath)
 void Core::setArticleName()
 {
 	articleName[BASE] = "BASE";
-	articleName[GLASS] = "GLASS";
+	articleName[GRASS] = "GLASS";
 	articleName[EARTH] = "EARTH";
 	articleName[STONE] = "STONE";
 	articleName[WOOD] = "WOOD";
@@ -123,7 +123,7 @@ void Core::paintEvent(QPaintEvent *event)
 		{
 			switch (board[windowStartPoint.row + row][windowStartPoint.col + col])
 			{
-			case GLASS:
+			case GRASS:
 				painter.setBrush(QBrush(QColor::fromRgb(0, 255, 127), Qt::SolidPattern));
 				break;
 			case WATER:
@@ -741,19 +741,19 @@ bool Core::isCubeCanBeCreateOn(Point position)
 	switch (player->currentArticleType)
 	{
 	case WOOD:
-		if (cubeType == GLASS || cubeType == WATER)
+		if (cubeType == GRASS || cubeType == WATER)
 		{
 			isAble = true;
 		}
 		break;
-	case GLASS:
+	case GRASS:
 		if (cubeType == EARTH || cubeType == WATER)
 		{
 			isAble = true;
 		}
 		break;
 	case STONE:
-		if (cubeType == GLASS || cubeType == WATER)
+		if (cubeType == GRASS || cubeType == WATER)
 		{
 			isAble = true;
 		}
@@ -771,7 +771,7 @@ bool Core::isCubeCanBeCreateOn(Point position)
 		}
 		break;
 	case WATER:
-		if (cubeType == GLASS || cubeType == BASE)
+		if (cubeType == GRASS || cubeType == BASE)
 		{
 			isAble = true;
 		}
@@ -840,12 +840,12 @@ void Core::playerMining(Point miningPoint)
 		*targetCube = WOOD;
 		break;
 	case STONE:
-		*targetCube = GLASS;
+		*targetCube = GRASS;
 		break;
 	case WOOD:
-		*targetCube = GLASS;
+		*targetCube = GRASS;
 		break;
-	case GLASS:
+	case GRASS:
 		*targetCube = EARTH;
 		break;
 	case EARTH:

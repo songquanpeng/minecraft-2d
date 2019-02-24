@@ -9,6 +9,7 @@ Pig::Pig(Point givenRealPosition)
 	blood = PIG_BLOOD;
 	armor = PIG_ARMOR;
 	name = "Pig";
+
 }
 
 

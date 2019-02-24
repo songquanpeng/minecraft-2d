@@ -201,5 +201,43 @@
     <ClInclude Include="Arrow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MineCraft.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\minecraft\cow.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\cow_hurt.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\creeper_death.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\creeper_hurt.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\sheep.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\skeleton_death.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\sketon_hurt.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\zombie_death.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\minecraft\zombie_hurt.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sound\forest.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

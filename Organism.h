@@ -2,7 +2,7 @@
 #include "Constant.h"
 #include <Qstring>
 #include <QImage>
-
+#include <QMediaPlayer>
 
 class Organism
 {
@@ -11,6 +11,9 @@ public:
 	Organism(Point givenRealPosition);
 	~Organism();
 	QString name;
+	QMediaPlayer soundPlayer;
+	QString hurtSound;
+	QString deadSound;
 
 	int speed; //实际移动的像素数，因此为整数
 	int blood;

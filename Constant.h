@@ -39,7 +39,7 @@ const int EARTH_PROBABILITY = 6;
 // Player.cpp 中的loadAticleList函数中初始化其数量
 const int MAX_ARTICLE_NUM = 20;
 const int BASE = 0;
-const int GLASS = 1;
+const int GRASS = 1;
 const int EARTH = 2;
 const int STONE = 3;
 const int WOOD = 4;

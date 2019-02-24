@@ -86,7 +86,7 @@ int World::getSuitableCube(int _row, int _col)
 		int randomNumber = getRandomInt();
 		if (randomNumber <= EARTH_PROBABILITY)
 		{
-			return GLASS;
+			return GRASS;
 		}
 		else if(randomNumber <= (EARTH_PROBABILITY+WOOD_PROBABILITY))
 		{
