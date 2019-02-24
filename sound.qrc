@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="/music">
+    <file>image/game/arrow_down.png</file>
+    <file>image/game/arrow_left.png</file>
+    <file>image/game/arrow_right.png</file>
+    <file>image/game/arrow_up.png</file>
     <file>sound/minecraft/cow.mp3</file>
     <file>sound/minecraft/cow_hurt.mp3</file>
     <file>sound/minecraft/creeper_death.mp3</file>

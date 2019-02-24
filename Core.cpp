@@ -233,7 +233,24 @@ void Core::renderArrows()
 		if ((*iter)->isMoving == false) continue; // 对不移动的箭矢做隐藏处理
 		updateScreenPosition(*iter);
 		QRectF targetPos((*iter)->positionRelativeToScreen.col, (*iter)->positionRelativeToScreen.row, 40, 40);
-		painter.drawImage(targetPos, (*iter)->image);
+
+		QString imageUrl;
+		if ((*iter)->direction == UP)
+		{
+			imageUrl = ":/lancher/image/game/arrow_up.png";
+		}else if ((*iter)->direction == DOWN)
+		{
+			imageUrl = ":/lancher/image/game/arrow_down.png";
+		}
+		else if ((*iter)->direction == LEFT)
+		{
+			imageUrl = ":/lancher/image/game/arrow_left.png";
+		}
+		else if ((*iter)->direction == RIGHT)
+		{
+			imageUrl = ":/lancher/image/game/arrow_right.png";
+		}
+		painter.drawImage(targetPos, QImage(imageUrl));
 	}
 
 }
