@@ -783,14 +783,28 @@ void Core::generateMobs()
 	{
 		generatedScreenPosition.row = (rand() % SCREEN_ROW)*SIZE;
 		generatedScreenPosition.col = (rand() % SCREEN_COL)*SIZE;
-		if (rand() % 2 == 0)
+		int randomNumber = rand() % 20; // TODO: 产生不同的怪物
+		if (randomNumber<4)
 		{
 			mobsList->append(new Pig(positionConvertor(generatedScreenPosition)));
 		}
-		else
+		else if(randomNumber<7)
 		{
 			mobsList->append(new Skeleton(positionConvertor(generatedScreenPosition)));
 		}
+		else if(randomNumber < 13)
+		{
+			mobsList->append(new Zombie(positionConvertor(generatedScreenPosition)));
+		}
+		else if (randomNumber < 17)
+		{
+			mobsList->append(new Sheep(positionConvertor(generatedScreenPosition)));
+		}
+		else if (randomNumber < 20)
+		{
+			mobsList->append(new Cow(positionConvertor(generatedScreenPosition)));
+		}
+
 	}
 }
 

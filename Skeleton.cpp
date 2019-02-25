@@ -7,7 +7,7 @@ Skeleton::Skeleton(Point givenRealPosition)
 {
 	image = QImage(":/lancher/image/game/skeleton2.png");
 	blood = SKELETON_BLOOD;
-	armor = SKELETON_BLOOD;
+	armor = SKELETON_ARMOR;
 	name = "Skeleton";
 	hurtSound = "sound/minecraft/sketon_hurt.mp3";
 	deadSound = "sound/minecraft/skeleton_death.mp3";

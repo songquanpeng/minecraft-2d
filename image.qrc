@@ -26,16 +26,9 @@
         <file>image/game/creeper.png</file>
         <file>image/game/skeleton2.png</file>
         <file>image/game/zombie2.png</file>
-    </qresource>
-    <qresource prefix="/sound">
-        <file>sound/minecraft/cow.mp3</file>
-        <file>sound/minecraft/cow_hurt.mp3</file>
-        <file>sound/minecraft/creeper_death.mp3</file>
-        <file>sound/minecraft/creeper_hurt.mp3</file>
-        <file>sound/minecraft/sheep.mp3</file>
-        <file>sound/minecraft/skeleton_death.mp3</file>
-        <file>sound/minecraft/sketon_hurt.mp3</file>
-        <file>sound/minecraft/zombie_death.mp3</file>
-        <file>sound/minecraft/zombie_hurt.mp3</file>
+        <file>image/game/sheep2.png</file>
+        <file>image/game/cow2.png</file>
+        <file>image/game/pig2.png</file>
+        <file>image/game/steven2.png</file>
     </qresource>
 </RCC>

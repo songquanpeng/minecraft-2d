@@ -19,6 +19,9 @@
 #include "Pig.h"
 #include "Skeleton.h"
 #include "Arrow.h"
+#include "Zombie.h"
+#include "Cow.h"
+#include "Sheep.h"
 
 class Core :
 	public QWidget

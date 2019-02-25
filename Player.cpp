@@ -5,7 +5,7 @@
 Player::Player()
 	:Organism()
 {
-	image = QImage(":/lancher/image/game/steven.png");
+	image = QImage(":/lancher/image/game/steven2.png");
 	name = "player";
 	blood = PLAYER_BLOOD;
 	armor = PLAYER_ARMOR;

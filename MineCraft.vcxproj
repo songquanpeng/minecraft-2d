@@ -201,6 +201,7 @@
     <ClCompile Include="archivemanager.cpp" />
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Cow.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="lancher.cpp" />
     <ClCompile Include="main.cpp" />
@@ -209,9 +210,11 @@
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="setting.cpp" />
+    <ClCompile Include="Sheep.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="worldeditdialog.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="about.h">
@@ -229,13 +232,16 @@
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Cow.h" />
     <ClInclude Include="Organism.h" />
     <ClInclude Include="PassiveMob.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Sheep.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="Zombie.h" />
     <QtMoc Include="worldeditdialog.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtMultimedia;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtWidgets;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtGui;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtANGLE;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtNetwork;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\include\QtCore;.\debug;\include;.\..\..\..\OTHERS\QT\QT5.11.2\5.11.2\MSVC2017_64\mkspecs\win32-msvc</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;_ENABLE_EXTENDED_ALIGNED_STORAGE;QT_DEPRECATED_WARNINGS;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</Define>

@@ -80,6 +80,12 @@ const int PIG_BLOOD = 7;
 const int PIG_ARMOR = 1;
 const int PIG_SPEED = 6;
 
+// cow
+const int COW_BLOOD = 12;
+const int COW_ARMOR = 2;
+const int COW_SPEED = 4;
+
+
 // zombie
 const int ZOMBIE_BLOOD = 10;
 const int ZOMBIE_ARMOR = 2;
