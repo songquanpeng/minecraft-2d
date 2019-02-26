@@ -17,7 +17,11 @@ Lancher::Lancher(QWidget *parent) :
 	{
 		// ²¥·Å±³¾°ÒôÀÖ 
 		backgroundMusicPlayer = new QMediaPlayer(this);
-		backgroundMusicPlayer->setMedia(QUrl::fromLocalFile("sound/forest.mp3"));
+		musicList = new QMediaPlaylist(this);
+		musicList->setPlaybackMode(QMediaPlaylist::Loop);
+		//musicList->addMedia(QUrl::fromLocalFile("sound/subwoofer2.mp3"));
+		musicList->addMedia(QUrl::fromLocalFile("sound/forest.mp3"));
+		backgroundMusicPlayer->setPlaylist(musicList);
 		backgroundMusicPlayer->play();
 	}
 }

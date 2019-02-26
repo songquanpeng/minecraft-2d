@@ -16,6 +16,7 @@
  </widget>
  <resources>
   <include location="sound.qrc"/>
+  <include location="music.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QSettings>
 #include "about.h"
 #include "setting.h"
@@ -28,6 +29,7 @@ protected:
 private:
     Ui::Lancher *ui;
     QMediaPlayer *backgroundMusicPlayer;
+	QMediaPlaylist *musicList;
 	ArchiveManager *archiveManager;
 	//About *aboutDialog;
 	//Setting *settingDialog;
