@@ -302,6 +302,7 @@
     <None Include="image\button2.png" />
     <None Include="image\dialog.png" />
     <None Include="image\icon.png" />
+    <None Include="README.md" />
     <QtRcc Include="image.qrc">
     </QtRcc>
     <None Include="image\textView.png" />

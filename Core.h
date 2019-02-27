@@ -82,6 +82,7 @@ private:
 	bool isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble);
 	bool isActionValid();
 	bool isCubeCanBeCreateOn(Point position);
+	bool isPointInScreen(Point position);
 	Point pixelToGrid(Point inPixel);
 	Point screenPositionToScreenGridPosition(Point screenPosition);
 	Point screenGridToRealGrid(Point screenGrid);

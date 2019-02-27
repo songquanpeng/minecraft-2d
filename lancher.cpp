@@ -66,5 +66,3 @@ void Lancher::paintEvent(QPaintEvent *event)
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-
-

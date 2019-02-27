@@ -3,14 +3,6 @@
 #include <QListIterator>
 
 
-// TODO: 玩家远程攻击
-// TODO: 生物普通攻击
-// TODO: 生物远程攻击
-// TODO: 音效
-// TODO: Setting
-// TODO: 更新地图
-// TODO: 保存所有生物的位置
-
 Core::Core(QString archivePath)
 {
 	this->showFullScreen();
@@ -730,6 +722,9 @@ void Core::moveAllMobs()  // 在Mobs中内置定时器以实现速度控制并按照格子行动
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
 	{
 		if ((*iter) == NULL) continue;
+		updateScreenPosition(*iter);
+		if (!isPointInScreen((*iter)->positionRelativeToScreen)) continue;
+
 		moveMobs(*iter, (*iter)->desiredDirection());
 
 		// 攻击
@@ -884,6 +879,19 @@ bool Core::isCubeCanBeCreateOn(Point position)
 		return isAble;
 	}
 	return isAble;
+}
+
+// updateScreenPosition(*iter);
+bool Core::isPointInScreen(Point position)
+{
+	if (position.row >= 0 && position.row <= SCREEN_ROW * SIZE&&position.col >= 0 && position.col <= SCREEN_COL * SIZE)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 // 玩家进行普通操作（攻击，挖掘），位置为mousePoint

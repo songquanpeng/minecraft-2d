@@ -187,6 +187,7 @@
     <None Include="image\textView.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
