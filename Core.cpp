@@ -722,8 +722,9 @@ bool Core::isMobNearScreenBorder(Organism * mobs, int direction)
 }
 
 // 需要准确的实际坐标
-bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
+bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble) // TODO: fix bug here
 {
+	// 实际坐标
 	Point myGridPosition = pixelToGrid(mobs->realPosition);
 	switch (direction)
 	{
@@ -762,11 +763,17 @@ bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 	// 检查是否有玩家阻挡
 	if (mobs != player)
 	{
-		updateScreenPosition(player);
-		if (myGridPosition == screenPositionToScreenGridPosition(player->positionRelativeToScreen))
+		//updateScreenPosition(player);
+		//if (myGridPosition == screenPositionToScreenGridPosition(player->positionRelativeToScreen))
+		//{
+		//	return false;
+		//}
+
+		if (myGridPosition == pixelToGrid(player->realPosition))
 		{
 			return false;
 		}
+
 	}
 
 	// 检查是否其他生物阻挡
@@ -776,13 +783,18 @@ bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 		for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
 		{
 			if (*iter == NULL) continue;
-			if (mobs != (*iter))
+			if (mobs != (*iter)) // 依据实际位置判断是否可以前进
 			{
-				updateScreenPosition(*iter);
-				if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
+				//updateScreenPosition(*iter);
+				//if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
+				//{
+				//	return false;
+				//}
+				if (myGridPosition == pixelToGrid((*iter)->realPosition))
 				{
 					return false;
 				}
+
 			}
 		}
 	}
@@ -792,6 +804,15 @@ bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 {
 	Point myGridPosition = pixelToGrid(mobs->realPosition);
+
+	// 检查发射点
+	int cubeType = board[myGridPosition.row][myGridPosition.col];
+	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
+	{
+		mobs->isMoving = false;
+		return false;
+	}
+
 	switch (direction)
 	{
 	case UP:
@@ -816,7 +837,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	}
 
 	// 检查是否是可以通过的方块
-	int cubeType = board[myGridPosition.row][myGridPosition.col];
+	cubeType = board[myGridPosition.row][myGridPosition.col];
 	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
 	{
 		mobs->isMoving = false;
@@ -824,8 +845,8 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	}
 
 	// 是否射中了玩家
-	updateScreenPosition(player);
-	if (myGridPosition == screenPositionToScreenGridPosition(player->positionRelativeToScreen))
+	// updateScreenPosition(player);
+	if (myGridPosition == pixelToGrid(player->realPosition))
 	{
 		// 击中
 		player->beAttacked(mobs->attakPower);
@@ -843,7 +864,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	{
 		if (*iter == NULL) continue;
 		updateScreenPosition(*iter);
-		if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
+		if (myGridPosition == pixelToGrid((*iter)->realPosition))
 		{
 			(*iter)->beAttacked(mobs->attakPower);
 			//playSound(*iter);
@@ -1197,7 +1218,7 @@ Point Core::positionConvertor(Point screenPostion)
 	return realPostion;
 }
 
-// 绝对坐标-->屏幕坐标; 注意：转换后可能并不在屏幕内
+// 绝对坐标-->屏幕坐标; 注意：转换后可能并不在屏幕内；单位：像素
 Point Core::absolutePositionConvertor(Point absolutePosition)
 {
 	Point screenPosition;
