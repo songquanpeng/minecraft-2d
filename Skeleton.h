@@ -6,5 +6,7 @@ class Skeleton :
 public:
 	Skeleton(Point givenRealPosition);
 	~Skeleton();
+	//int desiredDirection();
+
 };
 

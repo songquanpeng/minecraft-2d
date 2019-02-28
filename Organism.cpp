@@ -70,13 +70,16 @@ void Organism::beAttacked(int demage)
 	{
 		blood = 0;
 		killed();
-		soundPlayer.setMedia(QUrl::fromLocalFile(deadSound));
+		// soundPlayer.setMedia(QUrl::fromLocalFile(deadSound));
 	}
-	else
+	//else
+	//{
+	soundPlayer.setMedia(QUrl::fromLocalFile(hurtSound));
+	//}
+	if (name != "Player")
 	{
-		soundPlayer.setMedia(QUrl::fromLocalFile(hurtSound));
+		soundPlayer.play();
 	}
-	soundPlayer.play();
 }
 
 

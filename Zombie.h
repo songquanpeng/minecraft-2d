@@ -6,5 +6,6 @@ class Zombie :
 public:
 	Zombie(Point givenRealPosition);
 	~Zombie();
+	//int desiredDirection();
 };
 

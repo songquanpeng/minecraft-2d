@@ -1,6 +1,4 @@
 #include "Core.h"
-#include <QIcon>
-#include <QListIterator>
 
 
 Core::Core(QString archivePath)
@@ -20,6 +18,8 @@ Core::Core(QString archivePath)
 	mousePoint.col = WORLD_COL*SIZE;
 	mousePoint.row = WORLD_ROW*SIZE;
 	setArticleName();
+	srand(static_cast<unsigned int>(time(0)));  //以当前时间作为随机数种子
+	isGameOnGoing = true;
 }
 
 void Core::setArticleName()
@@ -57,6 +57,21 @@ void Core::resetGame()
 void Core::startGame()
 {
 
+}
+
+// 暂停与恢复游戏
+void Core::pauseGame()
+{
+	if (isGameOnGoing == true)
+	{
+		qDebug() << "Game paused";
+		isGameOnGoing = false;
+	}
+	else
+	{
+		qDebug() << "Game resumed";
+		isGameOnGoing = true;
+	}
 }
 
 void Core::quitGame()
@@ -154,13 +169,13 @@ void Core::paintEvent(QPaintEvent *event)
 				painter.setBrush(QBrush(QColor::fromRgb(156, 156, 156), Qt::SolidPattern));
 				break;
 			case WOOD:
-				painter.setBrush(QBrush(QColor::fromRgb(139, 71, 38), Qt::SolidPattern));
+				painter.setBrush(QBrush(QColor::fromRgb(177, 141, 88), Qt::SolidPattern));
 				break;
 			case BASE:
 				painter.setBrush(QBrush(QColor::fromRgb(0, 0, 0), Qt::SolidPattern));
 				break;
 			case EARTH:
-				painter.setBrush(QBrush(QColor::fromRgb(232, 139, 0), Qt::SolidPattern));
+				painter.setBrush(QBrush(QColor::fromRgb(116, 68, 39), Qt::SolidPattern));
 				break;
 			default:
 				break;
@@ -331,6 +346,9 @@ void Core::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_D:
 		movePlayer(RIGHT);
 		break;
+	case Qt::Key_P:
+		pauseGame();
+		break;
 	case Qt::Key_Tab:
 		player->changeCurrentHold(1);
 		break;
@@ -354,7 +372,7 @@ void Core::mousePressEvent(QMouseEvent * event)
 		// 判断是否是远程攻击
 		if (player->currentArticleType == BOW)
 		{
-			shotArrow(player);
+			mobAttack(player);
 		}
 		else
 		{
@@ -368,15 +386,21 @@ void Core::mousePressEvent(QMouseEvent * event)
 
 }
 
-// 远程攻击
-void Core::shotArrow(Organism* shoter)
+void Core::playSound(Organism * mob)
+{
+	soundPlayer.setMedia(QUrl::fromLocalFile(mob->hurtSound));
+	soundPlayer.play();
+}
+
+// 远程攻击; 近战；依赖attackDirection
+void Core::mobAttack(Organism* attacker)
 {
 	// 确定发射者位置
-	Point shoterRealGrid = pixelToGrid(shoter->realPosition);
+	Point shoterRealGrid = pixelToGrid(attacker->realPosition);
 
 	// 确定箭矢方向
 	int direction;
-	if (shoter == player)
+	if (attacker == player)
 	{
 		Point mouseRealGrid;
 		mouseRealGrid.row = mouseGridPoint.row + windowStartPoint.row;
@@ -405,10 +429,10 @@ void Core::shotArrow(Organism* shoter)
 	}
 	else
 	{
-		direction = shoter->attackDirection;
+		direction = attacker->attackDirection;
 	}
 
-	// 确定箭矢发射点
+	// 确定箭矢发射点; 实际位置，单位：格
 	Point arrowStartRealGrid;
 	if (direction == LEFT)
 	{
@@ -436,8 +460,165 @@ void Core::shotArrow(Organism* shoter)
 		return;
 	}
 
-	qDebug() << shoter->name << " shot at direction: " << direction << " row: " << arrowStartRealGrid.row << " col: " << arrowStartRealGrid.col;
-	arrowList->append(new Arrow(direction, arrowStartRealGrid));
+	qDebug() << attacker->name << " attack at direction: " << direction << " row: " << arrowStartRealGrid.row << " col: " << arrowStartRealGrid.col;
+	if (attacker->name == "Skeleton" || attacker->name == "Player")
+	{
+		arrowList->append(new Arrow(direction, arrowStartRealGrid));
+	}
+	else if(attacker->name == "Zombie")// 当前只检查玩家是否被攻击
+	{
+		Point playerRealGrid = pixelToGrid(player->realPosition);
+		if (playerRealGrid == arrowStartRealGrid)
+		{
+			qDebug() << "player be attacked by a zombie, row: " << arrowStartRealGrid.row << " col: " << arrowStartRealGrid.col;
+			player->beAttacked(ZOMBIE_ATTACK_POWER);
+
+			if (player->isDead) // TODO: 玩家如果被击杀
+			{
+				
+			}
+
+		}
+	}
+}
+
+//if ((*iter)->attackNow == true)
+//{
+//	(*iter)->attackNow = false;
+//	if ((*iter)->name == "Skeleton" || (*iter)->name == "Zombie")
+//	{
+//		mobAttack(*iter);
+//	}
+//}
+
+// 管理攻击型生物的移动与攻击; 返回值为方向；修改生物的attackDirection
+int Core::mobChasingPlayer(Organism* mob)
+{
+	bool isSkeleton = (mob->name == "Skeleton");
+	// 首先判断生物与玩家之间的距离以决定是否主动追逐玩家
+	bool chasePlayer = false;
+	// 获取怪物与玩家的实际格位置
+	Point mobRealGrid = pixelToGrid(mob->realPosition);
+
+	if (abs(mobRealGrid.row - player->realGrid.row) <= MOBS_CHASING_RANGE && abs(mobRealGrid.col - player->realGrid.col) <= MOBS_CHASING_RANGE)
+	{
+		chasePlayer = true;
+	}
+
+	if (chasePlayer)
+	{
+		if (!isSkeleton) // 如果不是骷髅，即如果是近战型攻击型生物，则尝试靠近玩家
+		{
+
+		}
+		// 位于同一行
+		if (mobRealGrid.row == player->realGrid.row)
+		{
+			if (mobRealGrid.col < player->realGrid.col)
+			{
+				mob->direction = RIGHT;
+			}
+			else
+			{
+				mob->direction = LEFT;
+			}
+
+			if (isSkeleton) // 如果是骷髅，同行同列后不再移动，开始攻击
+			{
+				mob->attackDirection = mob->direction;
+				mob->direction = STAY;
+				mob->attackNow = true;
+			}
+			else // 如果是僵尸之类的生物，如果当前位置与玩家相邻，则开始攻击
+			{
+				if (mobRealGrid.col - player->realGrid.col == 1)
+				{
+					mob->attackDirection = LEFT;
+					mob->direction = STAY;
+					mob->attackNow = true;
+				}
+				else if (mobRealGrid.col - player->realGrid.col == -1)
+				{
+					mob->attackDirection = RIGHT;
+					mob->direction = STAY;
+					mob->attackNow = true;
+				}
+			}
+		}
+		else
+		{
+			// 位于同一列
+			if (mobRealGrid.col == player->realGrid.col)
+			{
+				if (mobRealGrid.row < player->realGrid.row)
+				{
+					mob->direction = DOWN;
+				}
+				else
+				{
+					mob->direction = UP;
+				}
+
+				if (isSkeleton) // 如果是骷髅，同行同列后不再移动，开始攻击
+				{
+					mob->attackDirection = mob->direction;
+					mob->direction = STAY;
+					mob->attackNow = true;
+				}
+				else // 如果是僵尸之类的生物，如果当前位置与玩家相邻，则开始攻击
+				{
+					if (mobRealGrid.row - player->realGrid.row == 1)
+					{
+						mob->attackDirection = UP;
+						mob->direction = STAY;
+						mob->attackNow = true;
+					}
+					else if (mobRealGrid.row - player->realGrid.row == -1)
+					{
+						mob->attackDirection = DOWN;
+						mob->direction = STAY;
+						mob->attackNow = true;
+					}
+				}
+
+			}
+			else // 不同行也不同列，尝试同行或者同列; 适用于所有生物
+			{
+				if (rand() % 2 == 1) // 尝试同行
+				{
+					if (mobRealGrid.row < player->realGrid.row)
+					{
+						mob->direction = DOWN;
+					}
+					else
+					{
+						mob->direction = UP;
+					}
+				}
+				else // 尝试同列
+				{
+					if (mobRealGrid.col < player->realGrid.col)
+					{
+						mob->direction = RIGHT;
+					}
+					else
+					{
+						mob->direction = LEFT;
+					}
+				}
+			}
+		}
+	}
+	else // 随机移动
+	{
+		int randomNumber = rand() % 6;
+		if (randomNumber < 4)
+		{
+			mob->direction = randomNumber;
+		}
+	}
+
+	return mob->direction;
 }
 
 // 处理箭矢的移动以及碰撞，消失
@@ -446,7 +627,7 @@ void Core::moveAllArrows()
 	QVector<Arrow*>::iterator iter;
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
-		if ((*iter) == NULL) continue; // TODO: 处理内存泄漏
+		if ((*iter) == NULL) continue; 
 		if (!(*iter)->isMoving) continue;
 
 		bool isMoving = moveArrows((*iter), (*iter)->direction);
@@ -665,12 +846,14 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 		if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
 		{
 			(*iter)->beAttacked(mobs->attakPower);
+			//playSound(*iter);
+
 			if (!isPenetrateAble)
 			{
 				mobs->isMoving = false;
 				if ((*iter)->isDead)
 				{
-					delete *iter;
+					delete *iter; // TODO: 此处箭矢击杀生物后将其删除
 					mobsList->erase(iter); // 删除后，数组会前移（？）
 				}
 				return false;
@@ -719,22 +902,31 @@ int Core::min(int a, int b)
 void Core::moveAllMobs()  // 在Mobs中内置定时器以实现速度控制并按照格子行动
 {
 	QVector<Organism*> ::iterator iter;
+	player->realGrid = pixelToGrid(player->realPosition);
+
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
 	{
 		if ((*iter) == NULL) continue;
 		updateScreenPosition(*iter);
-		if (!isPointInScreen((*iter)->positionRelativeToScreen)) continue;
+		if (!isPointInScreen((*iter)->positionRelativeToScreen)) continue; // 离开屏幕范围的生物会停止移动
 
-		moveMobs(*iter, (*iter)->desiredDirection());
-
-		// 攻击
-		if ((*iter)->attackNow == true)
+		if ((*iter)->name == "Zombie" || (*iter)->name == "Skeleton")  // 处理攻击型生物的移动
 		{
-			(*iter)->attackNow = false;
-			if ((*iter)->name == "Skeleton") // TODO: 暂时使骷髅不能放箭
+			// TODO: 生物的攻击
+			moveMobs(*iter, mobChasingPlayer(*iter));
+
+			if ((*iter)->attackNow == true)
 			{
-				shotArrow(*iter);
+				(*iter)->attackNow = false;
+				if ((*iter)->name == "Skeleton" || (*iter)->name == "Zombie")
+				{
+					mobAttack(*iter);
+				}
 			}
+		}
+		else  // 处理被动型生物的移动
+		{
+			moveMobs(*iter, (*iter)->desiredDirection());
 		}
 	}
 }
@@ -915,7 +1107,9 @@ void Core::playerNormalAction()
 		if (mouseGridPoint == mobGridPosition)
 		{
 			(*iter)->beAttacked(player->finalAttackPower);
-			if ((*iter)->isDead)
+
+			//playSound(*iter);
+			if ((*iter)->isDead) // TODO: 此处玩家击杀生物后将其删除
 			{
 				delete *iter;
 				mobsList->erase(iter); // 删除后，数组会前移（？）
@@ -1021,24 +1215,24 @@ void Core::updateScreenPosition(Organism * mobs)
 
 void Core::timerEvent(QTimerEvent *event)
 {
+	if (isGameOnGoing)
+	{
+		//刷新画面
+		if (event->timerId() == renderTimer)
+		{
+			update();
 
-	//刷新画面
-	if (event->timerId() == renderTimer)
-	{
-		update();
-		
+		}
+		if (event->timerId() == mobsMoveTimer)
+		{
+			// 生物移动
+			moveAllMobs(); // 当前正常启用
+			//adjustAllMobsStatus(); // 目前弃用
+		}
+		if (event->timerId() == arrowMoveTimer)
+		{
+			// removeNotMovingArrow();  
+			moveAllArrows();
+		}
 	}
-	if (event->timerId() == mobsMoveTimer)
-	{
-		// 生物移动
-		moveAllMobs(); // 当前正常启用
-		adjustAllMobsStatus(); // 目前弃用
-	}
-	if (event->timerId() == arrowMoveTimer)
-	{
-		// TODO: 删除无用的箭矢
-		// removeNotMovingArrow();  
-		moveAllArrows();
-	}
-
 }

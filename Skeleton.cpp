@@ -18,3 +18,9 @@ Skeleton::~Skeleton()
 {
 }
 
+//// 负责骷髅的前进与攻击
+//int Skeleton::desiredDirection()
+//{
+//	return 0;
+//}
+

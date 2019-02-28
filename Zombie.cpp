@@ -11,10 +11,26 @@ Zombie::Zombie(Point givenRealPosition)
 	name = "Zombie";
 	hurtSound = "sound/minecraft/zombie_hurt.mp3";
 	deadSound = "sound/minecraft/zombie_death.mp3";
-
 }
 
 
 Zombie::~Zombie()
 {
 }
+
+//// 负责僵尸的前进方向
+//int Zombie::desiredDirection()
+//{
+//	int getRandomNumber = rand() % 7;
+//	if (getRandomNumber < 5)
+//	{
+//		direction = getRandomNumber;
+//	}
+//	else if (getRandomNumber == 5)
+//	{
+//		attackNow = true;
+//		attackDirection = direction;
+//	}
+//
+//	return direction;
+//}

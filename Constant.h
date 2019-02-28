@@ -20,6 +20,7 @@ struct Point
 	}
 };
 
+const int MOBS_CHASING_RANGE = 4;
 const float ARMOR_PROTECTION_RATIO = 0.5;
 
 const int WORLD_ROW = 270;
@@ -118,7 +119,7 @@ const int SPIDER_ATTACK_RANGE = 1;
 const int SPIDER_ATTACK_INTERVAL = 2;
 
 // player
-const int PLAYER_BLOOD = 10;
+const int PLAYER_BLOOD = 20;
 const int PLAYER_ARMOR = 2;
 const int PLAYER_SPEED = 6;
 const int PLAYER_ATTACK_POWER = 2;

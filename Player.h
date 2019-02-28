@@ -13,5 +13,8 @@ public:
 	int currentArticleType;
 	void loadAticleList();
 	void changeCurrentHold(int step);
+
+	// 此数据成员未在构造函数中初始化；使用之前请确保其值正确
+	Point realGrid;
 };
 

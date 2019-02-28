@@ -5,6 +5,8 @@
 #include <QTextStream>
 #include <QPaintEvent>
 #include <QMouseEvent>
+#include <QIcon>
+#include <QListIterator>
 #include <QKeyEvent>
 #include <cstdlib>
 #include <ctime>
@@ -13,6 +15,7 @@
 #include <QRectF>
 #include <QVector>
 #include <QColor>
+#include <QMediaPlayer>
 #include "Constant.h"
 #include "Organism.h"
 #include "Player.h"
@@ -36,6 +39,7 @@ public:
 	QString articleName[MAX_ARTICLE_NUM];
 	void resetGame();
 	void startGame();
+	void pauseGame();
 	void quitGame();
 	bool loadMapData();
 	bool saveMapData();
@@ -44,9 +48,13 @@ public:
 	virtual void keyPressEvent(QKeyEvent *event); //º¸≈ÃœÏ”¶
 	void mousePressEvent(QMouseEvent *event);
 	// virtual void keyReleaseEvent(QKeyEvent *event); //º¸≈ÃœÏ”¶
-
+	QMediaPlayer soundPlayer;
+	void playSound(Organism* mob);
 private:
-	void shotArrow(Organism* shoter);
+
+	bool isGameOnGoing;
+	void mobAttack(Organism* attacker);
+	int mobChasingPlayer(Organism* mob);
 	void moveAllArrows(); 
 	int renderTimer;
 	int mobsMoveTimer;
@@ -74,18 +82,22 @@ private:
 	void playerMining(Point miningPoint);
 	void playerCreateCube(Point createPoint);
 	void adjustAllMobsStatus();
+
 	Point positionConvertor(Point screenPostion);
 	Point absolutePositionConvertor(Point absolutePosition);
+	Point pixelToGrid(Point inPixel);
+	Point screenPositionToScreenGridPosition(Point screenPosition);
+	Point screenGridToRealGrid(Point screenGrid);
+
 	void updateScreenPosition(Organism* mobs);
+
 	bool isMobNearScreenBorder(Organism* mobs, int direction);
 	bool isAbleToGo(Organism* mobs, int direction, bool isPenetrateAble);
 	bool isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble);
 	bool isActionValid();
 	bool isCubeCanBeCreateOn(Point position);
 	bool isPointInScreen(Point position);
-	Point pixelToGrid(Point inPixel);
-	Point screenPositionToScreenGridPosition(Point screenPosition);
-	Point screenGridToRealGrid(Point screenGrid);
+
 	int min(int a, int b);
 };
 
