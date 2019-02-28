@@ -72,7 +72,7 @@ private:
 	void renderArticleList();
 	void moveWindow(int direction, int moveStep); 
 	void moveWindow(int direction);
-	void movePlayer(int direction);
+	bool movePlayer(int direction);
 	void moveMobs(Organism* mob, int direction);
 	bool moveArrows(Arrow* arrow, int direction);
 	void moveAllMobs();
@@ -81,6 +81,7 @@ private:
 	void playerNormalAction();
 	void playerMining(Point miningPoint);
 	void playerCreateCube(Point createPoint);
+	void playerGotoMousePoint();
 	void adjustAllMobsStatus();
 
 	Point positionConvertor(Point screenPostion);

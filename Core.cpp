@@ -381,7 +381,14 @@ void Core::mousePressEvent(QMouseEvent * event)
 	}
 	else if(event->button() == Qt::RightButton) // TODO: 判断玩家的行为(前往或者放置）
 	{
-		playerCreateCube(mouseGridPoint);
+		if (isActionValid())
+		{
+			playerCreateCube(mouseGridPoint);
+		}
+		else
+		{
+			playerGotoMousePoint();
+		}
 	}
 
 }
@@ -668,7 +675,7 @@ void Core::moveWindow(int direction)
 }
 
 // 玩家移动
-void Core::movePlayer(int direction) 
+bool Core::movePlayer(int direction) 
 {
 	if (isMobNearScreenBorder(player, direction))
 	{
@@ -678,6 +685,11 @@ void Core::movePlayer(int direction)
 	if (isAbleToGo(player, direction, false))
 	{
 		movePoint(player->realPosition, direction, player->speed); // 实际坐标已更新
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -1178,10 +1190,10 @@ void Core::playerMining(Point miningPoint)
 void Core::playerCreateCube(Point createPoint)
 {
 
-	if (!isActionValid())
-	{
-		return;
-	}
+	//if (!isActionValid())
+	//{
+	//	return;
+	//}
 
 	if (!isCubeCanBeCreateOn(createPoint))
 	{
@@ -1200,6 +1212,67 @@ void Core::playerCreateCube(Point createPoint)
 	}
 	board[createPoint.row][createPoint.col] = player->currentArticleType;
 	qDebug()<<"player create cube: "<< player->currentArticleType << " on point: row: " << createPoint.row << " col: " << createPoint.col;
+}
+
+// 鼠标右键移动玩家
+void Core::playerGotoMousePoint()
+{
+	player->realGrid = pixelToGrid(player->realPosition);
+	Point screenRealGrid = screenGridToRealGrid(mouseGridPoint);
+	int choosedDirection = STAY;
+	if (screenRealGrid.row == player->realGrid.row)
+	{
+		if (screenRealGrid.col < player->realGrid.col)
+		{
+			choosedDirection = LEFT;
+		}
+		else
+		{
+			choosedDirection = RIGHT;
+		}
+	}
+	else if (screenRealGrid.col == player->realGrid.col)
+	{
+		if (screenRealGrid.row < player->realGrid.row)
+		{
+			choosedDirection = UP;
+		}
+		else
+		{
+			choosedDirection = DOWN;
+		}
+	}
+	else
+	{
+		if (rand() % 2 == 1)
+		{
+			if (screenRealGrid.col < player->realGrid.col)
+			{
+				choosedDirection = LEFT;
+			}
+			else
+			{
+				choosedDirection = RIGHT;
+			}
+		}
+		else
+		{
+			if (screenRealGrid.row < player->realGrid.row)
+			{
+				choosedDirection = UP;
+			}
+			else
+			{
+				choosedDirection = DOWN;
+			}
+		}
+	}
+	
+	if (!movePlayer(choosedDirection))
+	{
+		movePlayer(rand() % 4);
+	}
+	
 }
 
 // 更新所有生物（包括玩家）的状态（血量，是否死亡）
