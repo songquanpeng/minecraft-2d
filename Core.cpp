@@ -10,16 +10,89 @@ Core::Core(QString archivePath)
 	file = new QFile(path+"/map.txt");
 	loadMapData();
 	resetGame();
-	windowStartPoint.row = 0;
-	windowStartPoint.col = 0;
-	player = new Player();
-	player->realPosition = positionConvertor(player->positionRelativeToScreen);
+	initPlayer();
+
 	generateMobs();
 	mousePoint.col = WORLD_COL*SIZE;
 	mousePoint.row = WORLD_ROW*SIZE;
 	setArticleName();
 	srand(static_cast<unsigned int>(time(0)));  //以当前时间作为随机数种子
 	isGameOnGoing = true;
+}
+
+void Core::initPlayer()
+{
+	player = new Player();
+
+	QSettings config(path + "/player.ini", QSettings::IniFormat);
+	windowStartPoint.row = config.value("window_row").toInt();
+	windowStartPoint.col = config.value("window_col").toInt();
+
+	//player->positionRelativeToScreen.row = config.value("row").toInt()*SIZE;
+	//player->positionRelativeToScreen.col = config.value("col").toInt()*SIZE;
+	//player->realPosition = positionConvertor(player->positionRelativeToScreen);
+
+	player->realPosition.row = config.value("row").toInt();
+	player->realPosition.col = config.value("col").toInt();
+
+	player->blood = config.value("blood").toInt();
+	player->level = config.value("level").toInt();
+	player->finalAttackPower = config.value("attack").toInt();
+	player->armor = config.value("armor").toInt();
+	player->currentArticleType = config.value("current").toInt();
+
+
+
+	config.beginReadArray("article");
+	for (int i = 0; i < 7; i++)
+	{
+		config.setArrayIndex(i);
+		player->articleList[i] = config.value("number").toInt();
+	}
+
+	for (int i = 10; i < 17; i++)
+	{
+		config.setArrayIndex(i);
+		player->articleList[i] = config.value("number").toInt();
+	}
+	config.endArray();
+
+}
+
+void Core::updatePlayer()
+{
+	QSettings config(path + "/player.ini", QSettings::IniFormat);
+	config.setValue("window_col", windowStartPoint.col);
+	config.setValue("window_row", windowStartPoint.row);
+
+	//player->realGrid = pixelToGrid(player->realPosition);
+	//config.setValue("row", player->realGrid.row);
+	//config.setValue("col", player->realGrid.col);
+
+	config.setValue("row", player->realPosition.row);
+	config.setValue("col", player->realPosition.col);
+
+
+	config.setValue("blood", player->blood);
+	config.setValue("level", player->level);
+	config.setValue("attack", player->attakPower);
+	config.setValue("armor", player->armor);
+	config.setValue("current", player->currentArticleType);
+
+	config.beginWriteArray("article");
+	for (int i = 0; i < 7; i++)
+	{
+		config.setArrayIndex(i);
+		config.setValue("number", player->articleList[i]);
+	}
+
+	for (int i = 10; i < 17; i++)
+	{
+		config.setArrayIndex(i);
+		config.setValue("number", player->articleList[i]);
+	}
+	config.endArray();
+
 }
 
 void Core::setArticleName()
@@ -51,7 +124,7 @@ void Core::resetGame()
 {
 	renderTimer = startTimer(1000/FPS);
 	mobsMoveTimer = startTimer(MOBS_MOVE_TIMER);
-	arrowMoveTimer = startTimer(50); // TODO: arrowMoveTimer
+	arrowMoveTimer = startTimer(50); 
 }
 
 void Core::startGame()
@@ -76,6 +149,7 @@ void Core::pauseGame()
 
 void Core::quitGame()
 {
+	updatePlayer();
 	saveMapData();
 	this->close();
 
@@ -379,11 +453,14 @@ void Core::mousePressEvent(QMouseEvent * event)
 			playerNormalAction();
 		}
 	}
-	else if(event->button() == Qt::RightButton) // TODO: 判断玩家的行为(前往或者放置）
+	else if(event->button() == Qt::RightButton) 
 	{
 		if (isActionValid())
 		{
-			playerCreateCube(mouseGridPoint);
+			Point realMouseGrid;
+			realMouseGrid.row = mouseGridPoint.row + windowStartPoint.row;
+			realMouseGrid.col = mouseGridPoint.col + windowStartPoint.col;
+			playerCreateCube(realMouseGrid);
 		}
 		else
 		{
@@ -398,6 +475,7 @@ void Core::playSound(Organism * mob)
 	soundPlayer.setMedia(QUrl::fromLocalFile(mob->hurtSound));
 	soundPlayer.play();
 }
+
 
 // 远程攻击; 近战；依赖attackDirection
 void Core::mobAttack(Organism* attacker)
@@ -734,7 +812,7 @@ bool Core::isMobNearScreenBorder(Organism * mobs, int direction)
 }
 
 // 需要准确的实际坐标
-bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble) // TODO: fix bug here
+bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble) 
 {
 	// 实际坐标
 	Point myGridPosition = pixelToGrid(mobs->realPosition);
@@ -886,7 +964,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 				mobs->isMoving = false;
 				if ((*iter)->isDead)
 				{
-					delete *iter; // TODO: 此处箭矢击杀生物后将其删除
+					delete *iter; 
 					mobsList->erase(iter); // 删除后，数组会前移（？）
 				}
 				return false;
@@ -945,7 +1023,6 @@ void Core::moveAllMobs()  // 在Mobs中内置定时器以实现速度控制并按照格子行动
 
 		if ((*iter)->name == "Zombie" || (*iter)->name == "Skeleton")  // 处理攻击型生物的移动
 		{
-			// TODO: 生物的攻击
 			moveMobs(*iter, mobChasingPlayer(*iter));
 
 			if ((*iter)->attackNow == true)
@@ -1003,7 +1080,7 @@ void Core::generateMobs()
 	{
 		generatedScreenPosition.row = (rand() % SCREEN_ROW)*SIZE;
 		generatedScreenPosition.col = (rand() % SCREEN_COL)*SIZE;
-		int randomNumber = rand() % 20; // TODO: 产生不同的怪物
+		int randomNumber = rand() % 20; 
 		if (randomNumber<4)
 		{
 			mobsList->append(new Pig(positionConvertor(generatedScreenPosition)));
@@ -1142,7 +1219,7 @@ void Core::playerNormalAction()
 			(*iter)->beAttacked(player->finalAttackPower);
 
 			//playSound(*iter);
-			if ((*iter)->isDead) // TODO: 此处玩家击杀生物后将其删除
+			if ((*iter)->isDead)
 			{
 				delete *iter;
 				mobsList->erase(iter); // 删除后，数组会前移（？）

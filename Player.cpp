@@ -13,12 +13,12 @@ Player::Player()
 	attackRange = PLAYER_ATTACK_RANGE;
 	attackInterval = PLAYER_ATTACK_INTERVAL;
 	level = 0;
-	positionRelativeToScreen.row = 6*SIZE;
-	positionRelativeToScreen.col = 10*SIZE;
+	//positionRelativeToScreen.row = 6*SIZE;
+	//positionRelativeToScreen.col = 10*SIZE;
 	finalAttackPower = attakPower;
 	attackRange = PLAYER_ATTACK_RANGE;
 	currentArticleType = BOW;
-	loadAticleList();
+	// loadAticleList();
 }
 
 

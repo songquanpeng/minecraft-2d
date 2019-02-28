@@ -34,7 +34,7 @@ Organism::~Organism()
 }
 
 // 决定方向以及是否攻击（attackNow）
-int Organism::desiredDirection()  // TODO: 待优化，目前仅为方便测试其他内容
+int Organism::desiredDirection() 
 {
 	int getRandomNumber = rand() % 7;
 	if (getRandomNumber < 5)

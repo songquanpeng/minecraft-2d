@@ -20,6 +20,8 @@ World::~World()
 
 bool World::createWorld(int id)
 {
+	// 创建并储存玩家信息
+	generatePlayerConfig(id);
 	// 确定河流的起始点与结束点
 	riverStartPoint.row = getRandomInt(5, WORLD_ROW);
 	riverStartPoint.col = 0;
@@ -57,6 +59,36 @@ bool World::startGame(int id)
 inline int World::getRandomInt()
 {
 	return rand() % 10 + 1;
+}
+
+bool World::generatePlayerConfig(int id)
+{
+	QSettings config(getPath(id)+"/player.ini", QSettings::IniFormat);
+	config.setValue("window_col", 0);
+	config.setValue("window_row", 0);
+
+	config.setValue("row", 6*SIZE);
+	config.setValue("col", 10*SIZE);
+	config.setValue("blood", PLAYER_BLOOD);
+	config.setValue("level", 0);
+	config.setValue("attack", PLAYER_ATTACK_POWER);
+	config.setValue("armor", PLAYER_ARMOR);
+	config.setValue("current", SWORD);
+
+	config.beginWriteArray("article");
+	for (int i = 0; i < 7; i++)
+	{
+		config.setArrayIndex(i);
+		config.setValue("number", 0);
+	}
+
+	for (int i = 10; i < 17; i++)
+	{
+		config.setArrayIndex(i);
+		config.setValue("number", 1);
+	}
+	config.endArray();
+	return false;
 }
 
 inline int World::getRandomInt(int lower, int upper)

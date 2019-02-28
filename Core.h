@@ -1,6 +1,7 @@
 #pragma once
 #include <qwidget.h>
 #include <QString>
+#include <QSettings>
 #include <QFile>
 #include <QTextStream>
 #include <QPaintEvent>
@@ -50,8 +51,11 @@ public:
 	// virtual void keyReleaseEvent(QKeyEvent *event); //键盘响应
 	QMediaPlayer soundPlayer;
 	void playSound(Organism* mob);
-private:
+	Point birthPoint;
 
+private:
+	void initPlayer();
+	void updatePlayer();
 	bool isGameOnGoing;
 	void mobAttack(Organism* attacker);
 	int mobChasingPlayer(Organism* mob);
@@ -60,11 +64,11 @@ private:
 	int mobsMoveTimer;
 	int arrowMoveTimer;
 	Point mousePoint; // 单位像素
-	Point mouseGridPoint; // 指针鼠标位置，单位：格
+	Point mouseGridPoint; // 指针鼠标位置，单位：格;注意为屏幕坐标
 	Player *player;
 	QVector<Organism*> *mobsList; 
 	QVector<Arrow*> *arrowList;
-	Point windowStartPoint; // 单位：格
+	Point windowStartPoint; // 单位：格, 真实坐标
 	void setArticleName();
 	void renderMobs();
 	void renderArrows();

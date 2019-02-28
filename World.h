@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <QString>
+#include <QSettings>
+#include "Constant.h"
 #include "Core.h"
 
 //const int WORLD_ROW = 270;
@@ -23,6 +25,7 @@ public:
 
 private:
 	int getRandomInt();
+	bool generatePlayerConfig(int id);
 	int getRandomInt(int lower, int upper);
 	int getSuitableCube(int _row, int _col);
 	QString getPath(int id);
