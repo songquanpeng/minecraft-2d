@@ -429,6 +429,37 @@ void Core::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_CapsLock:
 		player->changeCurrentHold(-1);
 		break;
+	case Qt::Key_1:
+		player->currentArticleType = SWORD;
+		break;
+	case Qt::Key_2:
+		player->currentArticleType = BOW;
+		break;
+	case Qt::Key_3:
+		player->currentArticleType = AXE;
+		break;
+	case Qt::Key_4:
+		player->currentArticleType = PICK;
+		break;
+	case Qt::Key_5:
+		player->currentArticleType = SHOVEL;
+		break;
+	case Qt::Key_6:
+		player->currentArticleType = MEAT;
+		break;
+	case Qt::Key_7:
+		player->currentArticleType = STONE;
+		break;
+	case Qt::Key_8:
+		player->currentArticleType = EARTH;
+		break;
+	case Qt::Key_9:
+		player->currentArticleType = WOOD;
+		break;
+	case Qt::Key_0:
+		player->currentArticleType = GRASS;
+		break;
+
 	default:
 		break;
 	}
@@ -446,7 +477,11 @@ void Core::mousePressEvent(QMouseEvent * event)
 		// 判断是否是远程攻击
 		if (player->currentArticleType == BOW)
 		{
-			mobAttack(player);
+			if (player->articleList[ARROW] >= 1)
+			{
+				mobAttack(player);
+				player->articleList[ARROW] -= 1;
+			}
 		}
 		else
 		{
@@ -455,16 +490,31 @@ void Core::mousePressEvent(QMouseEvent * event)
 	}
 	else if(event->button() == Qt::RightButton) 
 	{
-		if (isActionValid())
+		if (player->currentArticleType == MEAT)
 		{
-			Point realMouseGrid;
-			realMouseGrid.row = mouseGridPoint.row + windowStartPoint.row;
-			realMouseGrid.col = mouseGridPoint.col + windowStartPoint.col;
-			playerCreateCube(realMouseGrid);
+			if (player->blood < player->maxBlood)
+			{
+				if (player->articleList[MEAT] >= 1)
+				{
+					player->articleList[MEAT]--;
+					player->blood += 5;
+				}
+			}
 		}
 		else
 		{
-			playerGotoMousePoint();
+			if (isActionValid())
+			{
+				Point realMouseGrid;
+				realMouseGrid.row = mouseGridPoint.row + windowStartPoint.row;
+				realMouseGrid.col = mouseGridPoint.col + windowStartPoint.col;
+				playerCreateCube(realMouseGrid);
+			}
+			else
+			{
+				playerGotoMousePoint();
+			}
+
 		}
 	}
 
@@ -1255,6 +1305,15 @@ void Core::playerMining(Point miningPoint)
 	Point realMiningPoint = screenGridToRealGrid(miningPoint);
 	qDebug() << "player mine at row: " << miningPoint.row << " col: " << miningPoint.col;
 	unsigned short* targetCube = &board[realMiningPoint.row][realMiningPoint.col];
+	bool ok_1 = ((*targetCube == STONE) && (player->currentArticleType == PICK));
+	bool ok_2 = ((*targetCube == EARTH || *targetCube == GRASS) && (player->currentArticleType == SHOVEL));
+	bool ok_3 = ((*targetCube == WOOD || *targetCube == LEAF) && (player->currentArticleType == AXE));
+	if (!(ok_1||ok_2||ok_3))
+	{
+		qDebug() << "Inappropriate tool";
+		return;
+	}
+
 	player->articleList[*targetCube] += 1; // 增加玩家物品栏储备
 	switch (*targetCube)
 	{

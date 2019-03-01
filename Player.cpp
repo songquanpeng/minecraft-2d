@@ -8,6 +8,7 @@ Player::Player()
 	image = QImage(":/lancher/image/game/steven2.png");
 	name = "Player";
 	blood = PLAYER_BLOOD;
+	maxBlood = PLAYER_BLOOD;
 	armor = PLAYER_ARMOR;
 	attakPower = PLAYER_ATTACK_POWER;
 	attackRange = PLAYER_ATTACK_RANGE;
