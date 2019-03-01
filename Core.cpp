@@ -36,7 +36,7 @@ void Core::initPlayer()
 	player->realPosition.col = config.value("col").toInt();
 
 	player->blood = config.value("blood").toInt();
-	player->level = config.value("level").toInt();
+	player->level = config.value("level").toDouble();
 	player->finalAttackPower = config.value("attack").toInt();
 	player->armor = config.value("armor").toInt();
 	player->currentArticleType = config.value("current").toInt();
@@ -549,6 +549,10 @@ void Core::mobAttack(Organism* attacker)
 	if (attacker->name == "Skeleton" || attacker->name == "Player")
 	{
 		arrowList->append(new Arrow(direction, arrowStartRealGrid));
+		if (attacker->name == "Player")
+		{
+			arrowList->back()->isPlayer = true;
+		}
 	}
 	else if(attacker->name == "Zombie")// 当前只检查玩家是否被攻击
 	{
@@ -948,6 +952,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 		}
 	}
 
+	// bool isPlayer = (mobs->name == "Player");
 
 	QVector<Organism*>::iterator iter;
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
@@ -964,6 +969,13 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 				mobs->isMoving = false;
 				if ((*iter)->isDead)
 				{
+					if (mobs->isPlayer)
+					{
+						player->experienceAdd((*iter)->experience);
+						player->articleList[(*iter)->dropItemType] += (*iter)->dropItemNum;
+
+					}
+
 					delete *iter; 
 					mobsList->erase(iter); // 删除后，数组会前移（？）
 				}
@@ -1221,6 +1233,9 @@ void Core::playerNormalAction()
 			//playSound(*iter);
 			if ((*iter)->isDead)
 			{
+				player->experienceAdd((*iter)->experience);
+				player->articleList[(*iter)->dropItemType] += (*iter)->dropItemNum;
+
 				delete *iter;
 				mobsList->erase(iter); // 删除后，数组会前移（？）
 			}

@@ -11,5 +11,6 @@ public:
 	// ARROW direction
 	int direction;
 	bool isMoving;
+	bool isPlayer;
 };
 

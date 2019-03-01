@@ -11,6 +11,9 @@ Zombie::Zombie(Point givenRealPosition)
 	name = "Zombie";
 	hurtSound = "sound/minecraft/zombie_hurt.mp3";
 	deadSound = "sound/minecraft/zombie_death.mp3";
+	dropItemNum = 2;
+	dropItemType = STONE;
+	experience = 0.4;
 }
 
 

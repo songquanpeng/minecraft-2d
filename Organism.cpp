@@ -26,6 +26,9 @@ void Organism::constructorTool()
 	direction = 0;
 	attackDirection = direction;
 	attackNow = false;
+	dropItemNum = 2;
+	dropItemType = MEAT;
+	experience = 0.2;
 }
 
 Organism::~Organism()

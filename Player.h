@@ -9,7 +9,8 @@ public:
 	~Player();
 	int articleList[MAX_ARTICLE_NUM];
 	int finalAttackPower;
-	int level;
+	double level;
+	void experienceAdd(double gain);
 	int currentArticleType;
 	void loadAticleList();
 	void changeCurrentHold(int step);

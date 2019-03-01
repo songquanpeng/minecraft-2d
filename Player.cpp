@@ -26,6 +26,11 @@ Player::~Player()
 {
 }
 
+void Player::experienceAdd(double gain) // TODO: 玩家升级带来的属性改变
+{
+	level += gain;
+}
+
 void Player::loadAticleList()  // TODO: load article list
 {
 	articleList[BASE] = 0;

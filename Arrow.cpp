@@ -14,6 +14,7 @@ Arrow::Arrow(int direction_, Point realGrid)
 	speed = 25;
 	isPenetrateAble = false;  // 存在问题，如果打开，生物将一次性受到多次伤害
 	isMoving = true;
+	isPlayer = false;
 }
 
 Arrow::~Arrow()
