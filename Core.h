@@ -42,6 +42,7 @@ public:
 	void startGame();
 	void pauseGame();
 	void quitGame();
+	void playerRebrith();
 	bool loadMapData();
 	bool saveMapData();
 	virtual void paintEvent(QPaintEvent *event); //场景刷新
@@ -65,6 +66,8 @@ private:
 	int arrowMoveTimer;
 	Point mousePoint; // 单位像素
 	Point mouseGridPoint; // 指针鼠标位置，单位：格;注意为屏幕坐标
+	Point rebirthPoint;
+	Point rebirthWindow;
 	Player *player;
 	QVector<Organism*> *mobsList; 
 	QVector<Arrow*> *arrowList;

@@ -25,15 +25,20 @@ void Core::initPlayer()
 	player = new Player();
 
 	QSettings config(path + "/player.ini", QSettings::IniFormat);
-	windowStartPoint.row = config.value("window_row").toInt();
-	windowStartPoint.col = config.value("window_col").toInt();
+	rebirthWindow.row = config.value("window_row").toInt();
+	rebirthWindow.col = config.value("window_col").toInt();
+	windowStartPoint.row = rebirthWindow.row;
+	windowStartPoint.col = rebirthWindow.col;
 
 	//player->positionRelativeToScreen.row = config.value("row").toInt()*SIZE;
 	//player->positionRelativeToScreen.col = config.value("col").toInt()*SIZE;
 	//player->realPosition = positionConvertor(player->positionRelativeToScreen);
 
-	player->realPosition.row = config.value("row").toInt();
-	player->realPosition.col = config.value("col").toInt();
+	rebirthPoint.row = config.value("row").toInt();
+	rebirthPoint.col = config.value("col").toInt();
+
+	player->realPosition.row = rebirthPoint.row;
+	player->realPosition.col = rebirthPoint.col;
 
 	player->blood = config.value("blood").toInt();
 	player->level = config.value("level").toDouble();
@@ -177,6 +182,18 @@ void Core::quitGame()
 	mobsList->clear();
 
 	delete player;
+}
+
+void Core::playerRebrith()
+{
+	player->realPosition.row = rebirthPoint.row;
+	player->realPosition.col = rebirthPoint.col;
+
+	windowStartPoint.row = rebirthWindow.row;
+	windowStartPoint.col = rebirthWindow.col;
+
+	player->blood = player->maxBlood;
+	player->level = 0;
 }
 
 bool Core::loadMapData()
@@ -614,7 +631,7 @@ void Core::mobAttack(Organism* attacker)
 
 			if (player->isDead) // TODO: 玩家如果被击杀
 			{
-				
+				playerRebrith();
 			}
 
 		}
@@ -994,6 +1011,11 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	{
 		// 击中
 		player->beAttacked(mobs->attakPower);
+		if (player->isDead) // TODO: 玩家如果被击杀
+		{
+			playerRebrith();
+		}
+
 
 		if (!isPenetrateAble)
 		{

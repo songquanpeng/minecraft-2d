@@ -32,7 +32,7 @@ void Player::experienceAdd(double gain) // TODO: 玩家升级带来的属性改变
 	level += gain;
 }
 
-void Player::loadAticleList()  // TODO: load article list
+void Player::loadAticleList()
 {
 	articleList[BASE] = 0;
 	articleList[EARTH] = 5;
