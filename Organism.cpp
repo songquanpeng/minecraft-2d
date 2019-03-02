@@ -29,6 +29,7 @@ void Organism::constructorTool()
 	dropItemNum = 2;
 	dropItemType = MEAT;
 	experience = 0.2;
+	inScreen = true;
 }
 
 Organism::~Organism()

@@ -65,7 +65,7 @@ const int STAY = 4;
 const int WINDOW_MOVE_STEP = 1;
 
 // …˙ŒÔ Ù–‘
-const int MOBS_NUMBER = 60;
+const int MOBS_NUMBER = 20;
 // cattle
 const int CATTLE_BLOOD = 15;
 const int CATTLE_ARMOR = 4;

@@ -36,7 +36,8 @@ public:
 	QString path;
 	QFile *file;
 	unsigned short int board[WORLD_ROW][WORLD_COL]; // 行，列
-	   
+	int mobsCount;
+
 	QString articleName[MAX_ARTICLE_NUM];
 	void resetGame();
 	void startGame();
@@ -55,6 +56,7 @@ public:
 	Point birthPoint;
 
 private:
+	void addNewMobs();
 	void initPlayer();
 	void updatePlayer();
 	bool isGameOnGoing;
@@ -64,6 +66,7 @@ private:
 	int renderTimer;
 	int mobsMoveTimer;
 	int arrowMoveTimer;
+	int checkMobsNumberTimer;
 	Point mousePoint; // 单位像素
 	Point mouseGridPoint; // 指针鼠标位置，单位：格;注意为屏幕坐标
 	Point rebirthPoint;
@@ -84,7 +87,7 @@ private:
 	bool moveArrows(Arrow* arrow, int direction);
 	void moveAllMobs();
 	void movePoint(Point& point, int direction, int moveDistance);
-	void generateMobs();
+	void generateMobs(int number);
 	void playerNormalAction();
 	void playerMining(Point miningPoint);
 	void playerCreateCube(Point createPoint);

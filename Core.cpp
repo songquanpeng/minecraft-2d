@@ -11,13 +11,23 @@ Core::Core(QString archivePath)
 	loadMapData();
 	resetGame();
 	initPlayer();
-
-	generateMobs();
+	mobsList = new QVector<Organism*>;
+	arrowList = new QVector<Arrow*>;
+	mobsCount = 0;
+	generateMobs(MOBS_NUMBER);
 	mousePoint.col = WORLD_COL*SIZE;
 	mousePoint.row = WORLD_ROW*SIZE;
 	setArticleName();
 	srand(static_cast<unsigned int>(time(0)));  //以当前时间作为随机数种子
 	isGameOnGoing = true;
+}
+
+void Core::addNewMobs()
+{
+	if (mobsCount <= 10)
+	{
+		generateMobs(10);
+	}
 }
 
 void Core::initPlayer()
@@ -129,7 +139,8 @@ void Core::resetGame()
 {
 	renderTimer = startTimer(1000/FPS);
 	mobsMoveTimer = startTimer(MOBS_MOVE_TIMER);
-	arrowMoveTimer = startTimer(50); 
+	arrowMoveTimer = startTimer(50);
+	checkMobsNumberTimer = startTimer(10000);
 }
 
 void Core::startGame()
@@ -194,6 +205,7 @@ void Core::playerRebrith()
 
 	player->blood = player->maxBlood;
 	player->level = 0;
+	player->isDead = false;
 }
 
 bool Core::loadMapData()
@@ -629,7 +641,7 @@ void Core::mobAttack(Organism* attacker)
 			qDebug() << "player be attacked by a zombie, row: " << arrowStartRealGrid.row << " col: " << arrowStartRealGrid.col;
 			player->beAttacked(ZOMBIE_ATTACK_POWER);
 
-			if (player->isDead) // TODO: 玩家如果被击杀
+			if (player->isDead) 
 			{
 				playerRebrith();
 			}
@@ -1011,7 +1023,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	{
 		// 击中
 		player->beAttacked(mobs->attakPower);
-		if (player->isDead) // TODO: 玩家如果被击杀
+		if (player->isDead) 
 		{
 			playerRebrith();
 		}
@@ -1047,7 +1059,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 						player->articleList[(*iter)->dropItemType] += (*iter)->dropItemNum;
 
 					}
-
+					mobsCount--;
 					delete *iter; 
 					mobsList->erase(iter); // 删除后，数组会前移（？）
 				}
@@ -1103,7 +1115,21 @@ void Core::moveAllMobs()  // 在Mobs中内置定时器以实现速度控制并按照格子行动
 	{
 		if ((*iter) == NULL) continue;
 		updateScreenPosition(*iter);
-		if (!isPointInScreen((*iter)->positionRelativeToScreen)) continue; // 离开屏幕范围的生物会停止移动
+		if (!isPointInScreen((*iter)->positionRelativeToScreen))
+		{
+			if ((*iter)->inScreen == true) // 之前在屏幕内，刚刚离开屏幕范围
+			{
+				mobsCount--;
+			}
+			(*iter)->inScreen = false;
+			
+			continue; // 离开屏幕范围的生物会停止移动
+		}
+		if ((*iter)->inScreen == false) // 之前离开屏幕现在回到屏幕内
+		{
+			(*iter)->inScreen = true;
+			mobsCount++;
+		}
 
 		if ((*iter)->name == "Zombie" || (*iter)->name == "Skeleton")  // 处理攻击型生物的移动
 		{
@@ -1154,14 +1180,14 @@ void Core::movePoint(Point& point, int direction, int moveDistance)
 }
 
 // 生成怪物
-void Core::generateMobs()
+void Core::generateMobs(int number)
 {
 	srand(static_cast<unsigned int>(time(0)));
-	mobsList = new QVector<Organism*>;
-	arrowList = new QVector<Arrow*>;
+	
 	Point generatedScreenPosition;
-	for (int i = 0; i < MOBS_NUMBER; i++)
+	for (int i = 0; i < number; i++)
 	{
+		mobsCount++;
 		generatedScreenPosition.row = (rand() % SCREEN_ROW)*SIZE;
 		generatedScreenPosition.col = (rand() % SCREEN_COL)*SIZE;
 		int randomNumber = rand() % 20; 
@@ -1305,6 +1331,7 @@ void Core::playerNormalAction()
 			//playSound(*iter);
 			if ((*iter)->isDead)
 			{
+				mobsCount--;
 				player->experienceAdd((*iter)->experience);
 				player->articleList[(*iter)->dropItemType] += (*iter)->dropItemNum;
 
@@ -1501,5 +1528,11 @@ void Core::timerEvent(QTimerEvent *event)
 			// removeNotMovingArrow();  
 			moveAllArrows();
 		}
+		if (event->timerId() == checkMobsNumberTimer)
+		{
+			// TODO
+			addNewMobs();
+		}
+
 	}
 }
