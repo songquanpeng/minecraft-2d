@@ -39,7 +39,8 @@ bool World::createWorld(int id)
 
 void World::resetGame(int id)
 {
-
+	QString archivePath = getPath(id);
+	deleteArchive(archivePath);
 }
 
 bool World::startGame(int id)
@@ -156,6 +157,36 @@ bool World::isWater(int _row, int _col)
 		return true;
 	}
 	return false;
+}
+
+bool World::deleteArchive(QString path)
+{
+
+	if (path.isEmpty())
+	{
+		return false;
+	}
+
+	QDir dir(path);
+	if (!dir.exists())
+	{
+		return true;
+	}
+
+	dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+	QFileInfoList fileList = dir.entryInfoList();
+	foreach(QFileInfo fi, fileList)
+	{
+		if (fi.isFile())
+		{
+			fi.dir().remove(fi.fileName());
+		}
+		else
+		{
+			deleteArchive(fi.absoluteFilePath());
+		}
+	}
+	return dir.rmpath(dir.absolutePath());
 }
 
 

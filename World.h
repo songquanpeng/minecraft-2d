@@ -34,5 +34,6 @@ private:
 	Point riverStartPoint;
 	Point riverEndPoint;
 	bool isWater(int _row, int _col);
+	bool deleteArchive(QString path);
 };
 
