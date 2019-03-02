@@ -66,7 +66,7 @@ void Organism::killed()
 
 void Organism::beAttacked(int demage)
 {
-	int realDemage = min(demage - armor * ARMOR_PROTECTION_RATIO, 0);
+	int realDemage = max(demage - armor * ARMOR_PROTECTION_RATIO, 1);
 	blood -= realDemage;
 	qDebug() << name << " be attacked, demage: " << demage << " real demage: " << realDemage << "remainingBlood: " << blood;
 	if (blood <= 0)
@@ -86,7 +86,7 @@ void Organism::beAttacked(int demage)
 }
 
 
-int Organism::min(int a, int b)
+int Organism::max(int a, int b)
 {
 	if (a > b)
 	{

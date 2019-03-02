@@ -8,12 +8,12 @@ Player::Player()
 	image = QImage(":/lancher/image/game/steven2.png");
 	name = "Player";
 	blood = PLAYER_BLOOD;
-	maxBlood = PLAYER_BLOOD;
 	armor = PLAYER_ARMOR;
 	attakPower = PLAYER_ATTACK_POWER;
 	attackRange = PLAYER_ATTACK_RANGE;
 	attackInterval = PLAYER_ATTACK_INTERVAL;
 	level = 0;
+	maxBlood = level + PLAYER_BLOOD;
 	//positionRelativeToScreen.row = 6*SIZE;
 	//positionRelativeToScreen.col = 10*SIZE;
 	finalAttackPower = attakPower;
@@ -30,6 +30,9 @@ Player::~Player()
 void Player::experienceAdd(double gain) // TODO: 玩家升级带来的属性改变
 {
 	level += gain;
+	maxBlood = level + PLAYER_BLOOD;
+	attakPower += (int)level % 3;
+	armor += (int)level % 6;
 }
 
 void Player::loadAticleList()

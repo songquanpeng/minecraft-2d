@@ -14,6 +14,7 @@ Zombie::Zombie(Point givenRealPosition)
 	dropItemNum = 2;
 	dropItemType = STONE;
 	experience = 0.4;
+	attakPower = ZOMBIE_ATTACK_POWER;
 }
 
 
