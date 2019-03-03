@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <qwidget.h>
 #include <QString>
 #include <QSettings>
@@ -35,7 +35,7 @@ public:
 	~Core();
 	QString path;
 	QFile *file;
-	unsigned short int board[WORLD_ROW][WORLD_COL]; // ĞĞ£¬ÁĞ
+	unsigned short int board[WORLD_ROW][WORLD_COL]; // è¡Œï¼Œåˆ—
 	int mobsCount;
 
 	QString articleName[MAX_ARTICLE_NUM];
@@ -46,11 +46,11 @@ public:
 	void playerRebrith();
 	bool loadMapData();
 	bool saveMapData();
-	virtual void paintEvent(QPaintEvent *event); //³¡¾°Ë¢ĞÂ
-	virtual void timerEvent(QTimerEvent *event); //¶¨Ê±Æ÷ÊÂ¼ş
-	virtual void keyPressEvent(QKeyEvent *event); //¼üÅÌÏìÓ¦
+	virtual void paintEvent(QPaintEvent *event); //åœºæ™¯åˆ·æ–°
+	virtual void timerEvent(QTimerEvent *event); //å®šæ—¶å™¨äº‹ä»¶
+	virtual void keyPressEvent(QKeyEvent *event); //é”®ç›˜å“åº”
 	void mousePressEvent(QMouseEvent *event);
-	// virtual void keyReleaseEvent(QKeyEvent *event); //¼üÅÌÏìÓ¦
+	// virtual void keyReleaseEvent(QKeyEvent *event); //é”®ç›˜å“åº”
 	QMediaPlayer soundPlayer;
 	void playSound(Organism* mob);
 	Point birthPoint;
@@ -72,14 +72,14 @@ private:
 	int mobsMoveTimer;
 	int arrowMoveTimer;
 	int checkMobsNumberTimer;
-	Point mousePoint; // µ¥Î»ÏñËØ
-	Point mouseGridPoint; // Ö¸ÕëÊó±êÎ»ÖÃ£¬µ¥Î»£º¸ñ;×¢ÒâÎªÆÁÄ»×ø±ê
+	Point mousePoint; // å•ä½åƒç´ 
+	Point mouseGridPoint; // æŒ‡é’ˆé¼ æ ‡ä½ç½®ï¼Œå•ä½ï¼šæ ¼;æ³¨æ„ä¸ºå±å¹•åæ ‡
 	Point rebirthPoint;
 	Point rebirthWindow;
 	Player *player;
 	QVector<Organism*> *mobsList; 
 	QVector<Arrow*> *arrowList;
-	Point windowStartPoint; // µ¥Î»£º¸ñ, ÕæÊµ×ø±ê
+	Point windowStartPoint; // å•ä½ï¼šæ ¼, çœŸå®åæ ‡
 	void setArticleName();
 	void renderMobs();
 	void renderArrows();

@@ -1,4 +1,4 @@
-#include "Organism.h"
+ï»¿#include "Organism.h"
 
 
 
@@ -7,7 +7,7 @@ Organism::Organism()
 	constructorTool();
 }
 
-// Ìá¹©¸ø¶¨µÄÊµ¼Ê×ø±ê£¬µ¥Î»ÎªÏñËØ
+// æä¾›ç»™å®šçš„å®é™…åæ ‡ï¼Œå•ä½ä¸ºåƒç´ 
 Organism::Organism(Point givenRealPosition)
 {
 	Organism();
@@ -37,7 +37,7 @@ Organism::~Organism()
 
 }
 
-// ¾ö¶¨·½ÏòÒÔ¼°ÊÇ·ñ¹¥»÷£¨attackNow£©
+// å†³å®šæ–¹å‘ä»¥åŠæ˜¯å¦æ”»å‡»ï¼ˆattackNowï¼‰
 int Organism::desiredDirection() 
 {
 	int getRandomNumber = rand() % 7;

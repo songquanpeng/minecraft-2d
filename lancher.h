@@ -1,4 +1,4 @@
-#ifndef LANCHER_H
+﻿#ifndef LANCHER_H
 #define LANCHER_H
 
 #include <QWidget>

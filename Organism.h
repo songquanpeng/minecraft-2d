@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Constant.h"
 #include <Qstring>
 #include <QImage>
@@ -15,14 +15,14 @@ public:
 	QString hurtSound;
 	QString deadSound;
 
-	int speed; //Êµ¼ÊÒÆ¶¯µÄÏñËØÊı£¬Òò´ËÎªÕûÊı
+	int speed; //å®é™…ç§»åŠ¨çš„åƒç´ æ•°ï¼Œå› æ­¤ä¸ºæ•´æ•°
 	int blood;
 	int direction;
 	int dropItemType;
 	int dropItemNum;
 	double experience;
-	Point positionRelativeToScreen; // µ¥Î»Ó¦¸üĞÂÎªÏñËØ
-	Point realPosition; // µ¥Î»£ºÏñËØ£»²»ÒÀÀµÆÁÄ»Î»ÖÃ
+	Point positionRelativeToScreen; // å•ä½åº”æ›´æ–°ä¸ºåƒç´ 
+	Point realPosition; // å•ä½ï¼šåƒç´ ï¼›ä¸ä¾èµ–å±å¹•ä½ç½®
 	bool isPenetrateAble;
 	int attakPower;
 	int attackRange;
@@ -30,12 +30,12 @@ public:
 	int armor;
 	int facing;
 	int desiredDirection();
-	int getRealMove(int speed); // ´Ëº¯ÊıµÄ¹¦ÄÜÓëÃû³ÆÃèÊö²»·û£»²»ÒªÇáÒ×ĞŞ¸Ä
+	int getRealMove(int speed); // æ­¤å‡½æ•°çš„åŠŸèƒ½ä¸åç§°æè¿°ä¸ç¬¦ï¼›ä¸è¦è½»æ˜“ä¿®æ”¹
 	bool isDead;
 	bool inScreen;
-	// ÊÇ·ñÏÖÔÚ¹¥»÷
+	// æ˜¯å¦ç°åœ¨æ”»å‡»
 	bool attackNow;
-	// ¹¥»÷·½Ïò
+	// æ”»å‡»æ–¹å‘
 	int attackDirection;
 	QImage image;
 

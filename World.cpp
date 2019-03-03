@@ -1,4 +1,4 @@
-#include "World.h"
+ï»¿#include "World.h"
 #include <QDir>
 #include <QFile>
 #include <QIODevice>
@@ -20,9 +20,9 @@ World::~World()
 
 bool World::createWorld(int id)
 {
-	// ´´½¨²¢´¢´æÍæ¼ÒĞÅÏ¢
+	// åˆ›å»ºå¹¶å‚¨å­˜ç©å®¶ä¿¡æ¯
 	generatePlayerConfig(id);
-	// È·¶¨ºÓÁ÷µÄÆğÊ¼µãÓë½áÊøµã
+	// ç¡®å®šæ²³æµçš„èµ·å§‹ç‚¹ä¸ç»“æŸç‚¹
 	riverStartPoint.row = getRandomInt(5, WORLD_ROW);
 	riverStartPoint.col = 0;
 	riverEndPoint.row = getRandomInt(5, WORLD_ROW);
@@ -99,17 +99,17 @@ inline int World::getRandomInt(int lower, int upper)
 
 int World::getSuitableCube(int _row, int _col)
 {
-	// ¿ÉÒÔ·µ»ØµÄÖµ£º
-	// 1£º²İ·½¿é£¨´ú±í´óµØ£©
-	// 3£ºÔ²Ê¯·½¿é£¨´ú±íÉ½µØ£©
-	// 5£ºÊ÷Ò¶·½¿é£¨´ú±íÉ­ÁÖ£©
-	// 6£ºË®·½¿é£¨´ú±íºÓÁ÷£©
+	// å¯ä»¥è¿”å›çš„å€¼ï¼š
+	// 1ï¼šè‰æ–¹å—ï¼ˆä»£è¡¨å¤§åœ°ï¼‰
+	// 3ï¼šåœ†çŸ³æ–¹å—ï¼ˆä»£è¡¨å±±åœ°ï¼‰
+	// 5ï¼šæ ‘å¶æ–¹å—ï¼ˆä»£è¡¨æ£®æ—ï¼‰
+	// 6ï¼šæ°´æ–¹å—ï¼ˆä»£è¡¨æ²³æµï¼‰
 
-	// Ä¬ÈÏÉú³É¼¸ÂÊ£º
-	// ²İ·½¿é£º6
-	// Ô²Ê¯·½¿é£º2
-	// Ê÷Ò¶·½¿é£º2
-	// Ë®·½¿é£ºÓÉº¯ÊıÖ±½ÓÈ·¶¨
+	// é»˜è®¤ç”Ÿæˆå‡ ç‡ï¼š
+	// è‰æ–¹å—ï¼š6
+	// åœ†çŸ³æ–¹å—ï¼š2
+	// æ ‘å¶æ–¹å—ï¼š2
+	// æ°´æ–¹å—ï¼šç”±å‡½æ•°ç›´æ¥ç¡®å®š
 	if (isWater(_row, _col))
 	{
 		return WATER;

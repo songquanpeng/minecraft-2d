@@ -1,4 +1,4 @@
-#include "setting.h"
+ï»¿#include "setting.h"
 #include "ui_setting.h"
 #include <QMouseEvent>
 #include <QDebug>
@@ -15,7 +15,7 @@ Setting::Setting(QWidget *parent) :
 	this->setAttribute(Qt::WA_DeleteOnClose, true);
 
 	setting = new QSettings("config.ini", QSettings::IniFormat);
-	// ¿ªÊ¼¶ÁÈ¡ÅäÖÃÎÄ¼ş
+	// å¼€å§‹è¯»å–é…ç½®æ–‡ä»¶
 	loadSetting();
 }
 

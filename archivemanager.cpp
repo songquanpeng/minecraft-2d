@@ -1,4 +1,4 @@
-#include "archivemanager.h"
+﻿#include "archivemanager.h"
 #include "ui_archivemanager.h"
 #include <QMessageBox>
 

@@ -1,4 +1,4 @@
-#include "Core.h"
+ï»¿#include "Core.h"
 
 
 Core::Core(QString archivePath)
@@ -7,7 +7,7 @@ Core::Core(QString archivePath)
 	this->setWindowIcon(QIcon(":lancher/image/icon.png"));
 	this->setAttribute(Qt::WA_DeleteOnClose, true);
 
-	// ¼ÓÔØÉèÖÃ
+	// åŠ è½½è®¾ç½®
 	loadSetting();
 
 
@@ -23,7 +23,7 @@ Core::Core(QString archivePath)
 	mousePoint.col = WORLD_COL*SIZE;
 	mousePoint.row = WORLD_ROW*SIZE;
 	setArticleName();
-	srand(static_cast<unsigned int>(time(0)));  //ÒÔµ±Ç°Ê±¼ä×÷ÎªËæ»úÊıÖÖ×Ó
+	srand(static_cast<unsigned int>(time(0)));  //ä»¥å½“å‰æ—¶é—´ä½œä¸ºéšæœºæ•°ç§å­
 	isGameOnGoing = true;
 }
 
@@ -196,7 +196,7 @@ void Core::startGame()
 
 }
 
-// ÔİÍ£Óë»Ö¸´ÓÎÏ·
+// æš‚åœä¸æ¢å¤æ¸¸æˆ
 void Core::pauseGame()
 {
 	if (isGameOnGoing == true)
@@ -300,10 +300,10 @@ void Core::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 
-	// äÖÈ¾»·¾³
+	// æ¸²æŸ“ç¯å¢ƒ
 	for (int row = 0; row < SCREEN_ROW; ++row)
 	{
-		for (int col = 0; col < SCREEN_COL; ++col) // äÖÈ¾Ê±ÒÀ¾İ¾ø¶Ô×ø±ê
+		for (int col = 0; col < SCREEN_COL; ++col) // æ¸²æŸ“æ—¶ä¾æ®ç»å¯¹åæ ‡
 		{
 			switch (board[windowStartPoint.row + row][windowStartPoint.col + col])
 			{
@@ -335,7 +335,7 @@ void Core::paintEvent(QPaintEvent *event)
 		}
 	}
 
-	// äÖÈ¾Êó±êËùÖ¸µã
+	// æ¸²æŸ“é¼ æ ‡æ‰€æŒ‡ç‚¹
 	painter.setBrush(Qt::NoBrush);
 	QPen pen;
 	pen.setStyle(Qt::DotLine);
@@ -344,25 +344,25 @@ void Core::paintEvent(QPaintEvent *event)
 	painter.setPen(pen);
 	painter.drawRect(mousePoint.col, mousePoint.row, SIZE, SIZE);
 
-	// äÖÈ¾ÉúÎï£¨°üÀ¨Íæ¼Ò£©
+	// æ¸²æŸ“ç”Ÿç‰©ï¼ˆåŒ…æ‹¬ç©å®¶ï¼‰
 	renderMobs();
 
-	// äÖÈ¾·ÉĞĞÎï£¨Èç¼ıÊ¸£©
+	// æ¸²æŸ“é£è¡Œç‰©ï¼ˆå¦‚ç®­çŸ¢ï¼‰
 	renderArrows();
 
-	// äÖÈ¾×´Ì¬À¸£¨ÎïÆ·À¸£©
+	// æ¸²æŸ“çŠ¶æ€æ ï¼ˆç‰©å“æ ï¼‰
 	renderArticleList();
 
 }
 
-// äÖÈ¾ÎïÆ·À¸
+// æ¸²æŸ“ç‰©å“æ 
 void Core::renderArticleList()
 {
 	QString text("");
-	// Ä¿Ç°Ëù³ÖÎïÆ·
+	// ç›®å‰æ‰€æŒç‰©å“
 	text.append("[>>> " + articleName[player->currentArticleType] + " <<<]\t");
 	text.append("LEVEL<" + QString::number(player->level) + "> BLOOD<" + QString::number(player->blood)+">\t");
-	// Íæ¼ÒµÄÎ»ÖÃ
+	// ç©å®¶çš„ä½ç½®
 	text += ("(" + QString::number(player->realPosition.row) + " ," + QString::number(player->realPosition.col) + " )\t");
 	for (int i = 0; i < MAX_ARTICLE_NUM; i++)
 	{
@@ -386,11 +386,11 @@ void Core::renderArticleList()
 }
 
 
-// ¸ù¾İÏàÓ¦µÄ Êµ¼Ê ×ø±êäÖÈ¾Íæ¼ÒÓëÉúÎï£»Ã¿´ÎäÖÈ¾Ç°²Å¸üĞÂÏà¶ÔÆÁÄ»×ø±ê
+// æ ¹æ®ç›¸åº”çš„ å®é™… åæ ‡æ¸²æŸ“ç©å®¶ä¸ç”Ÿç‰©ï¼›æ¯æ¬¡æ¸²æŸ“å‰æ‰æ›´æ–°ç›¸å¯¹å±å¹•åæ ‡
 void Core::renderMobs()
 {
 	QPainter painter(this);
-	// äÖÈ¾ÉúÎï
+	// æ¸²æŸ“ç”Ÿç‰©
 	QVector<Organism*> ::iterator iter;
 	for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
 	{
@@ -401,7 +401,7 @@ void Core::renderMobs()
 	}
 
 
-	// äÖÈ¾Íæ¼Ò;Íæ¼Ò±ØĞë×îºóäÖÈ¾
+	// æ¸²æŸ“ç©å®¶;ç©å®¶å¿…é¡»æœ€åæ¸²æŸ“
 	updateScreenPosition(player);
 	QRectF targetPosition(player->positionRelativeToScreen.col, player->positionRelativeToScreen.row, 40, 40);
 	painter.drawImage(targetPosition, player->image);
@@ -414,7 +414,7 @@ void Core::renderArrows()
 	for (iter = arrowList->begin(); iter != arrowList->end(); iter++)
 	{
 		if ((*iter) == NULL ) continue;
-		if ((*iter)->isMoving == false) //¶Ô²»ÒÆ¶¯µÄ¼ıÊ¸×ö£¨Òş²Ø£©´¦Àí 
+		if ((*iter)->isMoving == false) //å¯¹ä¸ç§»åŠ¨çš„ç®­çŸ¢åšï¼ˆéšè—ï¼‰å¤„ç† 
 		{
 			delete (*iter);
 			(*iter) = NULL;
@@ -542,7 +542,7 @@ void Core::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-// ×Ô¶¯¸üĞÂmousePoint Óë mouseGridPoint
+// è‡ªåŠ¨æ›´æ–°mousePoint ä¸ mouseGridPoint
 void Core::mousePressEvent(QMouseEvent * event)
 {
 	mousePoint.row = (event->y() / SIZE)*SIZE;
@@ -551,7 +551,7 @@ void Core::mousePressEvent(QMouseEvent * event)
 	qDebug() << "mousePoint.col " << mousePoint.col << "; mousePoint.row " << mousePoint.row;
 	if (event->button() == Qt::LeftButton) 
 	{
-		// ÅĞ¶ÏÊÇ·ñÊÇÔ¶³Ì¹¥»÷
+		// åˆ¤æ–­æ˜¯å¦æ˜¯è¿œç¨‹æ”»å‡»
 		if (player->currentArticleType == BOW)
 		{
 			if (player->articleList[ARROW] >= 1)
@@ -604,13 +604,13 @@ void Core::playSound(Organism * mob)
 }
 
 
-// Ô¶³Ì¹¥»÷; ½üÕ½£»ÒÀÀµattackDirection
+// è¿œç¨‹æ”»å‡»; è¿‘æˆ˜ï¼›ä¾èµ–attackDirection
 void Core::mobAttack(Organism* attacker)
 {
-	// È·¶¨·¢ÉäÕßÎ»ÖÃ
+	// ç¡®å®šå‘å°„è€…ä½ç½®
 	Point shoterRealGrid = pixelToGrid(attacker->realPosition);
 
-	// È·¶¨¼ıÊ¸·½Ïò
+	// ç¡®å®šç®­çŸ¢æ–¹å‘
 	int direction;
 	if (attacker == player)
 	{
@@ -644,7 +644,7 @@ void Core::mobAttack(Organism* attacker)
 		direction = attacker->attackDirection;
 	}
 
-	// È·¶¨¼ıÊ¸·¢Éäµã; Êµ¼ÊÎ»ÖÃ£¬µ¥Î»£º¸ñ
+	// ç¡®å®šç®­çŸ¢å‘å°„ç‚¹; å®é™…ä½ç½®ï¼Œå•ä½ï¼šæ ¼
 	Point arrowStartRealGrid;
 	if (direction == LEFT)
 	{
@@ -681,7 +681,7 @@ void Core::mobAttack(Organism* attacker)
 			arrowList->back()->isPlayer = true;
 		}
 	}
-	else if(attacker->name == "Zombie")// µ±Ç°Ö»¼ì²éÍæ¼ÒÊÇ·ñ±»¹¥»÷
+	else if(attacker->name == "Zombie")// å½“å‰åªæ£€æŸ¥ç©å®¶æ˜¯å¦è¢«æ”»å‡»
 	{
 		Point playerRealGrid = pixelToGrid(player->realPosition);
 		if (playerRealGrid == arrowStartRealGrid)
@@ -707,13 +707,13 @@ void Core::mobAttack(Organism* attacker)
 //	}
 //}
 
-// ¹ÜÀí¹¥»÷ĞÍÉúÎïµÄÒÆ¶¯Óë¹¥»÷; ·µ»ØÖµÎª·½Ïò£»ĞŞ¸ÄÉúÎïµÄattackDirection
+// ç®¡ç†æ”»å‡»å‹ç”Ÿç‰©çš„ç§»åŠ¨ä¸æ”»å‡»; è¿”å›å€¼ä¸ºæ–¹å‘ï¼›ä¿®æ”¹ç”Ÿç‰©çš„attackDirection
 int Core::mobChasingPlayer(Organism* mob)
 {
 	bool isSkeleton = (mob->name == "Skeleton");
-	// Ê×ÏÈÅĞ¶ÏÉúÎïÓëÍæ¼ÒÖ®¼äµÄ¾àÀëÒÔ¾ö¶¨ÊÇ·ñÖ÷¶¯×·ÖğÍæ¼Ò
+	// é¦–å…ˆåˆ¤æ–­ç”Ÿç‰©ä¸ç©å®¶ä¹‹é—´çš„è·ç¦»ä»¥å†³å®šæ˜¯å¦ä¸»åŠ¨è¿½é€ç©å®¶
 	bool chasePlayer = false;
-	// »ñÈ¡¹ÖÎïÓëÍæ¼ÒµÄÊµ¼Ê¸ñÎ»ÖÃ
+	// è·å–æ€ªç‰©ä¸ç©å®¶çš„å®é™…æ ¼ä½ç½®
 	Point mobRealGrid = pixelToGrid(mob->realPosition);
 
 	if (abs(mobRealGrid.row - player->realGrid.row) <= mobChasingRange && abs(mobRealGrid.col - player->realGrid.col) <= MOBS_CHASING_RANGE)
@@ -723,11 +723,11 @@ int Core::mobChasingPlayer(Organism* mob)
 
 	if (chasePlayer)
 	{
-		if (!isSkeleton) // Èç¹û²»ÊÇ÷¼÷Ã£¬¼´Èç¹ûÊÇ½üÕ½ĞÍ¹¥»÷ĞÍÉúÎï£¬Ôò³¢ÊÔ¿¿½üÍæ¼Ò
+		if (!isSkeleton) // å¦‚æœä¸æ˜¯éª·é«…ï¼Œå³å¦‚æœæ˜¯è¿‘æˆ˜å‹æ”»å‡»å‹ç”Ÿç‰©ï¼Œåˆ™å°è¯•é è¿‘ç©å®¶
 		{
 
 		}
-		// Î»ÓÚÍ¬Ò»ĞĞ
+		// ä½äºåŒä¸€è¡Œ
 		if (mobRealGrid.row == player->realGrid.row)
 		{
 			if (mobRealGrid.col < player->realGrid.col)
@@ -739,13 +739,13 @@ int Core::mobChasingPlayer(Organism* mob)
 				mob->direction = LEFT;
 			}
 
-			if (isSkeleton) // Èç¹ûÊÇ÷¼÷Ã£¬Í¬ĞĞÍ¬ÁĞºó²»ÔÙÒÆ¶¯£¬¿ªÊ¼¹¥»÷
+			if (isSkeleton) // å¦‚æœæ˜¯éª·é«…ï¼ŒåŒè¡ŒåŒåˆ—åä¸å†ç§»åŠ¨ï¼Œå¼€å§‹æ”»å‡»
 			{
 				mob->attackDirection = mob->direction;
 				mob->direction = STAY;
 				mob->attackNow = true;
 			}
-			else // Èç¹ûÊÇ½©Ê¬Ö®ÀàµÄÉúÎï£¬Èç¹ûµ±Ç°Î»ÖÃÓëÍæ¼ÒÏàÁÚ£¬Ôò¿ªÊ¼¹¥»÷
+			else // å¦‚æœæ˜¯åƒµå°¸ä¹‹ç±»çš„ç”Ÿç‰©ï¼Œå¦‚æœå½“å‰ä½ç½®ä¸ç©å®¶ç›¸é‚»ï¼Œåˆ™å¼€å§‹æ”»å‡»
 			{
 				if (mobRealGrid.col - player->realGrid.col == 1)
 				{
@@ -763,7 +763,7 @@ int Core::mobChasingPlayer(Organism* mob)
 		}
 		else
 		{
-			// Î»ÓÚÍ¬Ò»ÁĞ
+			// ä½äºåŒä¸€åˆ—
 			if (mobRealGrid.col == player->realGrid.col)
 			{
 				if (mobRealGrid.row < player->realGrid.row)
@@ -775,13 +775,13 @@ int Core::mobChasingPlayer(Organism* mob)
 					mob->direction = UP;
 				}
 
-				if (isSkeleton) // Èç¹ûÊÇ÷¼÷Ã£¬Í¬ĞĞÍ¬ÁĞºó²»ÔÙÒÆ¶¯£¬¿ªÊ¼¹¥»÷
+				if (isSkeleton) // å¦‚æœæ˜¯éª·é«…ï¼ŒåŒè¡ŒåŒåˆ—åä¸å†ç§»åŠ¨ï¼Œå¼€å§‹æ”»å‡»
 				{
 					mob->attackDirection = mob->direction;
 					mob->direction = STAY;
 					mob->attackNow = true;
 				}
-				else // Èç¹ûÊÇ½©Ê¬Ö®ÀàµÄÉúÎï£¬Èç¹ûµ±Ç°Î»ÖÃÓëÍæ¼ÒÏàÁÚ£¬Ôò¿ªÊ¼¹¥»÷
+				else // å¦‚æœæ˜¯åƒµå°¸ä¹‹ç±»çš„ç”Ÿç‰©ï¼Œå¦‚æœå½“å‰ä½ç½®ä¸ç©å®¶ç›¸é‚»ï¼Œåˆ™å¼€å§‹æ”»å‡»
 				{
 					if (mobRealGrid.row - player->realGrid.row == 1)
 					{
@@ -798,9 +798,9 @@ int Core::mobChasingPlayer(Organism* mob)
 				}
 
 			}
-			else // ²»Í¬ĞĞÒ²²»Í¬ÁĞ£¬³¢ÊÔÍ¬ĞĞ»òÕßÍ¬ÁĞ; ÊÊÓÃÓÚËùÓĞÉúÎï
+			else // ä¸åŒè¡Œä¹Ÿä¸åŒåˆ—ï¼Œå°è¯•åŒè¡Œæˆ–è€…åŒåˆ—; é€‚ç”¨äºæ‰€æœ‰ç”Ÿç‰©
 			{
-				if (rand() % 2 == 1) // ³¢ÊÔÍ¬ĞĞ
+				if (rand() % 2 == 1) // å°è¯•åŒè¡Œ
 				{
 					if (mobRealGrid.row < player->realGrid.row)
 					{
@@ -811,7 +811,7 @@ int Core::mobChasingPlayer(Organism* mob)
 						mob->direction = UP;
 					}
 				}
-				else // ³¢ÊÔÍ¬ÁĞ
+				else // å°è¯•åŒåˆ—
 				{
 					if (mobRealGrid.col < player->realGrid.col)
 					{
@@ -825,7 +825,7 @@ int Core::mobChasingPlayer(Organism* mob)
 			}
 		}
 	}
-	else // Ëæ»úÒÆ¶¯
+	else // éšæœºç§»åŠ¨
 	{
 		int randomNumber = rand() % 6;
 		if (randomNumber < 4)
@@ -837,7 +837,7 @@ int Core::mobChasingPlayer(Organism* mob)
 	return mob->direction;
 }
 
-// ´¦Àí¼ıÊ¸µÄÒÆ¶¯ÒÔ¼°Åö×²£¬ÏûÊ§
+// å¤„ç†ç®­çŸ¢çš„ç§»åŠ¨ä»¥åŠç¢°æ’ï¼Œæ¶ˆå¤±
 void Core::moveAllArrows()
 {
 	QVector<Arrow*>::iterator iter;
@@ -852,7 +852,7 @@ void Core::moveAllArrows()
 
 }
 
-// ¸ù¾İ·½Ïò²Ù×÷screenÏÔÊ¾µÄ²¿Î»£»·ÀÖ¹Ô½½ç£»´Ëº¯Êı½ö¸üĞÂ windowStartPoint
+// æ ¹æ®æ–¹å‘æ“ä½œscreenæ˜¾ç¤ºçš„éƒ¨ä½ï¼›é˜²æ­¢è¶Šç•Œï¼›æ­¤å‡½æ•°ä»…æ›´æ–° windowStartPoint
 void Core::moveWindow(int direction, int moveStep)
 {
 	switch (direction)
@@ -883,7 +883,7 @@ void Core::moveWindow(int direction)
 	moveWindow(direction, WINDOW_MOVE_STEP);
 }
 
-// Íæ¼ÒÒÆ¶¯
+// ç©å®¶ç§»åŠ¨
 bool Core::movePlayer(int direction) 
 {
 	if (isMobNearScreenBorder(player, direction))
@@ -893,7 +893,7 @@ bool Core::movePlayer(int direction)
 
 	if (isAbleToGo(player, direction, false))
 	{
-		movePoint(player->realPosition, direction, player->speed); // Êµ¼Ê×ø±êÒÑ¸üĞÂ
+		movePoint(player->realPosition, direction, player->speed); // å®é™…åæ ‡å·²æ›´æ–°
 		return true;
 	}
 	else
@@ -902,7 +902,7 @@ bool Core::movePlayer(int direction)
 	}
 }
 
-// ÉúÎïÒÆ¶¯
+// ç”Ÿç‰©ç§»åŠ¨
 void Core::moveMobs(Organism* mob, int direction) 
 {
 	if (isAbleToGo(mob, direction, mob->isPenetrateAble))
@@ -911,7 +911,7 @@ void Core::moveMobs(Organism* mob, int direction)
 	}
 }
 
-// ¼ıÊ¸ÒÆ¶¯;²»¿É¼ÌĞøÒÆ¶¯£ºfalse
+// ç®­çŸ¢ç§»åŠ¨;ä¸å¯ç»§ç»­ç§»åŠ¨ï¼šfalse
 bool Core::moveArrows(Arrow* arrow, int direction)
 {
 	if (isArrowAbleToGo(arrow, direction, arrow->isPenetrateAble))
@@ -922,10 +922,10 @@ bool Core::moveArrows(Arrow* arrow, int direction)
 	return false;
 }
 
-// Ã¿´Î¼ì²é¶¼»á¸üĞÂÆäÆÁÄ»×ø±ê; Íæ¼ÒÈôÕıÔÚ¿¿½ü£¬ÔòÖÃtrue
+// æ¯æ¬¡æ£€æŸ¥éƒ½ä¼šæ›´æ–°å…¶å±å¹•åæ ‡; ç©å®¶è‹¥æ­£åœ¨é è¿‘ï¼Œåˆ™ç½®true
 bool Core::isMobNearScreenBorder(Organism * mobs, int direction)
 {
-	// È·±£ÆÁÄ»×ø±êÕıÈ·
+	// ç¡®ä¿å±å¹•åæ ‡æ­£ç¡®
 	updateScreenPosition(mobs);
 	bool colMin = mobs->positionRelativeToScreen.col <= DISTANCE_TO_SCREEN_BORDER;
 	bool colMax = mobs->positionRelativeToScreen.col + DISTANCE_TO_SCREEN_BORDER >= SCREEN_COL * SIZE;
@@ -942,10 +942,10 @@ bool Core::isMobNearScreenBorder(Organism * mobs, int direction)
 	}
 }
 
-// ĞèÒª×¼È·µÄÊµ¼Ê×ø±ê
+// éœ€è¦å‡†ç¡®çš„å®é™…åæ ‡
 bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble) 
 {
-	// Êµ¼Ê×ø±ê
+	// å®é™…åæ ‡
 	Point myGridPosition = pixelToGrid(mobs->realPosition);
 	switch (direction)
 	{
@@ -964,24 +964,24 @@ bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 	default:
 		break;
 	}
-	// ¼ì²éÊÇ·ñÔ½½ç
+	// æ£€æŸ¥æ˜¯å¦è¶Šç•Œ
 	if (myGridPosition.row < 0 || myGridPosition.col < 0 || myGridPosition.col >= WORLD_COL || myGridPosition.row >= WORLD_ROW)
 	{
 		return false;
 	}
 
-	// ¼ì²éÊÇ·ñÊÇ¿ÉÒÔÍ¨¹ıµÄ·½¿é
+	// æ£€æŸ¥æ˜¯å¦æ˜¯å¯ä»¥é€šè¿‡çš„æ–¹å—
 	int cubeType = board[myGridPosition.row][myGridPosition.col];
 	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
 	{
 		return false;
 	}
 	
-	if (isPenetrateAble) //Èç¹ûÔÊĞí´©Í¸£¬ÔòÌø¹ıÉúÎïÅö×²¼ì²é
+	if (isPenetrateAble) //å¦‚æœå…è®¸ç©¿é€ï¼Œåˆ™è·³è¿‡ç”Ÿç‰©ç¢°æ’æ£€æŸ¥
 	{
 		return true;
 	}
-	// ¼ì²éÊÇ·ñÓĞÍæ¼Ò×èµ²
+	// æ£€æŸ¥æ˜¯å¦æœ‰ç©å®¶é˜»æŒ¡
 	if (mobs != player)
 	{
 		//updateScreenPosition(player);
@@ -997,14 +997,14 @@ bool Core::isAbleToGo(Organism * mobs, int direction, bool isPenetrateAble)
 
 	}
 
-	// ¼ì²éÊÇ·ñÆäËûÉúÎï×èµ²
+	// æ£€æŸ¥æ˜¯å¦å…¶ä»–ç”Ÿç‰©é˜»æŒ¡
 	if (ENABLE_CHECK_ALL)
 	{
 		QVector<Organism*>::iterator iter;
 		for (iter = mobsList->begin(); iter != mobsList->end(); iter++)
 		{
 			if (*iter == NULL) continue;
-			if (mobs != (*iter)) // ÒÀ¾İÊµ¼ÊÎ»ÖÃÅĞ¶ÏÊÇ·ñ¿ÉÒÔÇ°½ø
+			if (mobs != (*iter)) // ä¾æ®å®é™…ä½ç½®åˆ¤æ–­æ˜¯å¦å¯ä»¥å‰è¿›
 			{
 				//updateScreenPosition(*iter);
 				//if (myGridPosition == screenPositionToScreenGridPosition((*iter)->positionRelativeToScreen))
@@ -1026,7 +1026,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 {
 	Point myGridPosition = pixelToGrid(mobs->realPosition);
 
-	// ¼ì²é·¢Éäµã
+	// æ£€æŸ¥å‘å°„ç‚¹
 	int cubeType = board[myGridPosition.row][myGridPosition.col];
 	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
 	{
@@ -1051,13 +1051,13 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	default:
 		break;
 	}
-	// ¼ì²éÊÇ·ñÔ½½ç
+	// æ£€æŸ¥æ˜¯å¦è¶Šç•Œ
 	if (myGridPosition.row < 0 || myGridPosition.col < 0 || myGridPosition.col >= WORLD_COL || myGridPosition.row >= WORLD_ROW)
 	{
 		return false;
 	}
 
-	// ¼ì²éÊÇ·ñÊÇ¿ÉÒÔÍ¨¹ıµÄ·½¿é
+	// æ£€æŸ¥æ˜¯å¦æ˜¯å¯ä»¥é€šè¿‡çš„æ–¹å—
 	cubeType = board[myGridPosition.row][myGridPosition.col];
 	if (cubeType == LEAF || cubeType == STONE || cubeType == WOOD)
 	{
@@ -1065,11 +1065,11 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 		return false;
 	}
 
-	// ÊÇ·ñÉäÖĞÁËÍæ¼Ò
+	// æ˜¯å¦å°„ä¸­äº†ç©å®¶
 	// updateScreenPosition(player);
 	if (myGridPosition == pixelToGrid(player->realPosition))
 	{
-		// »÷ÖĞ
+		// å‡»ä¸­
 		// player->beAttacked(mobs->attakPower);
 		player->beAttacked(skeletonAttackPower);
 		if (player->isDead) 
@@ -1110,7 +1110,7 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 					}
 					mobsCount--;
 					delete *iter; 
-					mobsList->erase(iter); // É¾³ıºó£¬Êı×é»áÇ°ÒÆ£¨£¿£©
+					mobsList->erase(iter); // åˆ é™¤åï¼Œæ•°ç»„ä¼šå‰ç§»ï¼ˆï¼Ÿï¼‰
 				}
 				return false;
 			}
@@ -1155,7 +1155,7 @@ int Core::min(int a, int b)
 	}
 }
 
-void Core::moveAllMobs()  // ÔÚMobsÖĞÄÚÖÃ¶¨Ê±Æ÷ÒÔÊµÏÖËÙ¶È¿ØÖÆ²¢°´ÕÕ¸ñ×ÓĞĞ¶¯
+void Core::moveAllMobs()  // åœ¨Mobsä¸­å†…ç½®å®šæ—¶å™¨ä»¥å®ç°é€Ÿåº¦æ§åˆ¶å¹¶æŒ‰ç…§æ ¼å­è¡ŒåŠ¨
 {
 	QVector<Organism*> ::iterator iter;
 	player->realGrid = pixelToGrid(player->realPosition);
@@ -1166,21 +1166,21 @@ void Core::moveAllMobs()  // ÔÚMobsÖĞÄÚÖÃ¶¨Ê±Æ÷ÒÔÊµÏÖËÙ¶È¿ØÖÆ²¢°´ÕÕ¸ñ×ÓĞĞ¶¯
 		updateScreenPosition(*iter);
 		if (!isPointInScreen((*iter)->positionRelativeToScreen))
 		{
-			if ((*iter)->inScreen == true) // Ö®Ç°ÔÚÆÁÄ»ÄÚ£¬¸Õ¸ÕÀë¿ªÆÁÄ»·¶Î§
+			if ((*iter)->inScreen == true) // ä¹‹å‰åœ¨å±å¹•å†…ï¼Œåˆšåˆšç¦»å¼€å±å¹•èŒƒå›´
 			{
 				mobsCount--;
 			}
 			(*iter)->inScreen = false;
 			
-			continue; // Àë¿ªÆÁÄ»·¶Î§µÄÉúÎï»áÍ£Ö¹ÒÆ¶¯
+			continue; // ç¦»å¼€å±å¹•èŒƒå›´çš„ç”Ÿç‰©ä¼šåœæ­¢ç§»åŠ¨
 		}
-		if ((*iter)->inScreen == false) // Ö®Ç°Àë¿ªÆÁÄ»ÏÖÔÚ»Øµ½ÆÁÄ»ÄÚ
+		if ((*iter)->inScreen == false) // ä¹‹å‰ç¦»å¼€å±å¹•ç°åœ¨å›åˆ°å±å¹•å†…
 		{
 			(*iter)->inScreen = true;
 			mobsCount++;
 		}
 
-		if ((*iter)->name == "Zombie" || (*iter)->name == "Skeleton")  // ´¦Àí¹¥»÷ĞÍÉúÎïµÄÒÆ¶¯
+		if ((*iter)->name == "Zombie" || (*iter)->name == "Skeleton")  // å¤„ç†æ”»å‡»å‹ç”Ÿç‰©çš„ç§»åŠ¨
 		{
 			moveMobs(*iter, mobChasingPlayer(*iter));
 
@@ -1193,14 +1193,14 @@ void Core::moveAllMobs()  // ÔÚMobsÖĞÄÚÖÃ¶¨Ê±Æ÷ÒÔÊµÏÖËÙ¶È¿ØÖÆ²¢°´ÕÕ¸ñ×ÓĞĞ¶¯
 				}
 			}
 		}
-		else  // ´¦Àí±»¶¯ĞÍÉúÎïµÄÒÆ¶¯
+		else  // å¤„ç†è¢«åŠ¨å‹ç”Ÿç‰©çš„ç§»åŠ¨
 		{
 			moveMobs(*iter, (*iter)->desiredDirection());
 		}
 	}
 }
 
-// È·±£²»³¬³öÕæÊµµØÍ¼±ß½ç£»µ¥Î»£ºÏñËØ
+// ç¡®ä¿ä¸è¶…å‡ºçœŸå®åœ°å›¾è¾¹ç•Œï¼›å•ä½ï¼šåƒç´ 
 void Core::movePoint(Point& point, int direction, int moveDistance) 
 {
 	switch (direction)
@@ -1228,7 +1228,7 @@ void Core::movePoint(Point& point, int direction, int moveDistance)
 	if (point.row >= (WORLD_ROW)*SIZE) point.row = (WORLD_ROW - 1)*SIZE;
 }
 
-// Éú³É¹ÖÎï
+// ç”Ÿæˆæ€ªç‰©
 void Core::generateMobs(int number)
 {
 	srand(static_cast<unsigned int>(time(0)));
@@ -1264,13 +1264,13 @@ void Core::generateMobs(int number)
 	}
 }
 
-// Ã¿´Î²Ù×÷»á¸üĞÂmouseGridPoint
+// æ¯æ¬¡æ“ä½œä¼šæ›´æ–°mouseGridPoint
 bool Core::isActionValid()
 {
 	mouseGridPoint = screenPositionToScreenGridPosition(mousePoint);
-	// ÅĞ¶ÏÊÇ·ñÊÇÓĞĞ§²Ù×÷
+	// åˆ¤æ–­æ˜¯å¦æ˜¯æœ‰æ•ˆæ“ä½œ
 	bool isValid = false; 
-	// ĞèÒª»ñÈ¡Íæ¼ÒºÍ²Ù×÷µãµÄÆÁÄ»¸ñ×ø±ê
+	// éœ€è¦è·å–ç©å®¶å’Œæ“ä½œç‚¹çš„å±å¹•æ ¼åæ ‡
 	updateScreenPosition(player);
 	Point playerGridPoint = screenPositionToScreenGridPosition(player->positionRelativeToScreen);
 	bool condition_1 = (player->attackRange >= abs(playerGridPoint.row - mouseGridPoint.row)) && (player->attackRange >= abs(playerGridPoint.col - mouseGridPoint.col));
@@ -1284,7 +1284,7 @@ bool Core::isActionValid()
 	return true;
 }
 
-// ¾ö¶¨Ä³·½¿éÊÇ·ñ¿ÉÒÔ·ÅÔÚÄ³Ò»·½¿éÉÏ
+// å†³å®šæŸæ–¹å—æ˜¯å¦å¯ä»¥æ”¾åœ¨æŸä¸€æ–¹å—ä¸Š
 bool Core::isCubeCanBeCreateOn(Point position)
 {
 	int cubeType = board[position.row][position.col];
@@ -1355,7 +1355,7 @@ bool Core::isPointInScreen(Point position)
 	}
 }
 
-// Íæ¼Ò½øĞĞÆÕÍ¨²Ù×÷£¨¹¥»÷£¬ÍÚ¾ò£©£¬Î»ÖÃÎªmousePoint
+// ç©å®¶è¿›è¡Œæ™®é€šæ“ä½œï¼ˆæ”»å‡»ï¼ŒæŒ–æ˜ï¼‰ï¼Œä½ç½®ä¸ºmousePoint
 void Core::playerNormalAction()
 {
 	qDebug() << "Player normal operation, point: row: " << mouseGridPoint.row << " col: " << mouseGridPoint.col;
@@ -1365,7 +1365,7 @@ void Core::playerNormalAction()
 		return;
 	}
 
-	// ÅĞ¶ÏÊÇ·ñÊÇ¹¥»÷
+	// åˆ¤æ–­æ˜¯å¦æ˜¯æ”»å‡»
 	bool isAttack = false;
 	QVector<Organism*>::iterator iter;
 	for (iter=mobsList->begin();iter!=mobsList->end();iter++)
@@ -1385,14 +1385,14 @@ void Core::playerNormalAction()
 				player->articleList[(*iter)->dropItemType] += (*iter)->dropItemNum;
 
 				delete *iter;
-				mobsList->erase(iter); // É¾³ıºó£¬Êı×é»áÇ°ÒÆ£¨£¿£©
+				mobsList->erase(iter); // åˆ é™¤åï¼Œæ•°ç»„ä¼šå‰ç§»ï¼ˆï¼Ÿï¼‰
 			}
 			isAttack = true;
-			return; // ÒÑÕÒµ½±»¹¥»÷µÄ¶ÔÏó£¬ÍË³öº¯Êı
+			return; // å·²æ‰¾åˆ°è¢«æ”»å‡»çš„å¯¹è±¡ï¼Œé€€å‡ºå‡½æ•°
 		}
 	}
 
-	if (!isAttack) // ÓÃ»§½øĞĞÁËºÏ·¨µÄÍÚ¾ò²Ù×÷
+	if (!isAttack) // ç”¨æˆ·è¿›è¡Œäº†åˆæ³•çš„æŒ–æ˜æ“ä½œ
 	{
 		playerMining(mouseGridPoint);
 	}
@@ -1412,7 +1412,7 @@ void Core::playerMining(Point miningPoint)
 		return;
 	}
 
-	player->articleList[*targetCube] += 1; // Ôö¼ÓÍæ¼ÒÎïÆ·À¸´¢±¸
+	player->articleList[*targetCube] += 1; // å¢åŠ ç©å®¶ç‰©å“æ å‚¨å¤‡
 	switch (*targetCube)
 	{
 	case LEAF:
@@ -1435,7 +1435,7 @@ void Core::playerMining(Point miningPoint)
 	}
 }
 
-// ½ÓÊÕ²ÎÊıµÄµ¥Î»Îª¸ñ
+// æ¥æ”¶å‚æ•°çš„å•ä½ä¸ºæ ¼
 void Core::playerCreateCube(Point createPoint)
 {
 
@@ -1463,7 +1463,7 @@ void Core::playerCreateCube(Point createPoint)
 	qDebug()<<"player create cube: "<< player->currentArticleType << " on point: row: " << createPoint.row << " col: " << createPoint.col;
 }
 
-// Êó±êÓÒ¼üÒÆ¶¯Íæ¼Ò
+// é¼ æ ‡å³é”®ç§»åŠ¨ç©å®¶
 void Core::playerGotoMousePoint()
 {
 	player->realGrid = pixelToGrid(player->realPosition);
@@ -1524,14 +1524,14 @@ void Core::playerGotoMousePoint()
 	
 }
 
-// ¸üĞÂËùÓĞÉúÎï£¨°üÀ¨Íæ¼Ò£©µÄ×´Ì¬£¨ÑªÁ¿£¬ÊÇ·ñËÀÍö£©
+// æ›´æ–°æ‰€æœ‰ç”Ÿç‰©ï¼ˆåŒ…æ‹¬ç©å®¶ï¼‰çš„çŠ¶æ€ï¼ˆè¡€é‡ï¼Œæ˜¯å¦æ­»äº¡ï¼‰
 void Core::adjustAllMobsStatus()
 {
 
 }
 
 
-// ÒÔÏñËØÎªµ¥Î»£¬·Ç¸ñ£»ÆÁÄ»×ø±ê-->¾ø¶Ô×ø±ê
+// ä»¥åƒç´ ä¸ºå•ä½ï¼Œéæ ¼ï¼›å±å¹•åæ ‡-->ç»å¯¹åæ ‡
 Point Core::positionConvertor(Point screenPostion)
 {
 	Point realPostion;
@@ -1540,7 +1540,7 @@ Point Core::positionConvertor(Point screenPostion)
 	return realPostion;
 }
 
-// ¾ø¶Ô×ø±ê-->ÆÁÄ»×ø±ê; ×¢Òâ£º×ª»»ºó¿ÉÄÜ²¢²»ÔÚÆÁÄ»ÄÚ£»µ¥Î»£ºÏñËØ
+// ç»å¯¹åæ ‡-->å±å¹•åæ ‡; æ³¨æ„ï¼šè½¬æ¢åå¯èƒ½å¹¶ä¸åœ¨å±å¹•å†…ï¼›å•ä½ï¼šåƒç´ 
 Point Core::absolutePositionConvertor(Point absolutePosition)
 {
 	Point screenPosition;
@@ -1549,7 +1549,7 @@ Point Core::absolutePositionConvertor(Point absolutePosition)
 	return screenPosition;
 }
 
-// ¸ù¾İÆäÊµ¼Ê×ø±ê¸üĞÂÆäÆÁÄ»×ø±ê
+// æ ¹æ®å…¶å®é™…åæ ‡æ›´æ–°å…¶å±å¹•åæ ‡
 void Core::updateScreenPosition(Organism * mobs)
 {
 	mobs->positionRelativeToScreen = absolutePositionConvertor(mobs->realPosition);
@@ -1560,7 +1560,7 @@ void Core::timerEvent(QTimerEvent *event)
 {
 	if (isGameOnGoing)
 	{
-		//Ë¢ĞÂ»­Ãæ
+		//åˆ·æ–°ç”»é¢
 		if (event->timerId() == renderTimer)
 		{
 			update();
@@ -1568,9 +1568,9 @@ void Core::timerEvent(QTimerEvent *event)
 		}
 		if (event->timerId() == mobsMoveTimer)
 		{
-			// ÉúÎïÒÆ¶¯
-			moveAllMobs(); // µ±Ç°Õı³£ÆôÓÃ
-			//adjustAllMobsStatus(); // Ä¿Ç°ÆúÓÃ
+			// ç”Ÿç‰©ç§»åŠ¨
+			moveAllMobs(); // å½“å‰æ­£å¸¸å¯ç”¨
+			//adjustAllMobsStatus(); // ç›®å‰å¼ƒç”¨
 		}
 		if (event->timerId() == arrowMoveTimer)
 		{

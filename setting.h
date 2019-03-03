@@ -1,4 +1,4 @@
-#ifndef SETTING_H
+ï»¿#ifndef SETTING_H
 #define SETTING_H
 
 #include <QDialog>
@@ -28,7 +28,7 @@ private slots:
 	void on_okBtn_clicked();
 	void on_resetBtn_clicked();
 protected:
-	// ÊµÏÖ´°ÌåµÄ¿ÉÍÏ¶¯
+	// å®ç°çª—ä½“çš„å¯æ‹–åŠ¨
 	void mouseMoveEvent(QMouseEvent* event);
 	void mousePressEvent(QMouseEvent* event);
 	void mouseReleaseEvent(QMouseEvent* event);
