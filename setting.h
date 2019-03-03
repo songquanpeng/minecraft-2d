@@ -18,6 +18,9 @@ struct Config
 {
 	int difficulty;
 	bool backgroundMusicOn;
+	int number; // 生物数量
+	int interval; // 刷新间隔
+	int fps;
 };
 
 class Setting : public QDialog

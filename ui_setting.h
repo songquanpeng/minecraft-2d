@@ -20,6 +20,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -40,6 +42,16 @@ public:
     QRadioButton *normal;
     QRadioButton *difficult;
     QGroupBox *inputGroupBox;
+    QGridLayout *gridLayout_2;
+    QLabel *label_2;
+    QSpacerItem *horizontalSpacer;
+    QSpinBox *numberSpinBox;
+    QLabel *label_3;
+    QSpacerItem *horizontalSpacer_2;
+    QSpinBox *intervalSpinBox;
+    QLabel *label_4;
+    QSpacerItem *horizontalSpacer_3;
+    QSpinBox *fpsSpinBox;
     QPushButton *resetBtn;
     QPushButton *okBtn;
     QPushButton *cancelBtn;
@@ -78,8 +90,10 @@ public:
         checkBoxGroupBox->setObjectName(QStringLiteral("checkBoxGroupBox"));
         checkBoxGroupBox->setMinimumSize(QSize(286, 229));
         checkBoxGroupBox->setStyleSheet(QLatin1String("QGroupBox#checkBoxGroupBox{\n"
+"\n"
 "	border-image: url(:/lancher/image/dialog.png);\n"
-"}"));
+"}\n"
+"font: 16pt \"Georgia\";"));
         musicCheckBox = new QCheckBox(checkBoxGroupBox);
         musicCheckBox->setObjectName(QStringLiteral("musicCheckBox"));
         musicCheckBox->setGeometry(QRect(30, 30, 251, 19));
@@ -126,6 +140,67 @@ public:
         inputGroupBox->setStyleSheet(QLatin1String("QGroupBox#inputGroupBox{\n"
 "	border-image: url(:/lancher/image/dialog.png);\n"
 "}"));
+        gridLayout_2 = new QGridLayout(inputGroupBox);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        label_2 = new QLabel(inputGroupBox);
+        label_2->setObjectName(QStringLiteral("label_2"));
+
+        gridLayout_2->addWidget(label_2, 0, 0, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(364, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer, 0, 1, 1, 1);
+
+        numberSpinBox = new QSpinBox(inputGroupBox);
+        numberSpinBox->setObjectName(QStringLiteral("numberSpinBox"));
+        numberSpinBox->setMinimumSize(QSize(60, 30));
+        numberSpinBox->setMaximumSize(QSize(60, 30));
+        numberSpinBox->setMaximum(70);
+        numberSpinBox->setSingleStep(10);
+        numberSpinBox->setValue(20);
+
+        gridLayout_2->addWidget(numberSpinBox, 0, 2, 1, 1);
+
+        label_3 = new QLabel(inputGroupBox);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        gridLayout_2->addWidget(label_3, 1, 0, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(364, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_2, 1, 1, 1, 1);
+
+        intervalSpinBox = new QSpinBox(inputGroupBox);
+        intervalSpinBox->setObjectName(QStringLiteral("intervalSpinBox"));
+        intervalSpinBox->setMinimumSize(QSize(60, 30));
+        intervalSpinBox->setMaximumSize(QSize(60, 30));
+        intervalSpinBox->setMinimum(1);
+        intervalSpinBox->setMaximum(60);
+        intervalSpinBox->setSingleStep(1);
+        intervalSpinBox->setValue(10);
+
+        gridLayout_2->addWidget(intervalSpinBox, 1, 2, 1, 1);
+
+        label_4 = new QLabel(inputGroupBox);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        gridLayout_2->addWidget(label_4, 2, 0, 1, 1);
+
+        horizontalSpacer_3 = new QSpacerItem(364, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_3, 2, 1, 1, 1);
+
+        fpsSpinBox = new QSpinBox(inputGroupBox);
+        fpsSpinBox->setObjectName(QStringLiteral("fpsSpinBox"));
+        fpsSpinBox->setMinimumSize(QSize(60, 30));
+        fpsSpinBox->setMaximumSize(QSize(60, 30));
+        fpsSpinBox->setMinimum(10);
+        fpsSpinBox->setMaximum(100);
+        fpsSpinBox->setSingleStep(10);
+        fpsSpinBox->setValue(60);
+
+        gridLayout_2->addWidget(fpsSpinBox, 2, 2, 1, 1);
+
 
         verticalLayout_2->addWidget(inputGroupBox);
 
@@ -178,6 +253,9 @@ public:
         normal->setText(QApplication::translate("Setting", "Normal", nullptr));
         difficult->setText(QApplication::translate("Setting", "Difficult", nullptr));
         inputGroupBox->setTitle(QApplication::translate("Setting", "Input", nullptr));
+        label_2->setText(QApplication::translate("Setting", "Biological quantity:", nullptr));
+        label_3->setText(QApplication::translate("Setting", "Refresh interval:", nullptr));
+        label_4->setText(QApplication::translate("Setting", "FPS:", nullptr));
         resetBtn->setText(QApplication::translate("Setting", "Reset", nullptr));
         okBtn->setText(QApplication::translate("Setting", "OK", nullptr));
         cancelBtn->setText(QApplication::translate("Setting", "Cancel", nullptr));

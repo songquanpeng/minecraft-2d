@@ -28,8 +28,14 @@ void Setting::loadSetting()
 {
 	config.backgroundMusicOn = setting->value("backgroundMusicOn").toBool();
 	config.difficulty = setting->value("difficulty").toInt();
+	config.number = setting->value("number").toInt();
+	config.interval = setting->value("interval").toInt();
+	config.fps = setting->value("fps").toInt();
 
 	ui->musicCheckBox->setChecked(config.backgroundMusicOn);
+	ui->numberSpinBox->setValue(config.number);
+	ui->intervalSpinBox->setValue(config.interval);
+	ui->fpsSpinBox->setValue(config.fps);
 	// load difficulty setting
 	if (config.difficulty == Pease) {
 		ui->peace->setChecked(true);
@@ -48,6 +54,10 @@ void Setting::loadSetting()
 void Setting::updateSetting()
 {
 	config.backgroundMusicOn = ui->musicCheckBox->isChecked();
+	config.number = ui->numberSpinBox->value();
+	config.fps = ui->fpsSpinBox->value();
+	config.interval = ui->intervalSpinBox->value();
+
 	// update difficulty setting
 	if (ui->peace->isChecked()){
 		config.difficulty = Pease;
@@ -64,12 +74,19 @@ void Setting::updateSetting()
 
 	setting->setValue("difficulty", config.difficulty);
 	setting->setValue("backgroundMusicOn", config.backgroundMusicOn);
+	setting->setValue("interval", config.interval);
+	setting->setValue("number", config.number);
+	setting->setValue("fps", config.fps);
+
 }
 
 void Setting::resetSetting()
 {
 	ui->musicCheckBox->setChecked(true);
 	ui->normal->setChecked(true);
+	ui->numberSpinBox->setValue(20);
+	ui->intervalSpinBox->setValue(10);
+	ui->fpsSpinBox->setValue(60);
 
 	updateSetting();
 }
