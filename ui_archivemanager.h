@@ -104,6 +104,7 @@ public:
         spinBox->setStyleSheet(QLatin1String("font: 18pt \"Georgia\";\n"
 "background-color: rgba(0, 255, 0, 100);"));
         spinBox->setAlignment(Qt::AlignCenter);
+        spinBox->setMaximum(99999);
 
         horizontalLayout_2->addWidget(spinBox);
 

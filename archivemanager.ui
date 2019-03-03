@@ -149,6 +149,9 @@ background-color: rgba(0, 255, 0, 100);</string>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
+         <property name="maximum">
+          <number>99999</number>
+         </property>
         </widget>
        </item>
        <item>
