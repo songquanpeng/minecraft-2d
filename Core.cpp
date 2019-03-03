@@ -37,6 +37,36 @@ void Core::loadSetting()
 	config.interval = setting->value("interval").toInt();
 	config.fps = setting->value("fps").toInt();
 
+	switch (config.difficulty)
+	{
+	case Pease:
+		mobChasingRange = 1;
+		zombieAttackPower = 1;
+		skeletonAttackPower = 1;
+		config.number *= 0.5;
+		break;
+	case Easy:
+		mobChasingRange = 2;
+		zombieAttackPower = 2;
+		skeletonAttackPower = 2;
+		config.number *= 1;
+		break;
+	case Normal:
+		mobChasingRange = 4;
+		zombieAttackPower = 3;
+		skeletonAttackPower = 3;
+		config.number *= 2;
+		break;
+	case Difficult:
+		mobChasingRange = 8;
+		zombieAttackPower = 6;
+		skeletonAttackPower = 6;
+		config.number *= 3;
+		break;
+	default:
+		break;
+	}
+
 	delete setting;
 }
 
@@ -657,7 +687,7 @@ void Core::mobAttack(Organism* attacker)
 		if (playerRealGrid == arrowStartRealGrid)
 		{
 			qDebug() << "player be attacked by a zombie, row: " << arrowStartRealGrid.row << " col: " << arrowStartRealGrid.col;
-			player->beAttacked(ZOMBIE_ATTACK_POWER);
+			player->beAttacked(zombieAttackPower);
 
 			if (player->isDead) 
 			{
@@ -686,7 +716,7 @@ int Core::mobChasingPlayer(Organism* mob)
 	// 获取怪物与玩家的实际格位置
 	Point mobRealGrid = pixelToGrid(mob->realPosition);
 
-	if (abs(mobRealGrid.row - player->realGrid.row) <= MOBS_CHASING_RANGE && abs(mobRealGrid.col - player->realGrid.col) <= MOBS_CHASING_RANGE)
+	if (abs(mobRealGrid.row - player->realGrid.row) <= mobChasingRange && abs(mobRealGrid.col - player->realGrid.col) <= MOBS_CHASING_RANGE)
 	{
 		chasePlayer = true;
 	}
@@ -1040,7 +1070,8 @@ bool Core::isArrowAbleToGo(Arrow* mobs, int direction, bool isPenetrateAble)
 	if (myGridPosition == pixelToGrid(player->realPosition))
 	{
 		// 击中
-		player->beAttacked(mobs->attakPower);
+		// player->beAttacked(mobs->attakPower);
+		player->beAttacked(skeletonAttackPower);
 		if (player->isDead) 
 		{
 			playerRebrith();

@@ -56,6 +56,9 @@ public:
 	Point birthPoint;
 
 private:
+	int mobChasingRange;
+	int zombieAttackPower;
+	int skeletonAttackPower;
 	Config config;
 	void loadSetting();
 	void addNewMobs();
