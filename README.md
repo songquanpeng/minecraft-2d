@@ -1,3 +1,5 @@
+**[Download the compiled executable here](https://github.com/songwonderful/Cloud-Disk/raw/master/Program/MineCraft-2D.7z)**
+
 ## TODO list
 - [x] 当生物离开屏幕范围时要被暂停活动
 - [x] 暂停与恢复游戏
