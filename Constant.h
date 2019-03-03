@@ -20,6 +20,21 @@ struct Point
 	}
 };
 
+const int Pease = 0;
+const int Easy = 1;
+const int Normal = 2;
+const int Difficult = 3;
+
+
+struct Config
+{
+	int difficulty;
+	bool backgroundMusicOn;
+	int number; // 生物数量
+	int interval; // 刷新间隔
+	int fps;
+};
+
 const int MOBS_CHASING_RANGE = 4;
 const float ARMOR_PROTECTION_RATIO = 0.5;
 

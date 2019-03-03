@@ -6,6 +6,11 @@ Core::Core(QString archivePath)
 	this->showFullScreen();
 	this->setWindowIcon(QIcon(":lancher/image/icon.png"));
 	this->setAttribute(Qt::WA_DeleteOnClose, true);
+
+	// º”‘ÿ…Ë÷√
+	loadSetting();
+
+
 	path = archivePath;
 	file = new QFile(path+"/map.txt");
 	loadMapData();
@@ -14,7 +19,7 @@ Core::Core(QString archivePath)
 	mobsList = new QVector<Organism*>;
 	arrowList = new QVector<Arrow*>;
 	mobsCount = 0;
-	generateMobs(MOBS_NUMBER);
+	generateMobs(config.number);
 	mousePoint.col = WORLD_COL*SIZE;
 	mousePoint.row = WORLD_ROW*SIZE;
 	setArticleName();
@@ -22,11 +27,24 @@ Core::Core(QString archivePath)
 	isGameOnGoing = true;
 }
 
+void Core::loadSetting()
+{
+	QSettings *setting = new QSettings("config.ini", QSettings::IniFormat);
+
+	config.backgroundMusicOn = setting->value("backgroundMusicOn").toBool();
+	config.difficulty = setting->value("difficulty").toInt();
+	config.number = setting->value("number").toInt();
+	config.interval = setting->value("interval").toInt();
+	config.fps = setting->value("fps").toInt();
+
+	delete setting;
+}
+
 void Core::addNewMobs()
 {
 	if (mobsCount <= 10)
 	{
-		generateMobs(10);
+		generateMobs(config.number);
 	}
 }
 
@@ -137,10 +155,10 @@ Core::~Core()
 
 void Core::resetGame()
 {
-	renderTimer = startTimer(1000/FPS);
+	renderTimer = startTimer(1000/config.fps);
 	mobsMoveTimer = startTimer(MOBS_MOVE_TIMER);
 	arrowMoveTimer = startTimer(50);
-	checkMobsNumberTimer = startTimer(10000);
+	checkMobsNumberTimer = startTimer(config.interval*1000);
 }
 
 void Core::startGame()

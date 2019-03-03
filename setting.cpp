@@ -86,7 +86,7 @@ void Setting::resetSetting()
 	ui->normal->setChecked(true);
 	ui->numberSpinBox->setValue(20);
 	ui->intervalSpinBox->setValue(10);
-	ui->fpsSpinBox->setValue(60);
+	ui->fpsSpinBox->setValue(20);
 
 	updateSetting();
 }

@@ -56,6 +56,8 @@ public:
 	Point birthPoint;
 
 private:
+	Config config;
+	void loadSetting();
 	void addNewMobs();
 	void initPlayer();
 	void updatePlayer();
